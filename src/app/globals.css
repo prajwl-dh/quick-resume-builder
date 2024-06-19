@@ -8,6 +8,6 @@
     }
 
     body {
-      @apply  dark:bg-dark-background bg-light-background
+      @apply bg-light-background dark:bg-dark-background 
     }
   }
