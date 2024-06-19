@@ -2,6 +2,7 @@
 
 import { useTheme } from 'next-themes';
 import PrimaryButton from './components/buttons/PrimaryButton';
+import SecondaryButton from './components/buttons/SecondaryButton';
 export default function Home() {
   const { theme, setTheme } = useTheme();
   return (
@@ -17,12 +18,9 @@ export default function Home() {
       </p>
       <div className='flex flex-row gap-5'>
         <PrimaryButton onClick={() => setTheme('dark')}>Click Me</PrimaryButton>
-        <button
-          onClick={() => setTheme('light')}
-          className='text-light-button-secondary-text dark:text-dark-button-secondary-text bg-light-button-secondary-background dark:bg-dark-button-secondary-background hover:bg-light-button-secondary-active dark:hover:bg-dark-button-secondary-active ring-1 ring-light-ring-secondary dark:ring-dark-ring-secondary dark:hover:ring-dark-ring-primary px-3 py-1.5 rounded-md outline-none transition duration-200 text-md shadow-sm'
-        >
+        <SecondaryButton onClick={() => setTheme('light')}>
           Go Back
-        </button>
+        </SecondaryButton>
       </div>
     </div>
   );
