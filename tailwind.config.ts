@@ -20,7 +20,7 @@ const config: Config = {
         'light-ring-primary': '#9ca3af',
         'light-ring-secondary': '#d1d5db',
         'light-button-primary-background': '#171717',
-        'light-button-primary-active': '#383838',
+        'light-button-primary-active': '#4d4d4d',
         'light-button-primary-text': '#ffffff',
         'light-button-secondary-background': '#ffffff',
         'light-button-secondary-active': '#EBEBEB',
