@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import { useTheme } from 'next-themes';
 import { useRouter } from 'next/navigation';
 import React from 'react';
-import PrimaryButton from '../buttons/PrimaryButton';
 import Moon from '../theme-switcher/Moon';
 import Sun from '../theme-switcher/Sun';
 import { Logo } from './Logo';
@@ -31,7 +30,7 @@ export default function Navbar() {
       initial={{ opacity: 0, y: -5 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.2, type: 'spring' }}
-      className={`w-full h-[70px] px-3 md:px-14 flex flex-row justify-between items-center fixed left-0 top-0 z-50 ${
+      className={`w-full h-[70px] px-1 md:px-14 flex flex-row justify-between items-center fixed left-0 top-0 z-50 scale-50 md:scale-100x ${
         sticky
           ? 'bg-light-foreground dark:bg-dark-foreground shadow-sm backdrop-blur-sm bg-opacity-40 dark:bg-opacity-40'
           : 'bg-transparent'
@@ -59,9 +58,6 @@ export default function Navbar() {
         </div>
       </div>
       <div className='flex flex-row gap-4 items-center'>
-        <PrimaryButton onClick={() => router.push('/builder')}>
-          Get Started --&gt;{' '}
-        </PrimaryButton>
         {theme === 'dark' ? (
           <Sun setTheme={setTheme} />
         ) : (

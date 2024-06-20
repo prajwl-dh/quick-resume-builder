@@ -1,6 +1,15 @@
+'use client';
+
+import { motion } from 'framer-motion';
+
 export default function Footer() {
   return (
-    <div className='w-full h-[60px] px-3 md:px-14 justify-center items-center flex flex-row bg-light-foreground dark:bg-dark-foreground backdrop-blur-sm bg-opacity-60 border-t-[1px] border-slate-200 dark:border-stone-700'>
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.3, type: 'spring' }}
+      className='w-full h-[60px] px-1 md:px-14 justify-center items-center flex flex-row bg-light-foreground dark:bg-dark-foreground backdrop-blur-sm bg-opacity-60 border-t-[1px] border-slate-200 dark:border-stone-700 fixed bottom-0'
+    >
       <div className='flex flex-row gap-0.5 justify-center items-center font-mono'>
         <p className='text text-md text-light-text-primary dark:text-dark-text-primary'>
           Made with &#9829; By @
@@ -13,6 +22,6 @@ export default function Footer() {
           prajwl-dh
         </a>
       </div>
-    </div>
+    </motion.div>
   );
 }
