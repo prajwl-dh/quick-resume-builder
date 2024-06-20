@@ -25,7 +25,7 @@ export default function ScrollToTheTop() {
       onClick={() => handleClick()}
       className={`fixed z-[9999] cursor-pointer ${
         !scrollButton ? 'hidden' : null
-      } right-2 md:right-2 bottom-5`}
+      } right-2 md:right-5 bottom-20`}
     >
       <svg
         className={`text text-dark-text-primary bg-light-button-primary-background dark:text-light-text-primary dark:bg-dark-button-primary-background rounded-md hover:scale-105`}

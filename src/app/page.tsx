@@ -9,9 +9,9 @@ export default function page() {
       <Navbar />
       <div className='w-full 2xl:w-10/12 px-3 md:px-14 flex flex-col items-center'>
         <Home />
-        <Footer />
         <ScrollToTheTop />
       </div>
+      <Footer />
     </div>
   );
 }
