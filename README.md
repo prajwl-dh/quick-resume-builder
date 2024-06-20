@@ -62,4 +62,4 @@ Make sure you have the following installed:
 
    ```
 
-5. Open your browser and visit `http://localhost:3000` , or http://localhost:PORT if PORT 3000 is already in use.
+5. Open your browser and visit `http://localhost:3000` , or `http://localhost:PORT` if PORT 3000 is already in use.
