@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Quick Resume Builder
+
+Quick Resume is a free and open-source app for building professional, eye-catching resumes quickly and effortlessly. No login or signup required. This README provides instructions on how to set up and run the project locally, as well as an overview of the tech stack used.
+
+## Features
+
+- Fast, easy, and intuitive resume builder
+- Free and open-source
+- No login or signup required
+- Customizable templates
+- Responsive design
+
+## Tech Stack
+
+- **React**: A JavaScript library for building user interfaces.
+- **Next.js**: A React framework for server-side rendering and static site generation.
+- **Tailwind CSS**: A utility-first CSS framework for rapid UI development.
+- **TypeScript**: A typed superset of JavaScript that compiles to plain JavaScript.
+- **Framer Motion**: A library for animations and gestures in React.
+- **ESLint**: A tool for identifying and reporting on patterns found in ECMAScript/JavaScript code.
+- **PostCSS**: A tool for transforming CSS with JavaScript plugins.
+- **Sharp**: A high-performance image processing library.
 
 ## Getting Started
 
-First, run the development server:
+Follow these steps to clone the repository and run the app locally.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Prerequisites
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Make sure you have the following installed:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Node.js
+- npm (Node package manager)
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### Installation
 
-## Learn More
+1. Clone the repository:
 
-To learn more about Next.js, take a look at the following resources:
+   ```bash
+   git clone https://github.com/yourusername/quick-resume-builder.git
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+2. Change to project directory:
 
-## Deploy on Vercel
+   ```bash
+   cd quick-resume-builder
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+3. Install dependencies:
+
+   ```bash
+   npm install
+
+   ```
+
+4. Start the development server:
+
+   ```bash
+   npm run dev
+
+   ```
+
+5. Open your browser and visit `http://localhost:3000` , or http://localhost:PORT if PORT 3000 is already in use.
