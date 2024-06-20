@@ -27,9 +27,9 @@ export default function Navbar() {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: -5 }}
+      initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.2, type: 'spring' }}
+      transition={{ delay: 0.5, type: 'spring' }}
       className={`w-full h-[70px] px-1 md:px-14 flex flex-row justify-between items-center fixed left-0 top-0 z-50 scale-50 md:scale-100x ${
         sticky
           ? 'bg-light-foreground dark:bg-dark-foreground shadow-sm backdrop-blur-sm bg-opacity-40 dark:bg-opacity-40'
