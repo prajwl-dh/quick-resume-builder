@@ -32,7 +32,12 @@ export default function Home() {
         >
           Get Started 🔥
         </PrimaryButton>
-        <SecondaryButton className='h-12 min-w-32 flex flex-row gap-1 items-center'>
+        <SecondaryButton
+          onClick={() =>
+            router.push('https://github.com/prajwl-dh/quick-resume-builder')
+          }
+          className='h-12 min-w-32 flex flex-row gap-1 items-center'
+        >
           <p>Contribute</p>
           <GitHubIcon />
         </SecondaryButton>

@@ -37,7 +37,7 @@ Make sure you have the following installed:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/yourusername/quick-resume-builder.git
+   git clone https://github.com/prajwl-dh/quick-resume-builder.git
 
    ```
 
