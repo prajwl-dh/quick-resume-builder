@@ -10,7 +10,7 @@ export default function ScrollToTheTop() {
 
   React.useEffect(() => {
     const toggleVisibility = () => {
-      if (window.scrollY > 5) {
+      if (window.scrollY > 100) {
         setScrollButton(true);
       } else {
         setScrollButton(false);

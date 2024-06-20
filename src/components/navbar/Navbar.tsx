@@ -33,7 +33,7 @@ export default function Navbar() {
       transition={{ delay: 0.2, type: 'spring' }}
       className={`w-full h-[70px] px-3 md:px-14 flex flex-row justify-between items-center fixed left-0 top-0 z-50 ${
         sticky
-          ? 'bg-light-foreground dark:bg-dark-foreground shadow-sm backdrop-blur-sm bg-opacity-70 dark:bg-opacity-70'
+          ? 'bg-light-foreground dark:bg-dark-foreground shadow-sm backdrop-blur-sm bg-opacity-40 dark:bg-opacity-40'
           : 'bg-transparent'
       }`}
     >
