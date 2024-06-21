@@ -9,7 +9,6 @@ export default function page() {
       <Navbar />
       <div className='w-screen px-1 md:px-14 flex flex-col items-center'>
         <Home />
-        <Home />
         <ScrollToTheTop />
       </div>
       <Footer />
