@@ -1,10 +1,14 @@
 'use client';
 
-export default function Moon({ ...props }) {
+interface MoonProps {
+  setTheme: (theme: string) => void;
+}
+
+export default function Moon({ setTheme }: MoonProps) {
   return (
     <svg
       onClick={() => {
-        props.setTheme('dark');
+        setTheme('dark');
       }}
       className='text text-3xl hover:cursor-pointer transition duration-300 ease-in-out hover:scale-110'
       xmlns='http://www.w3.org/2000/svg'

@@ -1,10 +1,14 @@
 'use client';
 
-export default function Sun({ ...props }) {
+interface SunProps {
+  setTheme: (theme: string) => void;
+}
+
+export default function Sun({ setTheme }: SunProps) {
   return (
     <svg
       onClick={() => {
-        props.setTheme('light');
+        setTheme('light');
       }}
       className='text text-3xl hover:cursor-pointer transition duration-300 ease-in-out hover:scale-110'
       xmlns='http://www.w3.org/2000/svg'

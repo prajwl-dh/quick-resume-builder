@@ -6,6 +6,7 @@ type PrimaryButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   onClick?: () => void;
   className?: string;
 };
+
 export default function PrimaryButton({
   children,
   className,

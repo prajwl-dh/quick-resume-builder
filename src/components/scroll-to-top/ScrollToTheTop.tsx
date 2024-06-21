@@ -2,7 +2,7 @@
 import React from 'react';
 
 export default function ScrollToTheTop() {
-  const [scrollButton, setScrollButton] = React.useState(false);
+  const [scrollButton, setScrollButton] = React.useState<Boolean>(false);
 
   const handleClick = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
