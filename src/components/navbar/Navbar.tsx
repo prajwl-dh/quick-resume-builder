@@ -8,33 +8,28 @@ import Moon from '../theme-switcher/Moon';
 import Sun from '../theme-switcher/Sun';
 import { Logo } from './Logo';
 
-export default function Navbar() {
+type NavbarType = {
+  children?: React.ReactNode;
+  initial?: { opacity: number; y: number };
+  animate?: { opacity: number; y: number };
+  transition?: { delay: number; type: string };
+};
+
+export default function Navbar({
+  children,
+  initial,
+  animate,
+  transition,
+}: NavbarType) {
   const router = useRouter();
-  const [sticky, setSticky] = React.useState<boolean>(false);
   const { theme, setTheme } = useTheme();
-
-  const handleScroll = (): void => {
-    if (scrollY <= 0) {
-      setSticky(false);
-    } else {
-      setSticky(true);
-    }
-  };
-
-  React.useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-  });
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: -10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.5, type: 'spring' }}
-      className={`w-full h-[70px] px-1 md:px-14 flex flex-row justify-between items-center fixed left-0 top-0 z-50 scale-50 md:scale-100x border-b-[1px] border-slate-200 dark:border-stone-700 ${
-        sticky
-          ? 'bg-light-foreground dark:bg-dark-foreground shadow-sm backdrop-blur-sm bg-opacity-40 dark:bg-opacity-40'
-          : 'bg-transparent'
-      }`}
+      initial={initial}
+      animate={animate}
+      transition={transition}
+      className={`w-full h-[70px] px-1 md:px-14 flex flex-row justify-between shadow-sm items-center fixed left-0 top-0 z-50 bg-light-foreground dark:bg-dark-foreground backdrop-blur-sm bg-opacity-40 dark:bg-opacity-40 border-b-[1px] border-slate-200 dark:border-stone-700`}
     >
       <div
         onClick={() => router.push('/')}
@@ -63,6 +58,7 @@ export default function Navbar() {
         ) : (
           <Moon setTheme={setTheme} />
         )}
+        {children}
       </div>
     </motion.div>
   );
