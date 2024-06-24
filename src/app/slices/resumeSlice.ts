@@ -1,27 +1,40 @@
+import { ResumeState } from '@/components/builder/ResumeInterface';
 import { createSlice } from '@reduxjs/toolkit';
+
+const initialState: ResumeState = {
+  value: [
+    {
+      id: 'cb2039b4-1b5a-4297-b146-aca0695c7899',
+      title: 'Software Engineer - Prajwal Dhungana',
+      last_accessed: '',
+    },
+    {
+      id: 'cb2039b4-1b5a-4297-b146-aca0695c7900',
+      title: 'Software Engineer - Pragya Dhungana',
+      last_accessed: '',
+    },
+    {
+      id: 'cb2039b4-1b5a-4297-b146-aca0695c7901',
+      title: 'Software Engineer - Kushum Dhungana',
+      last_accessed: '',
+    },
+  ],
+};
 
 export const resumeSlice = createSlice({
   name: 'resume',
-  initialState: {
-    value: [
-      {
-        id: 'cb2039b4-1b5a-4297-b146-aca0695c7899',
-        todo: 'Hello there, welcome to my to-do list app',
-        completion: false,
-      },
-      {
-        id: 'cb2039b4-1b5a-4297-b146-aca06sdauh99',
-        todo: 'You can click me or the circle to my left to mark me as completed',
-        completion: false,
-      },
-      {
-        id: 'cb2039b4-1b5a-4397-b146-acdagsdavh99',
-        todo: 'You can click or tap on the trash icon to delete me',
-        completion: true,
-      },
-    ],
+  initialState,
+  reducers: {
+    updateLastAccessed: (state, action) => {
+      state.value = state.value.map((resume) => {
+        if (resume.id === action.payload) {
+          resume.last_accessed = new Date().toUTCString();
+        }
+        return resume;
+      });
+    },
   },
-  reducers: {},
 });
 
+export const { updateLastAccessed } = resumeSlice.actions;
 export default resumeSlice.reducer;
