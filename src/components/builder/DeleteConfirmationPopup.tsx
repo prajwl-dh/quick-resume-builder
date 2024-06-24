@@ -38,12 +38,12 @@ export default function DeleteConfirmationPopup({ ...props }) {
                 <div className='mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left'>
                   <DialogTitle
                     as='h3'
-                    className='text-base font-semibold leading-6 text-light-text-primary dark:text-dark-text-primary'
+                    className='text-md font-semibold leading-6 text-light-text-primary dark:text-dark-text-primary'
                   >
                     Delete Resume
                   </DialogTitle>
                   <div className='mt-2'>
-                    <p className='text-sm text-light-text-secondary dark:text-dark-text-secondary'>
+                    <p className='text-md text-light-text-secondary dark:text-dark-text-secondary'>
                       Are you sure you want to delete this resume? This action
                       cannot be undone
                     </p>

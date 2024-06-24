@@ -81,14 +81,10 @@ export default function CreateConfirmationPopup({ ...props }) {
                     <div className='flex flex-col gap-2 py-2'>
                       <div className='flex flex-col gap-1'>
                         <label className='text text-md text-light-text-primary dark:text-dark-text-primary'>
-                          Full Name
+                          Full Name <sup>*</sup>
                         </label>
                         <input
-                          className={`p-2 rounded-md ring-1 focus:outline-none bg-light-foreground dark:bg-dark-foreground placeholder:text-light-text-secondary placeholder:dark:text-dark-text-secondary text-light-text-primary dark:text-dark-text-primary text-md ${
-                            formData.fullName.length > 0
-                              ? 'ring-light-ring-secondary dark:ring-dark-ring-secondary hover:ring-light-ring-primary hover:dark:ring-dark-ring-primary focus:ring-light-ring-primary focus:dark:ring-dark-ring-primary'
-                              : 'ring-red-400 dark:ring-red-500'
-                          }`}
+                          className={`p-2 rounded-md ring-1 focus:outline-none bg-light-foreground dark:bg-dark-foreground placeholder:text-light-text-secondary placeholder:dark:text-dark-text-secondary text-light-text-primary ring-light-ring-secondary dark:ring-dark-ring-secondary hover:ring-light-ring-primary hover:dark:ring-dark-ring-primary focus:ring-light-ring-primary focus:dark:ring-dark-ring-primary dark:text-dark-text-primary text-md `}
                           name='fullName'
                           type='text'
                           value={formData.fullName || ''}
@@ -98,14 +94,10 @@ export default function CreateConfirmationPopup({ ...props }) {
                       </div>
                       <div className='flex flex-col gap-1'>
                         <label className='text text-md text-light-text-primary dark:text-dark-text-primary'>
-                          Title
+                          Title <sup>*</sup>
                         </label>
                         <input
-                          className={`p-2 rounded-md ring-1 focus:outline-none bg-light-foreground dark:bg-dark-foreground placeholder:text-light-text-secondary placeholder:dark:text-dark-text-secondary text-light-text-primary dark:text-dark-text-primary text-md ${
-                            formData.jobTitle.length > 0
-                              ? 'ring-light-ring-secondary dark:ring-dark-ring-secondary hover:ring-light-ring-primary hover:dark:ring-dark-ring-primary focus:ring-light-ring-primary focus:dark:ring-dark-ring-primary'
-                              : 'ring-red-400 dark:ring-red-500'
-                          }`}
+                          className={`p-2 rounded-md ring-1 focus:outline-none bg-light-foreground dark:bg-dark-foreground placeholder:text-light-text-secondary placeholder:dark:text-dark-text-secondary text-light-text-primary ring-light-ring-secondary dark:ring-dark-ring-secondary hover:ring-light-ring-primary hover:dark:ring-dark-ring-primary focus:ring-light-ring-primary focus:dark:ring-dark-ring-primary dark:text-dark-text-primary text-md `}
                           name='jobTitle'
                           type='text'
                           value={formData.jobTitle || ''}
@@ -121,7 +113,10 @@ export default function CreateConfirmationPopup({ ...props }) {
             <div className='bg-light-foreground dark:bg-dark-foreground px-4 py-3 flex flex-row sm:px-6 gap-2 w-full justify-end'>
               <SecondaryButton
                 className='h-10'
-                onClick={() => setOpen(false)}
+                onClick={() => {
+                  setOpen(false);
+                  setFormData({ fullName: '', jobTitle: '' });
+                }}
                 data-autofocus
               >
                 Cancel
