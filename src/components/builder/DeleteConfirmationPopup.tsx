@@ -1,3 +1,4 @@
+'use client';
 import { deleteResume } from '@/lib/slices/resumeSlice';
 import { useAppDispatch } from '@/lib/store/hooks';
 import {

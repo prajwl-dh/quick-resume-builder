@@ -1,3 +1,4 @@
+'use client';
 import { updateLastAccessed } from '@/lib/slices/resumeSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/store/hooks';
 import { useRouter } from 'next/navigation';
