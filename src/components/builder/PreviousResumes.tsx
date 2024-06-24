@@ -1,5 +1,5 @@
-import { updateLastAccessed } from '@/app/slices/resumeSlice';
-import { useAppDispatch, useAppSelector } from '@/app/store/hooks';
+import { updateLastAccessed } from '@/lib/slices/resumeSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/store/hooks';
 import { ResumeSvg } from './ResumeSvg';
 
 export default function PreviousResumes() {

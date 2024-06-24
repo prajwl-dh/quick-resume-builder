@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import resumeReducer from '../slices/resumeSlice';
+import resumeReducer from '../../lib/slices/resumeSlice';
 
 export const makeStore = () => {
   return configureStore({
