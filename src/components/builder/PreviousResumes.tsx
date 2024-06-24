@@ -1,5 +1,5 @@
 import { updateLastAccessed } from '@/lib/slices/resumeSlice';
-import { useAppSelector } from '@/lib/store/hooks';
+import { useAppDispatch, useAppSelector } from '@/lib/store/hooks';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import SecondaryButton from '../buttons/SecondaryButton';
@@ -10,6 +10,7 @@ import { ResumeSvg } from './ResumeSvg';
 export default function PreviousResumes() {
   const router = useRouter();
   const resumes = useAppSelector((state) => state.resumeReducer.value);
+  const dispatch = useAppDispatch();
   const [open, setOpen] = useState(false);
   return (
     <>

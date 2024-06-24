@@ -9,7 +9,7 @@ export default function page() {
       <Navbar
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5, type: 'spring' }}
+        transition={{ delay: 0.3, type: 'spring' }}
       />
       <div className='w-screen px-1 md:px-14 flex flex-col items-center'>
         <Home />
