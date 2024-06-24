@@ -23,7 +23,7 @@ export default function ScrollToTheTop() {
   return (
     <div
       onClick={() => handleClick()}
-      className={`fixed z-[9999] cursor-pointer ${
+      className={`fixed z-40 cursor-pointer ${
         !scrollButton ? 'hidden' : null
       } right-2 md:right-5 bottom-20`}
     >

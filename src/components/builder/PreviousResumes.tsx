@@ -1,14 +1,16 @@
-import { deleteResume, updateLastAccessed } from '@/lib/slices/resumeSlice';
-import { useAppDispatch, useAppSelector } from '@/lib/store/hooks';
+import { updateLastAccessed } from '@/lib/slices/resumeSlice';
+import { useAppSelector } from '@/lib/store/hooks';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import SecondaryButton from '../buttons/SecondaryButton';
+import DeleteConfirmationPopup from './DeleteConfirmationPopup';
 import { DeleteSvg } from './DeleteSvg';
 import { ResumeSvg } from './ResumeSvg';
 
 export default function PreviousResumes() {
   const router = useRouter();
   const resumes = useAppSelector((state) => state.resumeReducer.value);
-  const dispatch = useAppDispatch();
+  const [open, setOpen] = useState(false);
   return (
     <>
       {resumes.map((resume) => {
@@ -37,10 +39,15 @@ export default function PreviousResumes() {
                 Edit Resume
               </SecondaryButton>
               <DeleteSvg
-                onClick={() => dispatch(deleteResume(resume.id))}
+                onClick={() => setOpen(true)}
                 className='text text-2xl text-light-text-secondary dark:text-dark-text-secondary cursor-pointer hover:text-red-600 dark:hover:text-red-600'
               />
             </div>
+            <DeleteConfirmationPopup
+              open={open}
+              setOpen={setOpen}
+              id={resume.id}
+            />
           </div>
         );
       })}
