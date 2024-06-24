@@ -1,4 +1,5 @@
 'use client';
+
 import { ImportResumeSvg } from './ImportResumeSvg';
 
 export default function ImportResume() {

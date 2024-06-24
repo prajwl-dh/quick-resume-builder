@@ -10,8 +10,8 @@ import {
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import PrimaryButton from '../buttons/PrimaryButton';
-import SecondaryButton from '../buttons/SecondaryButton';
+import PrimaryButton from '../../buttons/PrimaryButton';
+import SecondaryButton from '../../buttons/SecondaryButton';
 import { CreateSvg } from './CreateSvg';
 
 export default function CreateConfirmationPopup({ ...props }) {

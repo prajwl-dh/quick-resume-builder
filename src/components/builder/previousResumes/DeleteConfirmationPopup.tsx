@@ -7,7 +7,7 @@ import {
   DialogPanel,
   DialogTitle,
 } from '@headlessui/react';
-import SecondaryButton from '../buttons/SecondaryButton';
+import SecondaryButton from '../../buttons/SecondaryButton';
 import { DeleteSvg } from './DeleteSvg';
 
 export default function DeleteConfirmationPopup({ ...props }) {

@@ -1,7 +1,7 @@
 'use client';
-import CreateNew from './CreateNew';
-import ImportResume from './ImportResume';
-import PreviousResumes from './PreviousResumes';
+import CreateNew from './createNew/CreateNew';
+import ImportResume from './importNew/ImportResume';
+import PreviousResumes from './previousResumes/PreviousResumes';
 
 export default function BuilderHome() {
   return (
