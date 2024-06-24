@@ -15,7 +15,7 @@ export default function PreviousResumes() {
   const [open, setOpen] = useState(false);
   return (
     <>
-      {resumes.map((resume) => {
+      {resumes?.map((resume) => {
         return (
           <div
             key={resume.id}

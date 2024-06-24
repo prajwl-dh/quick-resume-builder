@@ -2,7 +2,7 @@ import { ResumeState } from '@/components/builder/ResumeInterface';
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState: ResumeState = {
-  value: JSON.parse(localStorage.getItem('resume') ?? 'null'),
+  value: JSON.parse(localStorage.getItem('resume') ?? '[]'),
 };
 
 export const resumeSlice = createSlice({
