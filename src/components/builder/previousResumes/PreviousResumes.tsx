@@ -55,17 +55,17 @@ export default function PreviousResumes() {
                   <MenuItem>
                     <div
                       onClick={() => setOpen(true)}
-                      className='flex flex-row gap-1 cursor-pointer w-full text-light-text-secondary dark:text-dark-text-secondary py-2 rounded-md hover:bg-gray-100 dark:hover:bg-dark-foreground'
+                      className='flex flex-row gap-1 cursor-pointer w-full text-light-text-secondary dark:text-dark-text-secondary py-2 rounded-md hover:bg-[#e5e7eb] dark:hover:bg-dark-foreground'
                     >
-                      <DeleteSvg className='text text-2xl text-light-text-secondary dark:text-dark-text-secondary cursor-pointer' />
+                      <DeleteSvg className='text text-2xl text-light-text-secondary dark:text-dark-text-secondary' />
                       <button className='text text-md text-light-text-secondary self-start dark:text-dark-text-secondary'>
                         Delete
                       </button>
                     </div>
                   </MenuItem>
                   <MenuItem>
-                    <div className='flex flex-row gap-1 cursor-pointer w-full text-light-text-secondary dark:text-dark-text-secondary py-2 rounded-md hover:bg-gray-100 dark:hover:bg-dark-foreground'>
-                      <DuplicateSvg className='text text-2xl text-light-text-secondary dark:text-dark-text-secondary cursor-pointer' />
+                    <div className='flex flex-row gap-1 cursor-pointer w-full text-light-text-secondary dark:text-dark-text-secondary py-2 rounded-md hover:bg-[#e5e7eb] dark:hover:bg-dark-foreground'>
+                      <DuplicateSvg className='text text-2xl text-light-text-secondary dark:text-dark-text-secondary' />
                       <button className='text text-md text-light-text-secondary self-start dark:text-dark-text-secondary'>
                         Duplicate
                       </button>
