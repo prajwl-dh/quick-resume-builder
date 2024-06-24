@@ -69,22 +69,22 @@ export default function CreateConfirmationPopup({ ...props }) {
                 <div className='mt-3 text sm:ml-4 sm:mt-0 text-left'>
                   <DialogTitle
                     as='h3'
-                    className='text-base font-semibold leading-6 text-light-text-primary dark:text-dark-text-primary'
+                    className='text-md font-semibold leading-6 text-light-text-primary dark:text-dark-text-primary'
                   >
                     Create Resume
                   </DialogTitle>
                   <div className='mt-2'>
-                    <p className='text-sm text-light-text-secondary dark:text-dark-text-secondary'>
+                    <p className='text-md text-light-text-secondary dark:text-dark-text-secondary'>
                       Lets create a brand new resume for you. Please provide
                       your full name and job title below to begin with
                     </p>
                     <div className='flex flex-col gap-2 py-2'>
                       <div className='flex flex-col gap-1'>
-                        <label className='text text-sm text-light-text-primary dark:text-dark-text-primary'>
+                        <label className='text text-md text-light-text-primary dark:text-dark-text-primary'>
                           Full Name
                         </label>
                         <input
-                          className={`p-2 rounded-md ring-1 focus:outline-none bg-light-foreground dark:bg-dark-foreground placeholder:text-light-text-secondary placeholder:dark:text-dark-text-secondary text-light-text-primary dark:text-dark-text-primary text-sm ${
+                          className={`p-2 rounded-md ring-1 focus:outline-none bg-light-foreground dark:bg-dark-foreground placeholder:text-light-text-secondary placeholder:dark:text-dark-text-secondary text-light-text-primary dark:text-dark-text-primary text-md ${
                             formData.fullName.length > 0
                               ? 'ring-light-ring-secondary dark:ring-dark-ring-secondary hover:ring-light-ring-primary hover:dark:ring-dark-ring-primary focus:ring-light-ring-primary focus:dark:ring-dark-ring-primary'
                               : 'ring-red-400 dark:ring-red-500'
@@ -97,11 +97,11 @@ export default function CreateConfirmationPopup({ ...props }) {
                         />
                       </div>
                       <div className='flex flex-col gap-1'>
-                        <label className='text text-sm text-light-text-primary dark:text-dark-text-primary'>
+                        <label className='text text-md text-light-text-primary dark:text-dark-text-primary'>
                           Title
                         </label>
                         <input
-                          className={`p-2 rounded-md ring-1 focus:outline-none bg-light-foreground dark:bg-dark-foreground placeholder:text-light-text-secondary placeholder:dark:text-dark-text-secondary text-light-text-primary dark:text-dark-text-primary text-sm ${
+                          className={`p-2 rounded-md ring-1 focus:outline-none bg-light-foreground dark:bg-dark-foreground placeholder:text-light-text-secondary placeholder:dark:text-dark-text-secondary text-light-text-primary dark:text-dark-text-primary text-md ${
                             formData.jobTitle.length > 0
                               ? 'ring-light-ring-secondary dark:ring-dark-ring-secondary hover:ring-light-ring-primary hover:dark:ring-dark-ring-primary focus:ring-light-ring-primary focus:dark:ring-dark-ring-primary'
                               : 'ring-red-400 dark:ring-red-500'
