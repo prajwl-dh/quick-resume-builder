@@ -39,6 +39,7 @@ export default function CreateConfirmationPopup({ ...props }) {
       const title = `${formData.jobTitle} - ${formData.fullName}`;
       dispatch(createNewResume({ id: id, title: title }));
       router.push(`/builder/${id}`);
+      setOpen(false);
     }
   };
 
