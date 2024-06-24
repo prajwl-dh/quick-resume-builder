@@ -1,4 +1,4 @@
-import { ResumeState } from '@/components/builder/ResumeInterface';
+import { ResumeState } from '@/components/builder/previousResumes/ResumeInterface';
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState: ResumeState = {
