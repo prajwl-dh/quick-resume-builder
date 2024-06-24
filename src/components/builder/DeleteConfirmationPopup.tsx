@@ -31,7 +31,7 @@ export default function DeleteConfirmationPopup({ ...props }) {
               <div className='sm:flex sm:items-start'>
                 <div className='mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full sm:mx-0 sm:h-10 sm:w-10'>
                   <DeleteSvg
-                    className='h-6 w-6 text-light-text-primary dark:text-dark-text-primary'
+                    className='h-10 w-10 text-light-text-primary dark:text-dark-text-primary'
                     aria-hidden='true'
                   />
                 </div>
@@ -45,7 +45,7 @@ export default function DeleteConfirmationPopup({ ...props }) {
                   <div className='mt-2'>
                     <p className='text-sm text-light-text-secondary dark:text-dark-text-secondary'>
                       Are you sure you want to delete this resume? This action
-                      cannot be undone.
+                      cannot be undone
                     </p>
                   </div>
                 </div>

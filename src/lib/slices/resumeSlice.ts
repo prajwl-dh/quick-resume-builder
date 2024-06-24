@@ -22,7 +22,8 @@ export const resumeSlice = createSlice({
       state.value = [
         ...state.value,
         {
-          id: action.payload,
+          id: action.payload.id,
+          title: action.payload.title,
           last_accessed: new Date().toUTCString(),
         },
       ];
