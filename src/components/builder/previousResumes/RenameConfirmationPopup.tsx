@@ -16,7 +16,7 @@ export default function RenameConfirmationPopup({ ...props }) {
   const { openRenamePopup, setOpenRenamePopup, id, fileName } = props;
   const [formData, setFormData] = useState<{
     fileName: string;
-  }>({ fileName: fileName });
+  }>({ fileName: fileName || '' });
   const dispatch = useAppDispatch();
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,7 +30,7 @@ export default function RenameConfirmationPopup({ ...props }) {
 
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (formData.fileName.length > 0) {
+    if (formData.fileName?.length > 0) {
       dispatch(renameResume({ id: id, fileName: formData.fileName }));
       setOpenRenamePopup(false);
     }
@@ -107,10 +107,10 @@ export default function RenameConfirmationPopup({ ...props }) {
               </SecondaryButton>
               <PrimaryButton
                 className={`h-10 ${
-                  formData.fileName.length > 0 ? 'null' : 'cursor-not-allowed'
+                  formData.fileName?.length > 0 ? 'null' : 'cursor-not-allowed'
                 }`}
                 type='submit'
-                disabled={formData.fileName.length > 0 ? false : true}
+                disabled={formData.fileName?.length > 0 ? false : true}
               >
                 Rename
               </PrimaryButton>
