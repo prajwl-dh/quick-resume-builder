@@ -10,11 +10,11 @@ type SlugType = {
 };
 
 export default function Slug({ params }: SlugType) {
-  const resume = useAppSelector((state) => state.resumeReducer.value).filter(
+  const resume = useAppSelector((state) => state.resumeReducer.value).find(
     (resume) => resume?.id === params?.slug
   );
 
-  if (resume?.length === 0) {
+  if (!resume) {
     return <NotFound />;
   }
 
@@ -23,10 +23,10 @@ export default function Slug({ params }: SlugType) {
       <Navbar />
       <div className='w-screen px-1 md:px-14 flex flex-col items-center'>
         <div className='flex flex-col gap-2'>
-          <p>{resume[0]?.id}</p>
-          <p>{resume[0]?.fullName}</p>
-          <p>{resume[0]?.last_accessed}</p>
-          <p>{resume[0]?.title}</p>
+          <p>{resume?.id}</p>
+          <p>{resume?.fullName}</p>
+          <p>{resume?.last_accessed}</p>
+          <p>{resume?.title}</p>
         </div>
         <ScrollToTheTop />
       </div>
