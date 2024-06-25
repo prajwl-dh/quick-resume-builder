@@ -1,5 +1,5 @@
 'use client';
-import { updateLastAccessed } from '@/lib/slices/resumeSlice';
+import { duplicateResume, updateLastAccessed } from '@/lib/slices/resumeSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/store/hooks';
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { useRouter } from 'next/navigation';
@@ -9,6 +9,8 @@ import DeleteConfirmationPopup from './DeleteConfirmationPopup';
 import { DeleteSvg } from './DeleteSvg';
 import { DuplicateSvg } from './DuplicateSvg';
 import { OptionsSvg } from './OptionsSvg';
+import RenameConfirmationPopup from './RenameConfirmationPopup';
+import { RenameSvg } from './RenameSvg';
 import { ResumeInterface } from './ResumeInterface';
 import { ResumeSvg } from './ResumeSvg';
 
@@ -17,6 +19,7 @@ export default function PreviousResumes() {
   const resumes = useAppSelector((state) => state.resumeReducer.value);
   const dispatch = useAppDispatch();
   const [open, setOpen] = useState(false);
+  const [openRenamePopup, setOpenRenamePopup] = useState(false);
   return (
     <>
       {resumes?.map((resume: ResumeInterface) => {
@@ -54,20 +57,34 @@ export default function PreviousResumes() {
                 >
                   <MenuItem>
                     <div
+                      onClick={() => setOpenRenamePopup(true)}
+                      className='flex flex-row gap-1 cursor-pointer w-full text-light-text-secondary dark:text-dark-text-secondary py-2 rounded-md hover:bg-[#e5e7eb] dark:hover:bg-dark-foreground'
+                    >
+                      <RenameSvg className='text text-2xl text-light-text-secondary dark:text-dark-text-secondary' />
+                      <button className='text text-md text-light-text-secondary self-start dark:text-dark-text-secondary'>
+                        Rename
+                      </button>
+                    </div>
+                  </MenuItem>
+                  <MenuItem>
+                    <div
+                      onClick={() => dispatch(duplicateResume(resume.id))}
+                      className='flex flex-row gap-1 cursor-pointer w-full text-light-text-secondary dark:text-dark-text-secondary py-2 rounded-md hover:bg-[#e5e7eb] dark:hover:bg-dark-foreground'
+                    >
+                      <DuplicateSvg className='text text-2xl text-light-text-secondary dark:text-dark-text-secondary' />
+                      <button className='text text-md text-light-text-secondary self-start dark:text-dark-text-secondary'>
+                        Duplicate
+                      </button>
+                    </div>
+                  </MenuItem>
+                  <MenuItem>
+                    <div
                       onClick={() => setOpen(true)}
                       className='flex flex-row gap-1 cursor-pointer w-full text-light-text-secondary dark:text-dark-text-secondary py-2 rounded-md hover:bg-[#e5e7eb] dark:hover:bg-dark-foreground'
                     >
                       <DeleteSvg className='text text-2xl text-light-text-secondary dark:text-dark-text-secondary' />
                       <button className='text text-md text-light-text-secondary self-start dark:text-dark-text-secondary'>
                         Delete
-                      </button>
-                    </div>
-                  </MenuItem>
-                  <MenuItem>
-                    <div className='flex flex-row gap-1 cursor-pointer w-full text-light-text-secondary dark:text-dark-text-secondary py-2 rounded-md hover:bg-[#e5e7eb] dark:hover:bg-dark-foreground'>
-                      <DuplicateSvg className='text text-2xl text-light-text-secondary dark:text-dark-text-secondary' />
-                      <button className='text text-md text-light-text-secondary self-start dark:text-dark-text-secondary'>
-                        Duplicate
                       </button>
                     </div>
                   </MenuItem>
@@ -78,6 +95,12 @@ export default function PreviousResumes() {
               open={open}
               setOpen={setOpen}
               id={resume.id}
+            />
+            <RenameConfirmationPopup
+              openRenamePopup={openRenamePopup}
+              setOpenRenamePopup={setOpenRenamePopup}
+              id={resume.id}
+              fileName={resume.fileName}
             />
           </div>
         );
