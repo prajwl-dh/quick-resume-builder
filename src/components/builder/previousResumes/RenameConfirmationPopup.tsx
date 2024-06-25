@@ -78,7 +78,7 @@ export default function RenameConfirmationPopup({ ...props }) {
                     <div className='flex flex-col gap-2 py-2'>
                       <div className='flex flex-col gap-1'>
                         <label className='text text-md text-light-text-primary dark:text-dark-text-primary'>
-                          File Name <sup>*</sup>
+                          New Name <sup>*</sup>
                         </label>
                         <input
                           className={`p-2 rounded-md ring-1 focus:outline-none bg-light-foreground dark:bg-dark-foreground placeholder:text-light-text-secondary placeholder:dark:text-dark-text-secondary text-light-text-primary ring-light-ring-secondary dark:ring-dark-ring-secondary hover:ring-light-ring-primary hover:dark:ring-dark-ring-primary focus:ring-light-ring-primary focus:dark:ring-dark-ring-primary dark:text-dark-text-primary text-md `}
