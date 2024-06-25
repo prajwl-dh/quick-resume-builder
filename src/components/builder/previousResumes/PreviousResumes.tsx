@@ -29,7 +29,7 @@ export default function PreviousResumes() {
               <ResumeSvg className='text text-5xl md:text-7xl text-light-text-primary dark:text-dark-text-primary group-hover:scale-125 transition duration-300' />
             </div>
             <p className='text text-md font-bold self-start text-light-text-primary dark:text-dark-text-primary'>
-              {resume.title}
+              {resume.fileName}
             </p>
             <p className='text text-sm text-light-text-secondary self-start dark:text-dark-text-secondary'>
               Last Accessed - {resume.last_accessed?.slice(0, 16)}

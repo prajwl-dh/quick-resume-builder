@@ -23,6 +23,8 @@ export const resumeSlice = createSlice({
         ...state.value,
         {
           id: action.payload.id,
+          fileName: action.payload.fileName,
+          fullName: action.payload.fullName,
           title: action.payload.title,
           last_accessed: new Date().toUTCString(),
         },
@@ -35,6 +37,7 @@ export const resumeSlice = createSlice({
       );
       localStorage.setItem('resume', JSON.stringify(state.value));
     },
+    duplicateResume: (state, action) => {},
   },
 });
 

@@ -36,8 +36,15 @@ export default function CreateConfirmationPopup({ ...props }) {
     e.preventDefault();
     if (formData.fullName.length > 0 && formData.jobTitle.length > 0) {
       const id = uuidv4();
-      const title = `${formData.jobTitle} - ${formData.fullName}`;
-      dispatch(createNewResume({ id: id, title: title }));
+      const fileName = `${formData.jobTitle} - ${formData.fullName}`;
+      dispatch(
+        createNewResume({
+          id: id,
+          fileName: fileName,
+          fullName: formData.fullName,
+          title: formData.jobTitle,
+        })
+      );
       setOpen(false);
       router.push(`/builder/${id}`);
     }
