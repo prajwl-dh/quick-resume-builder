@@ -31,7 +31,7 @@ export default function PreviousResumes() {
             <div className='flex-grow flex justify-center items-center'>
               <ResumeSvg className='text text-5xl md:text-7xl text-light-text-primary dark:text-dark-text-primary group-hover:scale-125 transition duration-300' />
             </div>
-            <p className='text text-md font-bold self-start text-light-text-primary dark:text-dark-text-primary'>
+            <p className='text text-md line-clamp-2 font-bold self-start text-light-text-primary dark:text-dark-text-primary'>
               {resume.fileName}
             </p>
             <p className='text text-sm text-light-text-secondary self-start dark:text-dark-text-secondary'>
