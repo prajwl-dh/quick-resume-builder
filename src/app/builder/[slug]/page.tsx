@@ -1,8 +1,7 @@
 'use client';
 
 import NotFound from '@/app/not-found';
-import Navbar from '@/components/navbar/Navbar';
-import ScrollToTheTop from '@/components/scroll-to-top/ScrollToTheTop';
+import BuilderNavbar from '@/components/builderSlug/navbar/BuilderNavbar';
 import { useAppSelector } from '@/lib/store/hooks';
 
 type SlugType = {
@@ -19,16 +18,9 @@ export default function Slug({ params }: SlugType) {
   }
 
   return (
-    <div className='flex flex-col justify-between mt-[70px]'>
-      <Navbar />
-      <div className='w-screen px-1 md:px-14 flex flex-col items-center'>
-        <div className='flex flex-col gap-2'>
-          <p>{resume?.id}</p>
-          <p>{resume?.fullName}</p>
-          <p>{resume?.last_accessed}</p>
-          <p>{resume?.title}</p>
-        </div>
-        <ScrollToTheTop />
+    <div className='flex flex-col justify-between'>
+      <div className='w-screen flex'>
+        <BuilderNavbar />
       </div>
     </div>
   );
