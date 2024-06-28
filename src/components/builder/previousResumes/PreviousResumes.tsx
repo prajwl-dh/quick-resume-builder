@@ -20,9 +20,15 @@ export default function PreviousResumes() {
   const dispatch = useAppDispatch();
   const [open, setOpen] = useState(false);
   const [openRenamePopup, setOpenRenamePopup] = useState(false);
+
+  const sortedResumes = [...resumes].sort(
+    (a: ResumeInterface, b: ResumeInterface) =>
+      new Date(b.last_accessed).getTime() - new Date(a.last_accessed).getTime()
+  );
+
   return (
     <>
-      {resumes?.map((resume: ResumeInterface) => {
+      {sortedResumes?.map((resume: ResumeInterface) => {
         return (
           <div
             key={resume.id}
