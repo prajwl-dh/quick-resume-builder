@@ -1,15 +1,30 @@
 'use client';
 import { Logo } from '@/components/navbar/Logo';
+import Moon from '@/components/theme-switcher/Moon';
+import Sun from '@/components/theme-switcher/Sun';
+import { useTheme } from 'next-themes';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React from 'react';
 import { BackSvg } from './svgs/BackSvg';
 import { ExperienceSvg } from './svgs/ExperienceSvg';
 import { ProfileSvg } from './svgs/ProfileSvg';
 
-export default function BuilderNavbar() {
-  const [isSidebarOpen, setSidebarOpen] = useState(false);
+interface BuilderNavbarProps {
+  isSidebarOpen: boolean;
+  setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  isResumePreviewOpen: boolean;
+  setIsResumePreviewOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export default function BuilderNavbar({
+  isSidebarOpen,
+  setSidebarOpen,
+  isResumePreviewOpen,
+  setIsResumePreviewOpen,
+}: BuilderNavbarProps) {
   const sidebarRef = React.useRef<HTMLDivElement>(null);
   const router = useRouter();
+  const { theme, setTheme } = useTheme();
 
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
@@ -39,17 +54,19 @@ export default function BuilderNavbar() {
 
   return (
     <div className='flex'>
-      <div className='flex flex-row justify-between p-3 sm:hidden bg-light-background dark:bg-dark-background w-screen'>
+      <div className='flex flex-row justify-between p-3 lg:hidden bg-light-background dark:bg-dark-background w-screen'>
         <button
           data-drawer-target='default-sidebar'
           data-drawer-toggle='default-sidebar'
           aria-controls='default-sidebar'
           type='button'
-          className='inline-flex items-center text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600'
+          className='inline-flex items-center text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600'
           onClick={toggleSidebar}
         >
           <svg
-            className='w-6 h-6'
+            className={`w-8 h-8 text-sm text-light-text-primary dark:text-dark-text-primary ${
+              isSidebarOpen ? 'hidden' : ''
+            }`}
             aria-hidden='true'
             fill='currentColor'
             viewBox='0 0 20 20'
@@ -62,7 +79,43 @@ export default function BuilderNavbar() {
             ></path>
           </svg>
         </button>
-        <p>p</p>
+        <svg
+          onClick={() => router.push('/builder')}
+          className={`w-8 h-8 text-sm text-light-text-primary dark:text-dark-text-primary ${
+            isSidebarOpen ? 'hidden' : ''
+          }`}
+          xmlns='http://www.w3.org/2000/svg'
+          width='1em'
+          height='1em'
+          viewBox='0 0 24 24'
+        >
+          <path
+            fill='currentColor'
+            d='M7 20q-.825 0-1.412-.587T5 18v-7.15l-2 1.525q-.35.25-.75.213T1.6 12.2t-.2-.75t.4-.65l8.975-6.875q.275-.2.588-.3t.637-.1t.638.1t.587.3L16 6.05V5.5q0-.625.438-1.062T17.5 4t1.063.438T19 5.5v2.85l3.2 2.45q.325.25.388.65t-.188.75t-.65.388t-.75-.213l-2-1.525V18q0 .825-.587 1.413T17 20h-1q-.825 0-1.412-.587T14 18v-2q0-.825-.587-1.412T12 14t-1.412.588T10 16v2q0 .825-.587 1.413T8 20zm3-9.975h4q0-.8-.6-1.313T12 8.2t-1.4.513t-.6 1.312'
+          ></path>
+        </svg>
+        <svg
+          onClick={() => setIsResumePreviewOpen((prev) => !prev)}
+          className={`w-8 h-8 text-sm text-light-text-primary dark:text-dark-text-primary ${
+            isSidebarOpen ? 'hidden' : ''
+          }`}
+          xmlns='http://www.w3.org/2000/svg'
+          width='1em'
+          height='1em'
+          viewBox='0 0 24 24'
+        >
+          <g
+            fill='none'
+            stroke='currentColor'
+            strokeLinecap='round'
+            strokeLinejoin='round'
+            strokeWidth='2'
+          >
+            <path d='M14 3v4a1 1 0 0 0 1 1h4'></path>
+            <path d='M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2'></path>
+            <path d='M11 12.5a1.5 1.5 0 0 0-3 0v3a1.5 1.5 0 0 0 3 0m2-4.5l1.5 6l1.5-6'></path>
+          </g>
+        </svg>
       </div>
 
       <aside
@@ -70,12 +123,12 @@ export default function BuilderNavbar() {
         id='default-sidebar'
         className={`fixed top-0 left-0 z-40 w-64 h-screen transition-transform bg-light-foreground dark:bg-dark-foreground ${
           isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        } sm:translate-x-0`}
+        } lg:translate-x-0`}
         aria-label='Sidebar'
       >
         <div className='h-full px-3 py-4 overflow-y-auto'>
-          <div className='flex flex-row justify-between items-start'>
-            <div className='flex flex-row items-center -space-x-1 mb-4'>
+          <div className='flex flex-row justify-between items-center mb-4'>
+            <div className='flex flex-row items-center -space-x-1'>
               <Logo
                 onClick={() => router.push('/')}
                 src={'/logo.png'}
@@ -98,9 +151,14 @@ export default function BuilderNavbar() {
                 </p>
               </div>
             </div>
+            {theme === 'dark' ? (
+              <Sun setTheme={setTheme} />
+            ) : (
+              <Moon setTheme={setTheme} />
+            )}
           </div>
           <ul className='space-y-2 font-medium'>
-            <li>
+            <li onClick={() => router.push('/builder')}>
               <div className='flex items-center p-2 rounded-lg cursor-pointer text-light-text-secondary dark:text-dark-text-secondary hover:bg-[#e5e7eb] dark:hover:bg-[#4d4d4e] group'>
                 <BackSvg className='w-5 h-5 transition duration-75 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary' />
                 <span className='ms-3 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary'>
