@@ -5,9 +5,16 @@ import Sun from '@/components/theme-switcher/Sun';
 import { useTheme } from 'next-themes';
 import { useRouter } from 'next/navigation';
 import React from 'react';
+import { AwardsSvg } from './svgs/AwardsSvg';
 import { BackSvg } from './svgs/BackSvg';
+import { CertificateSvg } from './svgs/CertificateSvg';
+import { EducationSvg } from './svgs/EducationSvg';
 import { ExperienceSvg } from './svgs/ExperienceSvg';
+import { LanguageSvg } from './svgs/LanguageSvg';
 import { ProfileSvg } from './svgs/ProfileSvg';
+import { ProjectSvg } from './svgs/ProjectSvg';
+import { ReferenceSvg } from './svgs/ReferenceSvg';
+import { SkillsSvg } from './svgs/SkillsSvg';
 
 interface BuilderNavbarProps {
   isSidebarOpen: boolean;
@@ -184,7 +191,7 @@ export default function BuilderNavbar({
             </li>
             <li>
               <div className='flex items-center p-2 rounded-lg cursor-pointer text-light-text-secondary dark:text-dark-text-secondary hover:bg-[#e5e7eb] dark:hover:bg-[#4d4d4e] group'>
-                <BackSvg className='w-5 h-5 transition duration-75 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary' />
+                <EducationSvg className='w-5 h-5 transition duration-75 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary' />
                 <span className='ms-3 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary'>
                   Education
                 </span>
@@ -192,7 +199,7 @@ export default function BuilderNavbar({
             </li>
             <li>
               <div className='flex items-center p-2 rounded-lg cursor-pointer text-light-text-secondary dark:text-dark-text-secondary hover:bg-[#e5e7eb] dark:hover:bg-[#4d4d4e] group'>
-                <BackSvg className='w-5 h-5 transition duration-75 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary' />
+                <SkillsSvg className='w-5 h-5 transition duration-75 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary' />
                 <span className='ms-3 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary'>
                   Skills
                 </span>
@@ -200,7 +207,7 @@ export default function BuilderNavbar({
             </li>
             <li>
               <div className='flex items-center p-2 rounded-lg cursor-pointer text-light-text-secondary dark:text-dark-text-secondary hover:bg-[#e5e7eb] dark:hover:bg-[#4d4d4e] group'>
-                <BackSvg className='w-5 h-5 transition duration-75 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary' />
+                <AwardsSvg className='w-5 h-5 transition duration-75 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary' />
                 <span className='ms-3 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary'>
                   Awards
                 </span>
@@ -208,7 +215,7 @@ export default function BuilderNavbar({
             </li>
             <li>
               <div className='flex items-center p-2 rounded-lg cursor-pointer text-light-text-secondary dark:text-dark-text-secondary hover:bg-[#e5e7eb] dark:hover:bg-[#4d4d4e] group'>
-                <BackSvg className='w-5 h-5 transition duration-75 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary' />
+                <CertificateSvg className='w-5 h-5 transition duration-75 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary' />
                 <span className='ms-3 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary'>
                   Certifications
                 </span>
@@ -216,7 +223,7 @@ export default function BuilderNavbar({
             </li>
             <li>
               <div className='flex items-center p-2 rounded-lg cursor-pointer text-light-text-secondary dark:text-dark-text-secondary hover:bg-[#e5e7eb] dark:hover:bg-[#4d4d4e] group'>
-                <BackSvg className='w-5 h-5 transition duration-75 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary' />
+                <ProjectSvg className='w-5 h-5 transition duration-75 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary' />
                 <span className='ms-3 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary'>
                   Projects
                 </span>
@@ -224,7 +231,7 @@ export default function BuilderNavbar({
             </li>
             <li>
               <div className='flex items-center p-2 rounded-lg cursor-pointer text-light-text-secondary dark:text-dark-text-secondary hover:bg-[#e5e7eb] dark:hover:bg-[#4d4d4e] group'>
-                <BackSvg className='w-5 h-5 transition duration-75 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary' />
+                <ReferenceSvg className='w-5 h-5 transition duration-75 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary' />
                 <span className='ms-3 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary'>
                   References
                 </span>
@@ -232,7 +239,7 @@ export default function BuilderNavbar({
             </li>
             <li>
               <div className='flex items-center p-2 rounded-lg cursor-pointer text-light-text-secondary dark:text-dark-text-secondary hover:bg-[#e5e7eb] dark:hover:bg-[#4d4d4e] group'>
-                <BackSvg className='w-5 h-5 transition duration-75 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary' />
+                <LanguageSvg className='w-5 h-5 transition duration-75 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary' />
                 <span className='ms-3 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary'>
                   Languages
                 </span>
