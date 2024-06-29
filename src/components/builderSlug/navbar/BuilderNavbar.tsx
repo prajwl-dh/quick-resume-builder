@@ -172,12 +172,12 @@ export default function BuilderNavbar({
                 opacity: 1,
                 transition: {
                   type: 'spring',
-                  staggerChildren: 0.03,
+                  staggerChildren: 0.04,
                 },
               },
             }}
             initial='hidden'
-            animate='show'
+            whileInView='show'
             className='space-y-2 font-medium'
           >
             <motion.li
