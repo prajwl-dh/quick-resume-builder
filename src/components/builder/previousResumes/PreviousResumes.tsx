@@ -2,6 +2,7 @@
 import { duplicateResume, updateLastAccessed } from '@/lib/slices/resumeSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/store/hooks';
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
+import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import SecondaryButton from '../../buttons/SecondaryButton';
@@ -28,9 +29,13 @@ export default function PreviousResumes() {
 
   return (
     <>
-      {sortedResumes?.map((resume: ResumeInterface) => {
+      {sortedResumes?.map((resume: ResumeInterface, index: number) => {
         return (
-          <div
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 100 }}
+            viewport={{ once: true }}
+            transition={{ type: 'spring', delay: index - index / 1.2 }}
             key={resume.id}
             className='h-60 md:h-80 w-full md:w-72 p-3 gap-1 flex flex-col justify-between items-center rounded-md ring-1 ring-light-ring-secondary dark:ring-dark-ring-secondary hover:ring-light-ring-primary hover:dark:ring-dark-ring-primary bg-light-foreground dark:bg-dark-foreground hover:shadow-sm group'
           >
@@ -108,7 +113,7 @@ export default function PreviousResumes() {
               id={resume.id}
               fileName={resume.fileName}
             />
-          </div>
+          </motion.div>
         );
       })}
     </>

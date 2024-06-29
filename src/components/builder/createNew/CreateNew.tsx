@@ -1,4 +1,6 @@
 'use client';
+import SecondaryButton from '@/components/buttons/SecondaryButton';
+import { motion } from 'framer-motion';
 import { useState } from 'react';
 import CreateConfirmationPopup from './CreateConfirmationPopup';
 import { CreateSvg } from './CreateSvg';
@@ -7,7 +9,11 @@ export default function CreateNew() {
   const [open, setOpen] = useState<boolean>(false);
 
   return (
-    <div
+    <motion.div
+      initial={{ scale: 0.9, opacity: 0 }}
+      animate={{ scale: 1, opacity: 100 }}
+      viewport={{ once: true }}
+      transition={{ type: 'spring' }}
       onClick={() => setOpen(true)}
       className='h-60 md:h-80 w-full md:w-72 p-3 gap-1 flex flex-col justify-between items-center rounded-md ring-1 ring-light-ring-secondary dark:ring-dark-ring-secondary hover:ring-light-ring-primary hover:dark:ring-dark-ring-primary bg-light-foreground dark:bg-dark-foreground cursor-pointer hover:shadow-sm group'
     >
@@ -20,7 +26,10 @@ export default function CreateNew() {
       <p className='text text-sm text-light-text-secondary self-start dark:text-dark-text-secondary'>
         Create a brand new resume from scratch
       </p>
+      <SecondaryButton className='dark:bg-dark-foreground self-start mt-2'>
+        Create Resume
+      </SecondaryButton>
       <CreateConfirmationPopup open={open} setOpen={setOpen} />
-    </div>
+    </motion.div>
   );
 }
