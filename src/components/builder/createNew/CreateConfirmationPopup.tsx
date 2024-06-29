@@ -92,7 +92,7 @@ export default function CreateConfirmationPopup({ ...props }) {
                           Full Name <sup>*</sup>
                         </label>
                         <input
-                          className={`p-2 rounded-md ring-1 focus:outline-none bg-light-foreground dark:bg-dark-foreground placeholder:text-light-text-secondary placeholder:dark:text-dark-text-secondary text-light-text-primary ring-light-ring-secondary dark:ring-dark-ring-secondary hover:ring-light-ring-primary hover:dark:ring-dark-ring-primary focus:ring-light-ring-primary focus:dark:ring-dark-ring-primary dark:text-dark-text-primary text-md `}
+                          className={`p-2 rounded-md ring-1 focus:outline-none bg-light-foreground dark:bg-dark-foreground placeholder:text-light-form-placeholder placeholder:dark:text-dark-form-placeholder text-light-text-primary ring-light-ring-secondary dark:ring-dark-ring-secondary focus:ring-light-ring-primary focus:dark:ring-dark-ring-primary dark:text-dark-text-primary text-md`}
                           name='fullName'
                           type='text'
                           value={formData.fullName || ''}
@@ -105,7 +105,7 @@ export default function CreateConfirmationPopup({ ...props }) {
                           Title <sup>*</sup>
                         </label>
                         <input
-                          className={`p-2 rounded-md ring-1 focus:outline-none bg-light-foreground dark:bg-dark-foreground placeholder:text-light-text-secondary placeholder:dark:text-dark-text-secondary text-light-text-primary ring-light-ring-secondary dark:ring-dark-ring-secondary hover:ring-light-ring-primary hover:dark:ring-dark-ring-primary focus:ring-light-ring-primary focus:dark:ring-dark-ring-primary dark:text-dark-text-primary text-md `}
+                          className={`p-2 rounded-md ring-1 focus:outline-none bg-light-foreground dark:bg-dark-foreground placeholder:text-light-form-placeholder placeholder:dark:text-dark-form-placeholder text-light-text-primary ring-light-ring-secondary dark:ring-dark-ring-secondary focus:ring-light-ring-primary focus:dark:ring-dark-ring-primary dark:text-dark-text-primary text-md`}
                           name='jobTitle'
                           type='text'
                           value={formData.jobTitle || ''}
