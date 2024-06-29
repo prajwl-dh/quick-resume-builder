@@ -2,6 +2,7 @@
 import { Logo } from '@/components/navbar/Logo';
 import Moon from '@/components/theme-switcher/Moon';
 import Sun from '@/components/theme-switcher/Sun';
+import { motion } from 'framer-motion';
 import { useTheme } from 'next-themes';
 import { useRouter } from 'next/navigation';
 import React from 'react';
@@ -164,88 +165,153 @@ export default function BuilderNavbar({
               <Moon setTheme={setTheme} />
             )}
           </div>
-          <ul className='space-y-2 font-medium'>
-            <li onClick={() => router.push('/builder')}>
+          <motion.ul
+            variants={{
+              hidden: { opacity: 0 },
+              show: {
+                opacity: 1,
+                transition: {
+                  type: 'spring',
+                  staggerChildren: 0.03,
+                },
+              },
+            }}
+            initial='hidden'
+            animate='show'
+            className='space-y-2 font-medium'
+          >
+            <motion.li
+              variants={{
+                hidden: { x: -50, opacity: 0 },
+                show: { x: 0, opacity: 1 },
+              }}
+              onClick={() => router.push('/builder')}
+            >
               <div className='flex items-center p-2 rounded-lg cursor-pointer text-light-text-secondary dark:text-dark-text-secondary hover:bg-[#e5e7eb] dark:hover:bg-[#4d4d4e] group'>
                 <BackSvg className='w-5 h-5 transition duration-75 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary' />
                 <span className='ms-3 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary'>
                   Go Back
                 </span>
               </div>
-            </li>
-            <li>
+            </motion.li>
+            <motion.li
+              variants={{
+                hidden: { x: -50, opacity: 0 },
+                show: { x: 0, opacity: 1 },
+              }}
+            >
               <div className='flex items-center p-2 rounded-lg cursor-pointer text-light-text-secondary dark:text-dark-text-secondary hover:bg-[#e5e7eb] dark:hover:bg-[#4d4d4e] group'>
                 <ProfileSvg className='w-5 h-5 transition duration-75 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary' />
                 <span className='ms-3 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary'>
                   Profile
                 </span>
               </div>
-            </li>
-            <li>
+            </motion.li>
+            <motion.li
+              variants={{
+                hidden: { x: -50, opacity: 0 },
+                show: { x: 0, opacity: 1 },
+              }}
+            >
               <div className='flex items-center p-2 rounded-lg cursor-pointer text-light-text-secondary dark:text-dark-text-secondary hover:bg-[#e5e7eb] dark:hover:bg-[#4d4d4e] group'>
                 <ExperienceSvg className='w-5 h-5 transition duration-75 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary' />
                 <span className='ms-3 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary'>
                   Work Experience
                 </span>
               </div>
-            </li>
-            <li>
+            </motion.li>
+            <motion.li
+              variants={{
+                hidden: { x: -50, opacity: 0 },
+                show: { x: 0, opacity: 1 },
+              }}
+            >
               <div className='flex items-center p-2 rounded-lg cursor-pointer text-light-text-secondary dark:text-dark-text-secondary hover:bg-[#e5e7eb] dark:hover:bg-[#4d4d4e] group'>
                 <EducationSvg className='w-5 h-5 transition duration-75 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary' />
                 <span className='ms-3 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary'>
                   Education
                 </span>
               </div>
-            </li>
-            <li>
+            </motion.li>
+            <motion.li
+              variants={{
+                hidden: { x: -50, opacity: 0 },
+                show: { x: 0, opacity: 1 },
+              }}
+            >
               <div className='flex items-center p-2 rounded-lg cursor-pointer text-light-text-secondary dark:text-dark-text-secondary hover:bg-[#e5e7eb] dark:hover:bg-[#4d4d4e] group'>
                 <SkillsSvg className='w-5 h-5 transition duration-75 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary' />
                 <span className='ms-3 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary'>
                   Skills
                 </span>
               </div>
-            </li>
-            <li>
+            </motion.li>
+            <motion.li
+              variants={{
+                hidden: { x: -50, opacity: 0 },
+                show: { x: 0, opacity: 1 },
+              }}
+            >
               <div className='flex items-center p-2 rounded-lg cursor-pointer text-light-text-secondary dark:text-dark-text-secondary hover:bg-[#e5e7eb] dark:hover:bg-[#4d4d4e] group'>
                 <AwardsSvg className='w-5 h-5 transition duration-75 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary' />
                 <span className='ms-3 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary'>
                   Awards
                 </span>
               </div>
-            </li>
-            <li>
+            </motion.li>
+            <motion.li
+              variants={{
+                hidden: { x: -50, opacity: 0 },
+                show: { x: 0, opacity: 1 },
+              }}
+            >
               <div className='flex items-center p-2 rounded-lg cursor-pointer text-light-text-secondary dark:text-dark-text-secondary hover:bg-[#e5e7eb] dark:hover:bg-[#4d4d4e] group'>
                 <CertificateSvg className='w-5 h-5 transition duration-75 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary' />
                 <span className='ms-3 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary'>
                   Certifications
                 </span>
               </div>
-            </li>
-            <li>
+            </motion.li>
+            <motion.li
+              variants={{
+                hidden: { x: -50, opacity: 0 },
+                show: { x: 0, opacity: 1 },
+              }}
+            >
               <div className='flex items-center p-2 rounded-lg cursor-pointer text-light-text-secondary dark:text-dark-text-secondary hover:bg-[#e5e7eb] dark:hover:bg-[#4d4d4e] group'>
                 <ProjectSvg className='w-5 h-5 transition duration-75 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary' />
                 <span className='ms-3 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary'>
                   Projects
                 </span>
               </div>
-            </li>
-            <li>
+            </motion.li>
+            <motion.li
+              variants={{
+                hidden: { x: -50, opacity: 0 },
+                show: { x: 0, opacity: 1 },
+              }}
+            >
               <div className='flex items-center p-2 rounded-lg cursor-pointer text-light-text-secondary dark:text-dark-text-secondary hover:bg-[#e5e7eb] dark:hover:bg-[#4d4d4e] group'>
                 <ReferenceSvg className='w-5 h-5 transition duration-75 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary' />
                 <span className='ms-3 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary'>
                   References
                 </span>
               </div>
-            </li>
-            <li>
+            </motion.li>
+            <motion.li
+              variants={{
+                hidden: { x: -50, opacity: 0 },
+                show: { x: 0, opacity: 1 },
+              }}
+            >
               <div className='flex items-center p-2 rounded-lg cursor-pointer text-light-text-secondary dark:text-dark-text-secondary hover:bg-[#e5e7eb] dark:hover:bg-[#4d4d4e] group'>
                 <LanguageSvg className='w-5 h-5 transition duration-75 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary' />
                 <span className='ms-3 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary'>
                   Languages
                 </span>
               </div>
-            </li>
-          </ul>
+            </motion.li>
+          </motion.ul>
         </div>
       </aside>
     </div>
