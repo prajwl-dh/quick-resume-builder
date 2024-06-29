@@ -62,17 +62,17 @@ export default function BuilderNavbar({
 
   return (
     <div className='flex'>
-      <div className='flex flex-row justify-between p-3 lg:hidden bg-light-background dark:bg-dark-background w-screen'>
+      <div className='flex fixed top-0 h-14 flex-row justify-between p-3 lg:hidden bg-light-background dark:bg-dark-background w-screen backdrop-blur-sm bg-opacity-40 dark:bg-opacity-40'>
         <button
           data-drawer-target='default-sidebar'
           data-drawer-toggle='default-sidebar'
           aria-controls='default-sidebar'
           type='button'
-          className='inline-flex items-center text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600'
+          className='inline-flex items-center text-sm text-gray-500 rounded-lg lg:hidden focus:outline-none'
           onClick={toggleSidebar}
         >
           <svg
-            className={`w-8 h-8 text-sm text-light-text-primary dark:text-dark-text-primary ${
+            className={`w-8 h-8 text-sm text-light-text-primary cursor-pointer dark:text-dark-text-primary ${
               isSidebarOpen ? 'hidden' : ''
             }`}
             aria-hidden='true'
@@ -89,7 +89,7 @@ export default function BuilderNavbar({
         </button>
         <svg
           onClick={() => router.push('/builder')}
-          className={`w-8 h-8 text-sm text-light-text-primary dark:text-dark-text-primary ${
+          className={`w-8 h-8 text-sm text-light-text-primary cursor-pointer dark:text-dark-text-primary ${
             isSidebarOpen ? 'hidden' : ''
           }`}
           xmlns='http://www.w3.org/2000/svg'
@@ -104,7 +104,7 @@ export default function BuilderNavbar({
         </svg>
         <svg
           onClick={() => setIsResumePreviewOpen((prev) => !prev)}
-          className={`w-8 h-8 text-sm text-light-text-primary dark:text-dark-text-primary ${
+          className={`w-8 h-8 text-sm text-light-text-primary cursor-pointer dark:text-dark-text-primary ${
             isSidebarOpen ? 'hidden' : ''
           }`}
           xmlns='http://www.w3.org/2000/svg'

@@ -2,6 +2,8 @@
 
 import NotFound from '@/app/not-found';
 import BuilderNavbar from '@/components/builderSlug/navbar/BuilderNavbar';
+import ResumeInput from '@/components/builderSlug/resume-input/ResumeInput';
+import MobileResumePreview from '@/components/resume-preview/MobileResumePreview';
 import ResumePreview from '@/components/resume-preview/ResumePreview';
 import { useAppSelector } from '@/lib/store/hooks';
 import { useState } from 'react';
@@ -25,16 +27,22 @@ export default function Slug({ params }: SlugType) {
 
   return (
     <div className='flex flex-col justify-between'>
-      <div className='w-screen flex'>
+      <div className='w-screen flex flex-col lg:flex-row'>
         {!isResumePreviewOpen ? (
-          <BuilderNavbar
-            isSidebarOpen={isSidebarOpen}
-            setSidebarOpen={setSidebarOpen}
-            isResumePreviewOpen={isResumePreviewOpen}
+          <>
+            <BuilderNavbar
+              isSidebarOpen={isSidebarOpen}
+              setSidebarOpen={setSidebarOpen}
+              isResumePreviewOpen={isResumePreviewOpen}
+              setIsResumePreviewOpen={setIsResumePreviewOpen}
+            />
+            <ResumeInput />
+            <ResumePreview />
+          </>
+        ) : (
+          <MobileResumePreview
             setIsResumePreviewOpen={setIsResumePreviewOpen}
           />
-        ) : (
-          <ResumePreview setIsResumePreviewOpen={setIsResumePreviewOpen} />
         )}
       </div>
     </div>
