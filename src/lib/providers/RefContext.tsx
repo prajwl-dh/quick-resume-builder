@@ -2,25 +2,28 @@ import React from 'react';
 
 interface RefTypes {
   profileRef: React.MutableRefObject<HTMLDivElement | null>;
+  workExperienceRef: React.MutableRefObject<HTMLDivElement | null>;
+  educationRef: React.MutableRefObject<HTMLDivElement | null>;
+  skillsRef: React.MutableRefObject<HTMLDivElement | null>;
+  awardsRef: React.MutableRefObject<HTMLDivElement | null>;
+  certificationsRef: React.MutableRefObject<HTMLDivElement | null>;
+  projectsRef: React.MutableRefObject<HTMLDivElement | null>;
+  referencesRef: React.MutableRefObject<HTMLDivElement | null>;
+  languagesRef: React.MutableRefObject<HTMLDivElement | null>;
 }
 
 const initialRefValue: RefTypes = {
   profileRef: React.createRef<HTMLDivElement>(),
+  workExperienceRef: React.createRef<HTMLDivElement>(),
+  educationRef: React.createRef<HTMLDivElement>(),
+  skillsRef: React.createRef<HTMLDivElement>(),
+  awardsRef: React.createRef<HTMLDivElement>(),
+  certificationsRef: React.createRef<HTMLDivElement>(),
+  projectsRef: React.createRef<HTMLDivElement>(),
+  referencesRef: React.createRef<HTMLDivElement>(),
+  languagesRef: React.createRef<HTMLDivElement>(),
 };
 
 const RefContext = React.createContext<RefTypes>(initialRefValue);
-
-export const RefProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
-  const profileRef = React.useRef<HTMLDivElement | null>(null);
-
-  // Update the context value whenever profileRef changes
-  const contextValue = React.useMemo(() => ({ profileRef }), [profileRef]);
-
-  return (
-    <RefContext.Provider value={contextValue}>{children}</RefContext.Provider>
-  );
-};
 
 export default RefContext;

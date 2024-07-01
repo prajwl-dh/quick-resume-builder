@@ -4,9 +4,7 @@ import { useContext } from 'react';
 import { ProfileSvg } from '../../navbar/svgs/ProfileSvg';
 
 export default function Profile() {
-  const context = useContext(RefContext);
-
-  const { profileRef } = context;
+  const { profileRef } = useContext(RefContext);
   return (
     <div className='w-full flex flex-col gap-4'>
       <div ref={profileRef} className='flex flex-row gap-2 items-center'>

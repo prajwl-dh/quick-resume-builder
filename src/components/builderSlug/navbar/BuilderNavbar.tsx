@@ -34,7 +34,17 @@ export default function BuilderNavbar({
   const sidebarRef = React.useRef<HTMLDivElement>(null);
   const router = useRouter();
   const { theme, setTheme } = useTheme();
-  const { profileRef } = useContext(RefContext);
+  const {
+    profileRef,
+    workExperienceRef,
+    educationRef,
+    skillsRef,
+    awardsRef,
+    certificationsRef,
+    projectsRef,
+    referencesRef,
+    languagesRef,
+  } = useContext(RefContext);
 
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
@@ -63,12 +73,53 @@ export default function BuilderNavbar({
   }, [isSidebarOpen]);
 
   const handleScroll = (section: string) => {
-    if (section === 'profile') {
+    if (section == 'profile') {
       profileRef.current?.scrollIntoView({
         behavior: 'smooth',
-        block: 'start',
+        block: 'center',
+      });
+    } else if (section == 'workExperience') {
+      workExperienceRef.current?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      });
+    } else if (section == 'education') {
+      educationRef.current?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      });
+    } else if (section == 'skills') {
+      skillsRef.current?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      });
+    } else if (section == 'awards') {
+      awardsRef.current?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      });
+    } else if (section == 'certifications') {
+      certificationsRef.current?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      });
+    } else if (section == 'projects') {
+      projectsRef.current?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      });
+    } else if (section == 'references') {
+      referencesRef.current?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      });
+    } else if (section == 'languages') {
+      languagesRef.current?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
       });
     }
+    setSidebarOpen(false);
   };
 
   return (
@@ -224,6 +275,7 @@ export default function BuilderNavbar({
                 hidden: { x: -50, opacity: 0 },
                 show: { x: 0, opacity: 1 },
               }}
+              onClick={() => handleScroll('workExperience')}
             >
               <div className='flex items-center p-2 rounded-lg cursor-pointer text-light-text-secondary dark:text-dark-text-secondary hover:bg-[#e5e7eb] dark:hover:bg-[#4d4d4e] group'>
                 <ExperienceSvg className='w-5 h-5 transition duration-75 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary' />
@@ -237,6 +289,7 @@ export default function BuilderNavbar({
                 hidden: { x: -50, opacity: 0 },
                 show: { x: 0, opacity: 1 },
               }}
+              onClick={() => handleScroll('education')}
             >
               <div className='flex items-center p-2 rounded-lg cursor-pointer text-light-text-secondary dark:text-dark-text-secondary hover:bg-[#e5e7eb] dark:hover:bg-[#4d4d4e] group'>
                 <EducationSvg className='w-5 h-5 transition duration-75 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary' />
@@ -250,6 +303,7 @@ export default function BuilderNavbar({
                 hidden: { x: -50, opacity: 0 },
                 show: { x: 0, opacity: 1 },
               }}
+              onClick={() => handleScroll('skills')}
             >
               <div className='flex items-center p-2 rounded-lg cursor-pointer text-light-text-secondary dark:text-dark-text-secondary hover:bg-[#e5e7eb] dark:hover:bg-[#4d4d4e] group'>
                 <SkillsSvg className='w-5 h-5 transition duration-75 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary' />
@@ -263,6 +317,7 @@ export default function BuilderNavbar({
                 hidden: { x: -50, opacity: 0 },
                 show: { x: 0, opacity: 1 },
               }}
+              onClick={() => handleScroll('awards')}
             >
               <div className='flex items-center p-2 rounded-lg cursor-pointer text-light-text-secondary dark:text-dark-text-secondary hover:bg-[#e5e7eb] dark:hover:bg-[#4d4d4e] group'>
                 <AwardsSvg className='w-5 h-5 transition duration-75 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary' />
@@ -276,6 +331,7 @@ export default function BuilderNavbar({
                 hidden: { x: -50, opacity: 0 },
                 show: { x: 0, opacity: 1 },
               }}
+              onClick={() => handleScroll('certifications')}
             >
               <div className='flex items-center p-2 rounded-lg cursor-pointer text-light-text-secondary dark:text-dark-text-secondary hover:bg-[#e5e7eb] dark:hover:bg-[#4d4d4e] group'>
                 <CertificateSvg className='w-5 h-5 transition duration-75 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary' />
@@ -289,6 +345,7 @@ export default function BuilderNavbar({
                 hidden: { x: -50, opacity: 0 },
                 show: { x: 0, opacity: 1 },
               }}
+              onClick={() => handleScroll('projects')}
             >
               <div className='flex items-center p-2 rounded-lg cursor-pointer text-light-text-secondary dark:text-dark-text-secondary hover:bg-[#e5e7eb] dark:hover:bg-[#4d4d4e] group'>
                 <ProjectSvg className='w-5 h-5 transition duration-75 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary' />
@@ -302,6 +359,7 @@ export default function BuilderNavbar({
                 hidden: { x: -50, opacity: 0 },
                 show: { x: 0, opacity: 1 },
               }}
+              onClick={() => handleScroll('references')}
             >
               <div className='flex items-center p-2 rounded-lg cursor-pointer text-light-text-secondary dark:text-dark-text-secondary hover:bg-[#e5e7eb] dark:hover:bg-[#4d4d4e] group'>
                 <ReferenceSvg className='w-5 h-5 transition duration-75 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary' />
@@ -315,6 +373,7 @@ export default function BuilderNavbar({
                 hidden: { x: -50, opacity: 0 },
                 show: { x: 0, opacity: 1 },
               }}
+              onClick={() => handleScroll('languages')}
             >
               <div className='flex items-center p-2 rounded-lg cursor-pointer text-light-text-secondary dark:text-dark-text-secondary hover:bg-[#e5e7eb] dark:hover:bg-[#4d4d4e] group'>
                 <LanguageSvg className='w-5 h-5 transition duration-75 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary' />
