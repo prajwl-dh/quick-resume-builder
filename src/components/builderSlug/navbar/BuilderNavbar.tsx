@@ -191,7 +191,7 @@ export default function BuilderNavbar({
       <aside
         ref={sidebarRef}
         id='default-sidebar'
-        className={`fixed top-0 left-0 z-50 w-64 h-screen transition-transform bg-light-foreground dark:bg-dark-foreground ${
+        className={`fixed top-0 left-0 z-50 backdrop-blur-md bg-opacity-60 dark:bg-opacity-60 w-64 h-screen transition-transform bg-light-foreground dark:bg-dark-foreground ${
           isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
         } lg:translate-x-0`}
         aria-label='Sidebar'

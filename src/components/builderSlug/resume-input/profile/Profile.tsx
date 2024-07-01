@@ -30,7 +30,7 @@ export default function Profile() {
         <input
           className='p-2 rounded-md ring-1 focus:outline-none bg-light-foreground dark:bg-dark-foreground placeholder:text-light-form-placeholder placeholder:dark:text-dark-form-placeholder text-light-text-primary ring-light-ring-secondary dark:ring-dark-ring-secondary focus:ring-light-ring-primary focus:dark:ring-dark-ring-primary dark:text-dark-text-primary text-md'
           type='text'
-          placeholder='Creative and Innovative Web Developer'
+          placeholder='An Innovative Web Developer'
         ></input>
       </div>
       <div className='flex flex-row flex-wrap justify-start gap-2'>
@@ -76,6 +76,38 @@ export default function Profile() {
             placeholder='https://portforlio.com'
           ></input>
         </div>
+      </div>
+      <div className='flex flex-row flex-wrap justify-start gap-2'>
+        <div className='flex flex-col flex-1 gap-2'>
+          <label className='text text-md font-medium text-light-text-primary dark:text-dark-text-primary'>
+            LinkedIn
+          </label>
+          <input
+            className='p-2 rounded-md ring-1 focus:outline-none bg-light-foreground dark:bg-dark-foreground placeholder:text-light-form-placeholder placeholder:dark:text-dark-form-placeholder text-light-text-primary ring-light-ring-secondary dark:ring-dark-ring-secondary focus:ring-light-ring-primary focus:dark:ring-dark-ring-primary dark:text-dark-text-primary text-md'
+            type='text'
+            placeholder='https://www.linkedin.com/in/john-doe-smith/'
+          ></input>
+        </div>
+        <div className='flex flex-col flex-1 gap-2'>
+          <label className='text text-md font-medium text-light-text-primary dark:text-dark-text-primary'>
+            GitHub
+          </label>
+          <input
+            className='p-2 rounded-md ring-1 focus:outline-none bg-light-foreground dark:bg-dark-foreground placeholder:text-light-form-placeholder placeholder:dark:text-dark-form-placeholder text-light-text-primary ring-light-ring-secondary dark:ring-dark-ring-secondary focus:ring-light-ring-primary focus:dark:ring-dark-ring-primary dark:text-dark-text-primary text-md'
+            type='text'
+            placeholder='https://github.com/john-doe-smith'
+          ></input>
+        </div>
+      </div>
+      <div className='flex flex-col flex-1 gap-2'>
+        <label className='text text-md font-medium text-light-text-primary dark:text-dark-text-primary'>
+          Summary
+        </label>
+        <textarea
+          className='p-2 rounded-md ring-1 focus:outline-none bg-light-foreground dark:bg-dark-foreground placeholder:text-light-form-placeholder placeholder:dark:text-dark-form-placeholder text-light-text-primary ring-light-ring-secondary dark:ring-dark-ring-secondary focus:ring-light-ring-primary focus:dark:ring-dark-ring-primary dark:text-dark-text-primary text-md'
+          placeholder='Professional summary here'
+          rows={5}
+        ></textarea>
       </div>
     </div>
   );
