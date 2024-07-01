@@ -36,7 +36,7 @@ export default function Slug({ params }: SlugType) {
               isResumePreviewOpen={isResumePreviewOpen}
               setIsResumePreviewOpen={setIsResumePreviewOpen}
             />
-            <ResumeInput />
+            <ResumeInput resume={resume} />
             <ResumePreview />
           </>
         ) : (

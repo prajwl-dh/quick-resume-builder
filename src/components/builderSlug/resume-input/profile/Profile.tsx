@@ -1,9 +1,14 @@
 'use client';
+import { ResumeInterface } from '@/components/builder/previousResumes/ResumeInterface';
 import RefContext from '@/lib/providers/RefContext';
 import { useContext } from 'react';
 import { ProfileSvg } from '../../navbar/svgs/ProfileSvg';
 
-export default function Profile() {
+export default function Profile({
+  resume,
+}: {
+  resume: ResumeInterface | undefined;
+}) {
   const { profileRef } = useContext(RefContext);
   return (
     <div className='w-full flex flex-col gap-4'>
@@ -21,6 +26,7 @@ export default function Profile() {
           className='p-2 rounded-md ring-1 focus:outline-none bg-light-foreground dark:bg-dark-foreground placeholder:text-light-form-placeholder placeholder:dark:text-dark-form-placeholder text-light-text-primary ring-light-ring-secondary dark:ring-dark-ring-secondary focus:ring-light-ring-primary focus:dark:ring-dark-ring-primary dark:text-dark-text-primary text-md'
           type='text'
           placeholder='John Doe Smith'
+          value={resume?.fullName || undefined}
         ></input>
       </div>
       <div className='flex flex-col flex-1 gap-2'>
