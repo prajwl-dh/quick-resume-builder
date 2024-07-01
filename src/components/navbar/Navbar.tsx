@@ -42,6 +42,7 @@ export default function Navbar({
           width={800}
           quality={100}
           className='h-10 w-10'
+          priority
         />
         <div className='flex flex-col items-center -space-y-1'>
           <p className='text text-xl font-bold text-light-text-primary dark:text-dark-text-primary p-0'>

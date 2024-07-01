@@ -129,12 +129,12 @@ export default function BuilderNavbar({
       <aside
         ref={sidebarRef}
         id='default-sidebar'
-        className={`fixed top-0 left-0 z-40 w-64 h-screen transition-transform bg-light-foreground dark:bg-dark-foreground ${
+        className={`fixed top-0 left-0 z-50 w-64 h-screen transition-transform bg-light-foreground dark:bg-dark-foreground ${
           isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
         } lg:translate-x-0`}
         aria-label='Sidebar'
       >
-        <div className='h-full px-3 py-4 overflow-y-auto'>
+        <div className='h-full px-3 py-4 overflow-y-auto overflow-x-hidden'>
           <div className='flex flex-row justify-between items-center mb-4'>
             <div className='flex flex-row items-center -space-x-1'>
               <Logo
