@@ -18,8 +18,6 @@ Quick Resume is a free and open-source app for building professional, eye-catchi
 - **TypeScript**: A typed superset of JavaScript that compiles to plain JavaScript.
 - **Framer Motion**: A library for animations and gestures in React.
 - **ESLint**: A tool for identifying and reporting on patterns found in ECMAScript/JavaScript code.
-- **PostCSS**: A tool for transforming CSS with JavaScript plugins.
-- **Sharp**: A high-performance image processing library.
 
 ## Getting Started
 
