@@ -2,10 +2,11 @@
 import { Logo } from '@/components/navbar/Logo';
 import Moon from '@/components/theme-switcher/Moon';
 import Sun from '@/components/theme-switcher/Sun';
+import RefContext from '@/lib/providers/RefContext';
 import { motion } from 'framer-motion';
 import { useTheme } from 'next-themes';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import React, { useContext } from 'react';
 import { AwardsSvg } from './svgs/AwardsSvg';
 import { BackSvg } from './svgs/BackSvg';
 import { CertificateSvg } from './svgs/CertificateSvg';
@@ -33,6 +34,7 @@ export default function BuilderNavbar({
   const sidebarRef = React.useRef<HTMLDivElement>(null);
   const router = useRouter();
   const { theme, setTheme } = useTheme();
+  const { profileRef } = useContext(RefContext);
 
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
@@ -59,6 +61,15 @@ export default function BuilderNavbar({
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [isSidebarOpen]);
+
+  const handleScroll = (section: string) => {
+    if (section === 'profile') {
+      profileRef.current?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    }
+  };
 
   return (
     <div className='flex'>
@@ -199,6 +210,7 @@ export default function BuilderNavbar({
                 hidden: { x: -50, opacity: 0 },
                 show: { x: 0, opacity: 1 },
               }}
+              onClick={() => handleScroll('profile')}
             >
               <div className='flex items-center p-2 rounded-lg cursor-pointer text-light-text-secondary dark:text-dark-text-secondary hover:bg-[#e5e7eb] dark:hover:bg-[#4d4d4e] group'>
                 <ProfileSvg className='w-5 h-5 transition duration-75 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary' />

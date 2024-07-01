@@ -1,9 +1,15 @@
+'use client';
+import RefContext from '@/lib/providers/RefContext';
+import { useContext } from 'react';
 import { ProfileSvg } from '../../navbar/svgs/ProfileSvg';
 
 export default function Profile() {
+  const context = useContext(RefContext);
+
+  const { profileRef } = context;
   return (
     <div className='w-full flex flex-col gap-4'>
-      <div className='flex flex-row gap-2 items-center'>
+      <div ref={profileRef} className='flex flex-row gap-2 items-center'>
         <ProfileSvg className='w-8 h-8 text-light-text-primary dark:text-dark-text-primary' />
         <p className='text text-3xl text-light-text-primary dark:text-dark-text-primary'>
           Profile
