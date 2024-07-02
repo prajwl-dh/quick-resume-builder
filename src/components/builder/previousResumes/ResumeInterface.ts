@@ -11,6 +11,7 @@ export interface ResumeInterface {
   website?: string;
   linkedIn?: string;
   gitHub?: string;
+  profileCustomField?: [{ fieldName: string; fieldValue: string }];
   summary?: string;
 }
 
