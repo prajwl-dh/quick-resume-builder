@@ -70,7 +70,7 @@ export default function BuilderNavbar({
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [isSidebarOpen]);
+  });
 
   const handleScroll = (section: string) => {
     if (section == 'profile') {
