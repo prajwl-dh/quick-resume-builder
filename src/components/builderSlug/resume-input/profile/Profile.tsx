@@ -19,6 +19,7 @@ export default function Profile({
 }: {
   resume: ResumeInterface | undefined;
 }) {
+  console.log(resume);
   const { profileRef } = useContext(RefContext);
   const dispatch = useAppDispatch();
   const [open, setOpen] = React.useState(false);
