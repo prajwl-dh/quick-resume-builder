@@ -19,7 +19,6 @@ export default function Profile({
 }: {
   resume: ResumeInterface | undefined;
 }) {
-  console.log(resume);
   const { profileRef } = useContext(RefContext);
   const dispatch = useAppDispatch();
   const [open, setOpen] = React.useState(false);
@@ -54,7 +53,7 @@ export default function Profile({
   };
 
   return (
-    <div className='w-full flex flex-col gap-4'>
+    <div className='w-full flex flex-col gap-4 mt-2'>
       <div ref={profileRef} className='flex flex-row gap-2 items-center'>
         <ProfileSvg className='w-8 h-8 text-light-text-primary dark:text-dark-text-primary' />
         <p className='text text-3xl text-light-text-primary dark:text-dark-text-primary'>

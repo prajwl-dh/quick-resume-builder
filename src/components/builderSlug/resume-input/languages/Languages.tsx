@@ -3,22 +3,22 @@ import { ResumeInterface } from '@/components/builder/previousResumes/ResumeInte
 import RefContext from '@/lib/providers/RefContext';
 import { useAppDispatch } from '@/lib/store/hooks';
 import { useContext } from 'react';
-import { ExperienceSvg } from '../../navbar/svgs/ExperienceSvg';
+import { LanguageSvg } from '../../navbar/svgs/LanguageSvg';
 
-export default function WorkExperience({
+export default function Languages({
   resume,
 }: {
   resume: ResumeInterface | undefined;
 }) {
-  const { workExperienceRef } = useContext(RefContext);
+  const { languagesRef } = useContext(RefContext);
   const dispatch = useAppDispatch();
 
   return (
     <div className='w-full flex flex-col gap-4'>
-      <div ref={workExperienceRef} className='flex flex-row gap-2 items-center'>
-        <ExperienceSvg className='w-8 h-8 text-light-text-primary dark:text-dark-text-primary' />
+      <div ref={languagesRef} className='flex flex-row gap-2 items-center'>
+        <LanguageSvg className='w-8 h-8 text-light-text-primary dark:text-dark-text-primary' />
         <p className='text text-3xl text-light-text-primary dark:text-dark-text-primary'>
-          Work Experience
+          Languages
         </p>
       </div>
     </div>
