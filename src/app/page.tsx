@@ -11,7 +11,7 @@ export default function page() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3, type: 'spring' }}
       />
-      <div className='w-screen px-1 md:px-14 flex flex-col items-center'>
+      <div className='w-screen h-[calc(100vh-80px)] px-1 md:px-14 flex flex-col items-center bg-[linear-gradient(to_right,#80808010_1px,transparent_1px),linear-gradient(to_bottom,#80808010_1px,transparent_1px)] bg-[size:100px_100px] dark:bg-[linear-gradient(to_right,#80808015_1px,transparent_1px),linear-gradient(to_bottom,#80808015_1px,transparent_1px)]'>
         <Home />
         <ScrollToTheTop />
       </div>
