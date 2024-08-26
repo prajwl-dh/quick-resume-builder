@@ -1,4 +1,5 @@
 'use client';
+import PrimaryButton from '@/components/buttons/PrimaryButton';
 import SecondaryButton from '@/components/buttons/SecondaryButton';
 import { Logo } from '@/components/navbar/Logo';
 import Moon from '@/components/theme-switcher/Moon';
@@ -153,15 +154,15 @@ export default function BuilderNavbar({
           </svg>
         </button>
         {isResumePreviewOpen ? (
-          <SecondaryButton
-            className='flex flex-row justify-center items-center bg-dark-foreground dark:bg-light-foreground'
+          <PrimaryButton
+            className='py-0 px-1'
             onClick={() => setIsResumePreviewOpen((prev) => !prev)}
           >
             <ResumePreviewSvg className='text-xl text-dark-text-primary cursor-pointer dark:text-light-text-primary -rotate-6' />
-          </SecondaryButton>
+          </PrimaryButton>
         ) : (
           <SecondaryButton
-            className='flex flex-row justify-center items-center'
+            className='py-0 px-1'
             onClick={() => setIsResumePreviewOpen((prev) => !prev)}
           >
             <ResumePreviewSvg className='text-xl text-light-text-primary cursor-pointer dark:text-dark-text-primary -rotate-6' />
