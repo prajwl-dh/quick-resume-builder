@@ -37,7 +37,7 @@ export default function Slug({ params }: SlugType) {
               setIsResumePreviewOpen={setIsResumePreviewOpen}
             />
             <ResumeInput resume={resume} />
-            <ResumePreview />
+            <ResumePreview resume={resume} />
           </>
         ) : (
           <>
@@ -49,6 +49,7 @@ export default function Slug({ params }: SlugType) {
             />
             <MobileResumePreview
               setIsResumePreviewOpen={setIsResumePreviewOpen}
+              resume={resume}
             />
           </>
         )}

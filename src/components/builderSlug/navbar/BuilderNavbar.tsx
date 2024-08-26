@@ -128,7 +128,7 @@ export default function BuilderNavbar({
 
   return (
     <div className='flex'>
-      <div className='flex fixed top-0 h-14 flex-row justify-between py-3 px-2 lg:hidden backdrop-blur-md bg-opacity-60 dark:bg-opacity-60 bg-light-background dark:bg-dark-background w-screen'>
+      <div className='flex fixed top-0 h-[56px] flex-row justify-between py-3 px-2 lg:hidden backdrop-blur-md bg-opacity-60 dark:bg-opacity-60 bg-light-background dark:bg-dark-background w-screen'>
         <button
           data-drawer-target='default-sidebar'
           data-drawer-toggle='default-sidebar'
