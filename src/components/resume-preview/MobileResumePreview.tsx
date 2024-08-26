@@ -4,7 +4,10 @@ export default function MobileResumePreview({
   setIsResumePreviewOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   return (
-    <div onClick={() => setIsResumePreviewOpen((prev) => !prev)}>
+    <div
+      className='mt-14 px-2'
+      onClick={() => setIsResumePreviewOpen((prev) => !prev)}
+    >
       ResumePreview
     </div>
   );

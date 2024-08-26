@@ -13,7 +13,7 @@ type SlugType = {
 };
 
 export default function Slug({ params }: SlugType) {
-  const [isSidebarOpen, setSidebarOpen] = useState<boolean>(true);
+  const [isSidebarOpen, setSidebarOpen] = useState<boolean>(false);
   const [isResumePreviewOpen, setIsResumePreviewOpen] =
     useState<boolean>(false);
 
@@ -40,9 +40,17 @@ export default function Slug({ params }: SlugType) {
             <ResumePreview />
           </>
         ) : (
-          <MobileResumePreview
-            setIsResumePreviewOpen={setIsResumePreviewOpen}
-          />
+          <>
+            <BuilderNavbar
+              isSidebarOpen={isSidebarOpen}
+              setSidebarOpen={setSidebarOpen}
+              isResumePreviewOpen={isResumePreviewOpen}
+              setIsResumePreviewOpen={setIsResumePreviewOpen}
+            />
+            <MobileResumePreview
+              setIsResumePreviewOpen={setIsResumePreviewOpen}
+            />
+          </>
         )}
       </div>
     </div>

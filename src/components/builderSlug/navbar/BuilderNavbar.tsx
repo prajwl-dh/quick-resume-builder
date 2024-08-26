@@ -1,4 +1,5 @@
 'use client';
+import SecondaryButton from '@/components/buttons/SecondaryButton';
 import { Logo } from '@/components/navbar/Logo';
 import Moon from '@/components/theme-switcher/Moon';
 import Sun from '@/components/theme-switcher/Sun';
@@ -16,6 +17,7 @@ import { LanguageSvg } from './svgs/LanguageSvg';
 import { ProfileSvg } from './svgs/ProfileSvg';
 import { ProjectSvg } from './svgs/ProjectSvg';
 import { ReferenceSvg } from './svgs/ReferenceSvg';
+import { ResumePreviewSvg } from './svgs/ResumePreviewSvg';
 import { SkillsSvg } from './svgs/SkillsSvg';
 
 interface BuilderNavbarProps {
@@ -48,6 +50,7 @@ export default function BuilderNavbar({
 
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
+    setIsResumePreviewOpen(false);
   };
 
   const handleClickOutside = (event: MouseEvent) => {
@@ -124,7 +127,7 @@ export default function BuilderNavbar({
 
   return (
     <div className='flex'>
-      <div className='flex fixed top-0 h-14 flex-row justify-between p-3 lg:hidden bg-light-background dark:bg-dark-background w-screen backdrop-blur-sm bg-opacity-40 dark:bg-opacity-40'>
+      <div className='flex fixed top-0 h-14 flex-row justify-between py-3 px-2 lg:hidden backdrop-blur-md bg-opacity-60 dark:bg-opacity-60 bg-light-background dark:bg-dark-background w-screen'>
         <button
           data-drawer-target='default-sidebar'
           data-drawer-toggle='default-sidebar'
@@ -149,49 +152,27 @@ export default function BuilderNavbar({
             ></path>
           </svg>
         </button>
-        <svg
-          onClick={() => router.push('/builder')}
-          className={`w-8 h-8 text-sm text-light-text-primary cursor-pointer dark:text-dark-text-primary ${
-            isSidebarOpen ? 'hidden' : ''
-          }`}
-          xmlns='http://www.w3.org/2000/svg'
-          width='1em'
-          height='1em'
-          viewBox='0 0 24 24'
-        >
-          <path
-            fill='currentColor'
-            d='M7 20q-.825 0-1.412-.587T5 18v-7.15l-2 1.525q-.35.25-.75.213T1.6 12.2t-.2-.75t.4-.65l8.975-6.875q.275-.2.588-.3t.637-.1t.638.1t.587.3L16 6.05V5.5q0-.625.438-1.062T17.5 4t1.063.438T19 5.5v2.85l3.2 2.45q.325.25.388.65t-.188.75t-.65.388t-.75-.213l-2-1.525V18q0 .825-.587 1.413T17 20h-1q-.825 0-1.412-.587T14 18v-2q0-.825-.587-1.412T12 14t-1.412.588T10 16v2q0 .825-.587 1.413T8 20zm3-9.975h4q0-.8-.6-1.313T12 8.2t-1.4.513t-.6 1.312'
-          ></path>
-        </svg>
-        <svg
-          onClick={() => setIsResumePreviewOpen((prev) => !prev)}
-          className={`w-8 h-8 text-sm text-light-text-primary cursor-pointer dark:text-dark-text-primary ${
-            isSidebarOpen ? 'hidden' : ''
-          }`}
-          xmlns='http://www.w3.org/2000/svg'
-          width='1em'
-          height='1em'
-          viewBox='0 0 24 24'
-        >
-          <g
-            fill='none'
-            stroke='currentColor'
-            strokeLinecap='round'
-            strokeLinejoin='round'
-            strokeWidth='2'
+        {isResumePreviewOpen ? (
+          <SecondaryButton
+            className='flex flex-row justify-center items-center bg-dark-foreground dark:bg-light-foreground'
+            onClick={() => setIsResumePreviewOpen((prev) => !prev)}
           >
-            <path d='M14 3v4a1 1 0 0 0 1 1h4'></path>
-            <path d='M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2'></path>
-            <path d='M11 12.5a1.5 1.5 0 0 0-3 0v3a1.5 1.5 0 0 0 3 0m2-4.5l1.5 6l1.5-6'></path>
-          </g>
-        </svg>
+            <ResumePreviewSvg className='text-xl text-dark-text-primary cursor-pointer dark:text-light-text-primary -rotate-6' />
+          </SecondaryButton>
+        ) : (
+          <SecondaryButton
+            className='flex flex-row justify-center items-center'
+            onClick={() => setIsResumePreviewOpen((prev) => !prev)}
+          >
+            <ResumePreviewSvg className='text-xl text-light-text-primary cursor-pointer dark:text-dark-text-primary -rotate-6' />
+          </SecondaryButton>
+        )}
       </div>
 
       <aside
         ref={sidebarRef}
         id='default-sidebar'
-        className={`fixed top-0 left-0 z-50 backdrop-blur-md bg-opacity-60 dark:bg-opacity-60 w-64 h-screen transition-transform bg-light-foreground dark:bg-dark-foreground ${
+        className={`fixed top-0 left-0 z-50 w-64 h-screen transition-transform bg-light-foreground dark:bg-dark-foreground ${
           isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
         } lg:translate-x-0`}
         aria-label='Sidebar'
@@ -385,6 +366,11 @@ export default function BuilderNavbar({
           </motion.ul>
         </div>
       </aside>
+      <div
+        className={`${
+          !isSidebarOpen ? 'hidden' : ''
+        }fixed z-40 inset-0 bg-light-background dark:bg-dark-background transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in`}
+      />
     </div>
   );
 }
