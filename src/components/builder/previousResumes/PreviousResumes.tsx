@@ -45,7 +45,7 @@ export default function PreviousResumes() {
                 dispatch(updateLastAccessed(resume.id));
                 router.push(`/builder/${resume.id}`);
               }}
-              className='min-h-40 md:min-h-60 w-full md:w-72 p-3 gap-1 flex flex-col justify-between items-center cursor-pointer'
+              className='min-h-40 md:min-h-60 w-full gap-1 flex flex-col justify-between items-center cursor-pointer'
             >
               <div className='flex-grow flex justify-center items-center'>
                 <ResumeSvg className='text text-5xl md:text-7xl text-light-text-primary dark:text-dark-text-primary group-hover:scale-125 transition duration-300' />
