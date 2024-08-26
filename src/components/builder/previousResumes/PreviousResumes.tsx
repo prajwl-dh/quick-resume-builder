@@ -54,8 +54,7 @@ export default function PreviousResumes() {
                 {resume.fileName}
               </p>
               <p className='text text-sm text-light-text-secondary self-start dark:text-dark-text-secondary'>
-                Last Accessed -{' '}
-                {format(resume.last_accessed, 'HH:mm a eee, MM/dd/yyyy')}
+                Last Edited - {format(resume.last_accessed, 'Pp')}
               </p>
             </div>
             <div className='mt-2 self-start flex flex-row w-full justify-between items-center'>
