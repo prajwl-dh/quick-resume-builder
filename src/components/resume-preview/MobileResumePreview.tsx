@@ -61,7 +61,7 @@ export default function MobileResumePreview({
           Export JSON
         </button>
       </div>
-      <PDFViewer className='h-full w-full px-5'>
+      <PDFViewer className='h-full w-full px-2 mb-2'>
         <MobilePreview />
       </PDFViewer>
     </div>
