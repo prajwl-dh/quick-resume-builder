@@ -35,7 +35,7 @@ export default function MobileResumePreview({
     );
   };
   return (
-    <div className='h-[calc(100vh-56px)] w-full fixed mt-14 flex flex-col justify-center items-center overflow-hidden bg-[#38343c]'>
+    <div className='h-[calc(100vh-56px)] w-full fixed mt-14 flex flex-col justify-center items-center overflow-hidden bg-[#323639]'>
       <div className='flex flex-row w-full justify-center items-center gap-2 my-2'>
         <Select
           className={

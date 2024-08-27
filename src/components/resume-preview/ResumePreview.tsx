@@ -39,7 +39,7 @@ export default function ResumePreview({
   };
 
   return (
-    <div className='hidden lg:flex flex-col justify-center items-center fixed h-full w-[calc(100vw-(16rem+35vw))] 2xl:w-[calc(100vw-(16rem+40vw))] bg-[#38343c] lg:ml-[calc(16rem+35vw)] 2xl:ml-[calc(16rem+40vw)] overflow-hidden'>
+    <div className='hidden lg:flex flex-col justify-center items-center fixed h-full w-[calc(100vw-(16rem+35vw))] 2xl:w-[calc(100vw-(16rem+40vw))] bg-[#323639] lg:ml-[calc(16rem+35vw)] 2xl:ml-[calc(16rem+40vw)] overflow-hidden'>
       <div className='flex flex-row self-end items-center gap-4 my-2 h-max mx-2'>
         <Select
           className={
