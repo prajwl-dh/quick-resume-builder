@@ -39,14 +39,14 @@ export default function MobileResumePreview({
       <div className='flex flex-row w-full justify-center items-center gap-2 my-2'>
         <Select
           className={
-            'text-light-button-secondary-text cursor-pointer bg-white px-2 py-1.5 h-9 rounded-sm outline-none text-md shadow-md'
+            'text-light-button-secondary-text cursor-pointer bg-white dark:bg-white px-2 py-1.5 h-9 rounded-sm outline-none text-md shadow-md'
           }
           name='status'
           aria-label='Project status'
         >
           <option value='default'>Default Theme</option>
         </Select>
-        <button className='text-light-button-secondary-text bg-white hover:bg-gray-200 h-9 px-2 py-1.5 rounded-sm outline-none text-md shadow-md'>
+        <button className='text-light-button-secondary-text bg-white dark:bg-white hover:bg-gray-200 h-9 px-2 py-1.5 rounded-sm outline-none text-md shadow-md'>
           <PDFDownloadLink
             document={<MobilePreview />}
             fileName={resume?.fileName}
@@ -57,11 +57,11 @@ export default function MobileResumePreview({
             }
           </PDFDownloadLink>
         </button>
-        <button className='text-light-button-secondary-text bg-white hover:bg-gray-200 h-9 px-2 py-1.5 rounded-sm outline-none text-md shadow-md'>
+        <button className='text-light-button-secondary-text bg-white dark:bg-white hover:bg-gray-200 h-9 px-2 py-1.5 rounded-sm outline-none text-md shadow-md'>
           Export JSON
         </button>
       </div>
-      <PDFViewer className='h-[calc(100dvh-56px-56px)] w-full px-2 mb-2'>
+      <PDFViewer className='h-[calc(100dvh-56px-56px)] w-full mb-2'>
         <MobilePreview />
       </PDFViewer>
     </div>

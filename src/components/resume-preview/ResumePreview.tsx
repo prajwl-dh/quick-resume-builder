@@ -43,14 +43,14 @@ export default function ResumePreview({
       <div className='flex flex-row self-end items-center gap-4 my-2 h-max mx-2'>
         <Select
           className={
-            'text-light-button-secondary-text cursor-pointer bg-white px-2 py-1.5 rounded-sm outline-none text-md'
+            'text-light-button-secondary-text bg-white dark:bg-white hover:bg-gray-200 h-9 px-2 py-1.5 rounded-sm outline-none text-md'
           }
           name='status'
           aria-label='Project status'
         >
           <option value='default'>Default Theme</option>
         </Select>
-        <button className='text-light-button-secondary-text bg-white hover:bg-gray-200 px-2 py-1.5 rounded-sm outline-none text-md'>
+        <button className='text-light-button-secondary-text bg-white dark:bg-white hover:bg-gray-200 px-2 py-1.5 rounded-sm outline-none text-md'>
           <PDFDownloadLink
             document={<DesktopPreview />}
             fileName={resume?.fileName}
@@ -61,7 +61,7 @@ export default function ResumePreview({
             }
           </PDFDownloadLink>
         </button>
-        <button className='text-light-button-secondary-text bg-white hover:bg-gray-200 px-2 py-1.5 rounded-sm outline-none text-md'>
+        <button className='text-light-button-secondary-text bg-white dark:bg-white hover:bg-gray-200 px-2 py-1.5 rounded-sm outline-none text-md'>
           Export JSON
         </button>
       </div>
