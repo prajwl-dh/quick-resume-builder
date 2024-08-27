@@ -35,8 +35,8 @@ export default function MobileResumePreview({
     );
   };
   return (
-    <div className='h-[calc(100vh-56px)] w-full mt-14 flex flex-col justify-center items-center overflow-hidden bg-[#38343c]'>
-      <div className='flex fixed top-0 mt-16 flex-row w-full justify-center items-center gap-2 '>
+    <div className='h-[calc(100vh-56px)] w-full fixed mt-14 flex flex-col justify-center items-center overflow-hidden bg-[#38343c]'>
+      <div className='flex flex-row w-full justify-center items-center gap-2 my-2'>
         <Select
           className={
             'text-light-button-secondary-text cursor-pointer bg-white px-2 py-1.5 h-9 rounded-sm outline-none text-md shadow-md'
@@ -61,7 +61,7 @@ export default function MobileResumePreview({
           Export JSON
         </button>
       </div>
-      <PDFViewer className='h-[calc(100vh-56px-36px-30px)] w-full px-2 fixed overflow-scroll mt-16 mb-2'>
+      <PDFViewer className='h-full w-full px-2 mb-2'>
         <MobilePreview />
       </PDFViewer>
     </div>
