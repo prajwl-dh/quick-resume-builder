@@ -1,4 +1,4 @@
-import { Document, Page, PDFViewer, Text, View } from '@react-pdf/renderer';
+import { Document, Page, Text, View } from '@react-pdf/renderer';
 import { ResumeInterface } from '../builder/previousResumes/ResumeInterface';
 
 export default function MobileResumePreview({
@@ -13,73 +13,66 @@ export default function MobileResumePreview({
       className='h-[calc(100vh-56px)] w-full mt-14'
       onClick={() => setIsResumePreviewOpen((prev) => !prev)}
     >
-      <PDFViewer
+      <Document
         style={{
           height: '100%',
           width: '100%',
+          backgroundColor: 'white',
+          color: 'black',
         }}
       >
-        <Document
-          style={{
-            height: '100%',
-            width: '100%',
-            backgroundColor: 'white',
-            color: 'black',
-          }}
-        >
-          <Page size='A4'>
-            <View
-              style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}
-            >
-              <Text>Prajwal</Text>
-              <Text>Prajwal</Text>
-              <Text>Prajwal</Text>
-              <Text>Prajwal</Text>
-              <Text>Prajwal</Text>
-              <Text>Prajwal</Text>
-              <Text>Prajwal</Text>
-              <Text>Prajwal</Text>
-              <Text>Prajwal</Text>
-              <Text>Prajwal</Text>
-              <Text>Prajwal</Text>
-              <Text>Prajwal</Text>
-              <Text>Prajwal</Text>
-              <Text>Prajwal</Text>
-              <Text>Prajwal</Text>
-              <Text>Prajwal</Text>
-              <Text>Prajwal</Text>
-              <Text>Prajwal</Text>
-              <Text>Prajwal</Text>
-              <Text>Prajwal</Text>
-              <Text>Prajwal</Text>
-              <Text>Prajwal</Text>
-              <Text>Prajwal</Text>
-              <Text>Prajwal</Text>
-              <Text>Prajwal</Text>
-              <Text>Prajwal</Text>
-              <Text>Prajwal</Text>
-              <Text>Prajwal</Text>
-              <Text>Prajwal</Text>
-              <Text>Prajwal</Text>
-              <Text>Prajwal</Text>
-              <Text>Prajwal</Text>
-              <Text>Prajwal</Text>
-              <Text>Prajwal</Text>
-              <Text>Prajwal</Text>
-              <Text>Prajwal</Text>
-              <Text>Prajwal</Text>
-              <Text>Prajwal</Text>
-              <Text>Prajwal</Text>
-              <Text>Prajwal</Text>
-              <Text>Prajwal</Text>
-              <Text>Prajwal</Text>
-              <Text>Prajwal</Text>
-              <Text>Prajwal</Text>
-              <Text>Prajwal</Text>
-            </View>
-          </Page>
-        </Document>
-      </PDFViewer>
+        <Page size='A4'>
+          <View
+            style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}
+          >
+            <Text>Prajwal</Text>
+            <Text>Prajwal</Text>
+            <Text>Prajwal</Text>
+            <Text>Prajwal</Text>
+            <Text>Prajwal</Text>
+            <Text>Prajwal</Text>
+            <Text>Prajwal</Text>
+            <Text>Prajwal</Text>
+            <Text>Prajwal</Text>
+            <Text>Prajwal</Text>
+            <Text>Prajwal</Text>
+            <Text>Prajwal</Text>
+            <Text>Prajwal</Text>
+            <Text>Prajwal</Text>
+            <Text>Prajwal</Text>
+            <Text>Prajwal</Text>
+            <Text>Prajwal</Text>
+            <Text>Prajwal</Text>
+            <Text>Prajwal</Text>
+            <Text>Prajwal</Text>
+            <Text>Prajwal</Text>
+            <Text>Prajwal</Text>
+            <Text>Prajwal</Text>
+            <Text>Prajwal</Text>
+            <Text>Prajwal</Text>
+            <Text>Prajwal</Text>
+            <Text>Prajwal</Text>
+            <Text>Prajwal</Text>
+            <Text>Prajwal</Text>
+            <Text>Prajwal</Text>
+            <Text>Prajwal</Text>
+            <Text>Prajwal</Text>
+            <Text>Prajwal</Text>
+            <Text>Prajwal</Text>
+            <Text>Prajwal</Text>
+            <Text>Prajwal</Text>
+            <Text>Prajwal</Text>
+            <Text>Prajwal</Text>
+            <Text>Prajwal</Text>
+            <Text>Prajwal</Text>
+            <Text>Prajwal</Text>
+            <Text>Prajwal</Text>
+            <Text>Prajwal</Text>
+            <Text>Prajwal</Text>
+            <Text>Prajwal</Text>
+          </View>
+        </Page>
+      </Document>
     </div>
   );
 }
