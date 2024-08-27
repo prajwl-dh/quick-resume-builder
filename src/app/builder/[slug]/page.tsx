@@ -47,10 +47,7 @@ export default function Slug({ params }: SlugType) {
               isResumePreviewOpen={isResumePreviewOpen}
               setIsResumePreviewOpen={setIsResumePreviewOpen}
             />
-            <MobileResumePreview
-              setIsResumePreviewOpen={setIsResumePreviewOpen}
-              resume={resume}
-            />
+            <MobileResumePreview resume={resume} />
           </>
         )}
       </div>
