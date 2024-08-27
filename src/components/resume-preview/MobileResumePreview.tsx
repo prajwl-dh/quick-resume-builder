@@ -35,18 +35,18 @@ export default function MobileResumePreview({
     );
   };
   return (
-    <div className='h-[calc(100vh-56px)] w-full mt-14'>
-      <div className='flex flex-row justify-between self-end items-center gap-4 my-2 h-max mx-2'>
+    <div className='h-[calc(100vh-56px)] w-full mt-14 flex flex-col justify-center items-center overflow-hidden'>
+      <div className='flex flex-row w-full justify-end items-center gap-2 my-2 px-2'>
         <Select
           className={
-            'text-light-button-secondary-text cursor-pointer bg-white px-2 py-1.5 rounded-sm outline-none text-md'
+            'text-light-button-secondary-text cursor-pointer bg-white px-2 py-1.5 rounded-sm outline-none text-md shadow-sm'
           }
           name='status'
           aria-label='Project status'
         >
           <option value='default'>Default Theme</option>
         </Select>
-        <button className='text-light-button-secondary-text bg-white hover:bg-gray-200 px-2 py-1.5 rounded-sm outline-none text-md'>
+        <button className='text-light-button-secondary-text bg-white hover:bg-gray-200 px-2 py-1.5 rounded-sm outline-none text-md shadow-sm'>
           <PDFDownloadLink
             document={<MobilePreview />}
             fileName={resume?.fileName}
@@ -57,11 +57,11 @@ export default function MobileResumePreview({
             }
           </PDFDownloadLink>
         </button>
-        <button className='text-light-button-secondary-text bg-white hover:bg-gray-200 px-2 py-1.5 rounded-sm outline-none text-md'>
+        <button className='text-light-button-secondary-text bg-white hover:bg-gray-200 px-2 py-1.5 rounded-sm outline-none text-md shadow-sm'>
           Export JSON
         </button>
       </div>
-      <PDFViewer className='h-full w-full'>
+      <PDFViewer className='h-full w-max'>
         <MobilePreview />
       </PDFViewer>
     </div>
