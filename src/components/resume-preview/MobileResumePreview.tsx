@@ -1,3 +1,4 @@
+import { Select } from '@headlessui/react';
 import {
   Document,
   Page,
@@ -35,31 +36,34 @@ export default function MobileResumePreview({
   };
   return (
     <div className='h-[calc(100vh-56px)] w-full mt-14'>
-      <PDFViewer showToolbar={false} className='prajwal h-full w-full'>
+      <div className='flex flex-row justify-between self-end items-center gap-4 my-2 h-max mx-2'>
+        <Select
+          className={
+            'text-light-button-secondary-text cursor-pointer bg-white px-2 py-1.5 rounded-sm outline-none text-md'
+          }
+          name='status'
+          aria-label='Project status'
+        >
+          <option value='default'>Default Theme</option>
+        </Select>
+        <button className='text-light-button-secondary-text bg-white hover:bg-gray-200 px-2 py-1.5 rounded-sm outline-none text-md'>
+          <PDFDownloadLink
+            document={<MobilePreview />}
+            fileName={resume?.fileName}
+            className='text-black'
+          >
+            {({ blob, url, loading, error }) =>
+              loading ? 'Loading...' : 'Download'
+            }
+          </PDFDownloadLink>
+        </button>
+        <button className='text-light-button-secondary-text bg-white hover:bg-gray-200 px-2 py-1.5 rounded-sm outline-none text-md'>
+          Export JSON
+        </button>
+      </div>
+      <PDFViewer className='h-full w-full'>
         <MobilePreview />
       </PDFViewer>
-      <div className='absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-row gap-2'>
-        <PDFDownloadLink
-          document={<MobilePreview />}
-          fileName={resume?.fileName}
-          className='text-black'
-        >
-          {({ blob, url, loading, error }) =>
-            loading ? null : (
-              <div className='relative inline-flex group'>
-                <div className='absolute transition-all duration-1000 opacity-70 -inset-px bg-gradient-to-r from-[#44BCFF] via-[#FF44EC] to-[#FF675E] rounded-xl blur-lg group-hover:opacity-100 group-hover:-inset-1 group-hover:duration-200 animate-tilt'></div>
-                <button
-                  title='Download Now'
-                  className='relative inline-flex items-center justify-center px-4 py-2 text-lg font-bold text-white transition-all duration-200 bg-gray-900 font-pj rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900'
-                  role='button'
-                >
-                  Download
-                </button>
-              </div>
-            )
-          }
-        </PDFDownloadLink>
-      </div>
     </div>
   );
 }
