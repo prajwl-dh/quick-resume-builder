@@ -1,12 +1,5 @@
-import { Select } from '@headlessui/react';
-import {
-  Document,
-  Page,
-  PDFDownloadLink,
-  PDFViewer,
-  Text,
-  View,
-} from '@react-pdf/renderer';
+import { Document, Page, Text, View } from '@react-pdf/renderer';
+import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
 import { ResumeInterface } from '../builder/previousResumes/ResumeInterface';
 
 export default function ResumePreview({
@@ -19,7 +12,11 @@ export default function ResumePreview({
       <Document>
         <Page
           size='A4'
-          style={{ paddingVertical: '10px', paddingHorizontal: '5px' }}
+          style={{
+            paddingVertical: '10px',
+            paddingHorizontal: '5px',
+            color: 'black',
+          }}
         >
           <View
             style={{
@@ -39,35 +36,20 @@ export default function ResumePreview({
   };
 
   return (
-    <div className='hidden lg:flex flex-col justify-center items-center fixed h-full w-[calc(100vw-(16rem+35vw))] 2xl:w-[calc(100vw-(16rem+40vw))] bg-[#323639] lg:ml-[calc(16rem+35vw)] 2xl:ml-[calc(16rem+40vw)] overflow-hidden'>
-      <div className='flex flex-row self-end items-center gap-4 my-2 h-max mx-2'>
-        <Select
-          className={
-            'text-light-button-secondary-text bg-white dark:bg-white hover:bg-gray-200 h-9 px-2 py-1.5 rounded-sm outline-none text-md'
-          }
-          name='status'
-          aria-label='Project status'
-        >
-          <option value='default'>Default Theme</option>
-        </Select>
-        <button className='text-light-button-secondary-text bg-white dark:bg-white hover:bg-gray-200 px-2 py-1.5 rounded-sm outline-none text-md'>
-          <PDFDownloadLink
-            document={<DesktopPreview />}
-            fileName={resume?.fileName}
-            className='text-black'
-          >
-            {({ blob, url, loading, error }) =>
-              loading ? 'Loading...' : 'Download'
-            }
-          </PDFDownloadLink>
-        </button>
-        <button className='text-light-button-secondary-text bg-white dark:bg-white hover:bg-gray-200 px-2 py-1.5 rounded-sm outline-none text-md'>
-          Export JSON
-        </button>
-      </div>
-      <PDFViewer className='h-full w-full'>
-        <DesktopPreview />
-      </PDFViewer>
+    <div className='hidden lg:flex flex-col bg-light-background dark:bg-dark-foreground justify-center items-center fixed max-h-dvh w-[calc(100vw-(16rem+35vw))] 2xl:w-[calc(100vw-(16rem+40vw))] bg-[#323639] lg:ml-[calc(16rem+35vw)] 2xl:ml-[calc(16rem+40vw)] overflow-hidden'>
+      <TransformWrapper
+        initialScale={0.9}
+        minScale={0.6}
+        maxScale={1}
+        centerOnInit
+        centerZoomedOut
+      >
+        <TransformComponent>
+          <div className='bg-white border-[1px] shadow-lg rounded-sm m-10 min-h-[90dvh]'>
+            <DesktopPreview />
+          </div>
+        </TransformComponent>
+      </TransformWrapper>
     </div>
   );
 }

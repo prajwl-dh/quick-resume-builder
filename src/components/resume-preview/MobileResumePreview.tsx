@@ -52,9 +52,7 @@ export default function MobileResumePreview({
             fileName={resume?.fileName}
             className='text-black'
           >
-            {({ blob, url, loading, error }) =>
-              loading ? 'Loading...' : 'Download'
-            }
+            Download
           </PDFDownloadLink>
         </button>
         <button className='text-light-button-secondary-text bg-white dark:bg-white hover:bg-gray-200 h-9 px-2 py-1.5 rounded-sm outline-none text-md shadow-md'>
