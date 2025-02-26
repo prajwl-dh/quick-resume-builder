@@ -1,6 +1,14 @@
-import { Document, Page, Text, View } from '@react-pdf/renderer';
+import {
+  Document,
+  Page,
+  PDFDownloadLink,
+  Text,
+  View,
+} from '@react-pdf/renderer';
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
 import { ResumeInterface } from '../builder/previousResumes/ResumeInterface';
+import PrimaryButton from '../buttons/PrimaryButton';
+import SecondaryButton from '../buttons/SecondaryButton';
 
 export default function ResumePreview({
   resume,
@@ -11,9 +19,10 @@ export default function ResumePreview({
     return (
       <Document>
         <Page
-          size='A4'
+          size='LETTER'
           style={{
             color: 'black',
+            padding: '40px',
           }}
         >
           <View
@@ -34,7 +43,21 @@ export default function ResumePreview({
   };
 
   return (
-    <div className='hidden lg:flex flex-col bg-light-background dark:bg-dark-foreground justify-center items-center fixed max-h-dvh w-[calc(100vw-(16rem+35vw))] 2xl:w-[calc(100vw-(16rem+40vw))] bg-[#323639] lg:ml-[calc(16rem+35vw)] 2xl:ml-[calc(16rem+40vw)] overflow-hidden'>
+    <div className='hidden lg:flex flex-col bg-light-background dark:bg-dark-foreground justify-center items-center fixed max-h-dvh w-[calc(100vw-(16rem+35vw))] 2xl:w-[calc(100vw-(16rem+40vw))] lg:ml-[calc(16rem+35vw)] 2xl:ml-[calc(16rem+40vw)] overflow-hidden'>
+      <div className='absolute top-0 z-50 w-full h-14 flex justify-between items-center px-4 bg-light-background dark:bg-dark-foreground'>
+        <p className='text-xl font-semibold'>Preview</p>
+        <div className='flex gap-4'>
+          <SecondaryButton>Export JSON</SecondaryButton>
+          <PrimaryButton>
+            <PDFDownloadLink
+              document={<DesktopPreview />}
+              fileName={`Resume_${resume?.fullName}`}
+            >
+              Download PDF
+            </PDFDownloadLink>
+          </PrimaryButton>
+        </div>
+      </div>
       <TransformWrapper
         initialScale={0.9}
         minScale={0.6}
@@ -43,7 +66,7 @@ export default function ResumePreview({
         centerZoomedOut
       >
         <TransformComponent>
-          <div className='bg-white border-[1px] shadow-lg rounded-sm m-10 min-h-[90dvh] p-10'>
+          <div className='bg-white border-[1px] shadow-lg rounded-md mx-10 mb-10 mt-24 min-h-[90dvh] p-10 cursor-grab min-w-[calc(100vw-(16rem+35vw+80px))] 2xl:min-w-[calc(100vw-(16rem+40vw+80px))]'>
             <DesktopPreview />
           </div>
         </TransformComponent>
