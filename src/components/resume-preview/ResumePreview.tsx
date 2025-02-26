@@ -13,8 +13,6 @@ export default function ResumePreview({
         <Page
           size='A4'
           style={{
-            paddingVertical: '10px',
-            paddingHorizontal: '5px',
             color: 'black',
           }}
         >
@@ -45,7 +43,7 @@ export default function ResumePreview({
         centerZoomedOut
       >
         <TransformComponent>
-          <div className='bg-white border-[1px] shadow-lg rounded-sm m-10 min-h-[90dvh]'>
+          <div className='bg-white border-[1px] shadow-lg rounded-sm m-10 min-h-[90dvh] p-10'>
             <DesktopPreview />
           </div>
         </TransformComponent>

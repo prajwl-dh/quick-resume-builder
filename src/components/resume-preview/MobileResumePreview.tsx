@@ -1,12 +1,5 @@
-import { Select } from '@headlessui/react';
-import {
-  Document,
-  Page,
-  PDFDownloadLink,
-  PDFViewer,
-  Text,
-  View,
-} from '@react-pdf/renderer';
+import { Document, Page, Text, View } from '@react-pdf/renderer';
+import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
 import { ResumeInterface } from '../builder/previousResumes/ResumeInterface';
 
 export default function MobileResumePreview({
@@ -17,7 +10,12 @@ export default function MobileResumePreview({
   const MobilePreview = () => {
     return (
       <Document>
-        <Page size='A4'>
+        <Page
+          size='A4'
+          style={{
+            color: 'black',
+          }}
+        >
           <View
             style={{
               display: 'flex',
@@ -35,33 +33,20 @@ export default function MobileResumePreview({
     );
   };
   return (
-    <div className='h-[calc(100dvh-56px)] w-full fixed mt-14 flex flex-col justify-center items-center overflow-hidden bg-[#323639]'>
-      <div className='flex flex-row w-full justify-center items-center gap-2 my-2'>
-        <Select
-          className={
-            'text-light-button-secondary-text cursor-pointer bg-white dark:bg-white px-2 py-1.5 h-9 rounded-sm outline-none text-md shadow-md'
-          }
-          name='status'
-          aria-label='Project status'
-        >
-          <option value='default'>Default Theme</option>
-        </Select>
-        <button className='text-light-button-secondary-text bg-white dark:bg-white hover:bg-gray-200 h-9 px-2 py-1.5 rounded-sm outline-none text-md shadow-md'>
-          <PDFDownloadLink
-            document={<MobilePreview />}
-            fileName={resume?.fileName}
-            className='text-black'
-          >
-            Download
-          </PDFDownloadLink>
-        </button>
-        <button className='text-light-button-secondary-text bg-white dark:bg-white hover:bg-gray-200 h-9 px-2 py-1.5 rounded-sm outline-none text-md shadow-md'>
-          Export JSON
-        </button>
-      </div>
-      <PDFViewer className='h-[calc(100dvh-56px-56px)] w-full mb-2'>
-        <MobilePreview />
-      </PDFViewer>
+    <div className='bg-light-background dark:bg-dark-foreground h-[calc(100dvh-56px)] w-full fixed mt-14 flex flex-col justify-center items-center overflow-hidden bg-[#323639]'>
+      <TransformWrapper
+        initialScale={0.9}
+        minScale={0.6}
+        maxScale={1}
+        centerOnInit
+        centerZoomedOut
+      >
+        <TransformComponent>
+          <div className='bg-white border-[1px] shadow-lg rounded-sm m-10 min-h-[90dvh] p-10'>
+            <MobilePreview />
+          </div>
+        </TransformComponent>
+      </TransformWrapper>
     </div>
   );
 }
