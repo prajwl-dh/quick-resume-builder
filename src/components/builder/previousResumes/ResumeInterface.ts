@@ -3,6 +3,10 @@ export interface ResumeInterface {
   fileName?: string;
   title: string;
   last_accessed: string;
+  profile: ResumeProfile;
+}
+
+export interface ResumeProfile {
   fullName?: string;
   intro?: string;
   email?: string;

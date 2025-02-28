@@ -1,7 +1,7 @@
 import { CreateSvg } from '@/components/builder/createNew/CreateSvg';
 import PrimaryButton from '@/components/buttons/PrimaryButton';
 import SecondaryButton from '@/components/buttons/SecondaryButton';
-import { addCustomField } from '@/lib/slices/resumeSlice';
+import { addCustomProfileField } from '@/lib/slices/resumeSlice';
 import { useAppDispatch } from '@/lib/store/hooks';
 import {
   Dialog,
@@ -33,7 +33,7 @@ export default function CustomFieldPopup({ ...props }) {
     e.preventDefault();
     formData.fieldName.length > 0 && formData.fieldValue.length > 0
       ? dispatch(
-          addCustomField({
+          addCustomProfileField({
             id: resume.id || '',
             key: 'profileCustomField',
             value: {

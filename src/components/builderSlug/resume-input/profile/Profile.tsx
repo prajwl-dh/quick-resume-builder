@@ -1,11 +1,14 @@
 'use client';
 import { DeleteSvg } from '@/components/builder/previousResumes/DeleteSvg';
-import { ResumeInterface } from '@/components/builder/previousResumes/ResumeInterface';
+import {
+  ResumeInterface,
+  ResumeProfile,
+} from '@/components/builder/previousResumes/ResumeInterface';
 import RefContext from '@/lib/providers/RefContext';
 import {
-  addCustomField,
-  deleteCustomField,
-  updateResume,
+  addCustomProfileField,
+  deleteCustomProfileField,
+  updateResumeProfile,
 } from '@/lib/slices/resumeSlice';
 import { useAppDispatch } from '@/lib/store/hooks';
 import React, { useContext } from 'react';
@@ -28,9 +31,9 @@ export default function Profile({
   ) => {
     e.preventDefault();
     dispatch(
-      updateResume({
+      updateResumeProfile({
         id: resume?.id ?? '',
-        key: e.target.name as keyof ResumeInterface,
+        key: e.target.name as keyof ResumeProfile,
         value: e.target.value,
       })
     );
@@ -41,7 +44,7 @@ export default function Profile({
   ) => {
     e.preventDefault();
     dispatch(
-      addCustomField({
+      addCustomProfileField({
         id: resume?.id ?? '',
         key: 'profileCustomField',
         value: {
@@ -66,7 +69,7 @@ export default function Profile({
         type='text'
         name='fullName'
         placeholder='John Doe Smith'
-        value={resume?.fullName || undefined}
+        value={resume?.profile.fullName || undefined}
         onChange={(e) => handleChange(e)}
       />
 
@@ -75,7 +78,7 @@ export default function Profile({
         name='intro'
         onChange={(e) => handleChange(e)}
         type='text'
-        value={resume?.intro || ''}
+        value={resume?.profile.intro || ''}
         placeholder='An Innovative Web Developer'
       />
 
@@ -85,7 +88,7 @@ export default function Profile({
           type='email'
           name='email'
           onChange={(e) => handleChange(e)}
-          value={resume?.email || ''}
+          value={resume?.profile.email || ''}
           placeholder='john@email.com'
         />
 
@@ -94,7 +97,7 @@ export default function Profile({
           type='text'
           name='location'
           onChange={(e) => handleChange(e)}
-          value={resume?.location || ''}
+          value={resume?.profile.location || ''}
           placeholder='Dallas, TX'
         />
       </div>
@@ -105,7 +108,7 @@ export default function Profile({
           type='text'
           name='phone'
           onChange={(e) => handleChange(e)}
-          value={resume?.phone || ''}
+          value={resume?.profile.phone || ''}
           placeholder='+1 415 555 0132'
         />
 
@@ -114,7 +117,7 @@ export default function Profile({
           type='text'
           name='website'
           onChange={(e) => handleChange(e)}
-          value={resume?.website || ''}
+          value={resume?.profile.website || ''}
           placeholder='https://portforlio.com'
         />
       </div>
@@ -125,7 +128,7 @@ export default function Profile({
           type='text'
           name='linkedIn'
           onChange={(e) => handleChange(e)}
-          value={resume?.linkedIn || ''}
+          value={resume?.profile.linkedIn || ''}
           placeholder='https://www.linkedin.com/in/john-doe-smith/'
         />
 
@@ -134,12 +137,12 @@ export default function Profile({
           type='text'
           name='gitHub'
           onChange={(e) => handleChange(e)}
-          value={resume?.gitHub || ''}
+          value={resume?.profile.gitHub || ''}
           placeholder='https://github.com/john-doe-smith'
         />
       </div>
 
-      {resume?.profileCustomField?.map((field, index) => {
+      {resume?.profile.profileCustomField?.map((field, index) => {
         return (
           <div key={index} className='flex flex-row gap-2 items-end'>
             <InputField
@@ -152,7 +155,7 @@ export default function Profile({
             <DeleteSvg
               onClick={() =>
                 dispatch(
-                  deleteCustomField({
+                  deleteCustomProfileField({
                     id: resume?.id ?? '',
                     key: 'profileCustomField',
                     fieldName: field.fieldName,
@@ -187,7 +190,7 @@ export default function Profile({
         placeholder='Professional summary here'
         name='summary'
         onChange={(e) => handleChange(e)}
-        value={resume?.summary || ''}
+        value={resume?.profile.summary || ''}
         rows={5}
       />
     </div>

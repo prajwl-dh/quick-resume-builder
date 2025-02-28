@@ -1,5 +1,5 @@
 import {
-  ResumeInterface,
+  ResumeProfile,
   ResumeState,
 } from '@/components/builder/previousResumes/ResumeInterface';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
@@ -51,109 +51,11 @@ export const resumeSlice = createSlice({
           fileName: action.payload.fileName,
           title: action.payload.title,
           last_accessed: new Date().toUTCString(),
-          fullName: action.payload.fullName,
+          profile: {
+            fullName: action.payload.fullName,
+          },
         },
       ];
-      localStorage?.setItem('resume', JSON.stringify(state.value));
-    },
-
-    updateResume: (
-      state,
-      action: PayloadAction<{
-        id: string;
-        key: keyof ResumeInterface;
-        value: any;
-      }>
-    ) => {
-      const { id, key, value } = action.payload;
-      state.value = state.value.map((resume) => {
-        if (resume.id === id) {
-          resume[key] = value;
-        }
-        return resume;
-      });
-      localStorage?.setItem('resume', JSON.stringify(state.value));
-    },
-
-    addCustomField: (
-      state,
-      action: PayloadAction<{
-        id: string;
-        key: keyof ResumeInterface;
-        value: { fieldName: string; fieldValue: any };
-      }>
-    ) => {
-      const { id, key, value } = action.payload;
-
-      state.value = state.value.map((resume) => {
-        if (resume.id === id) {
-          const fieldValue = resume[key];
-
-          if (Array.isArray(fieldValue)) {
-            // Check if an object with the same fieldName exists in the array
-            const updatedArray = fieldValue.map((item) => {
-              if (item.fieldName === value.fieldName) {
-                // Update the existing object
-                return {
-                  ...item,
-                  fieldValue: value.fieldValue,
-                };
-              }
-              return item;
-            });
-
-            // If the fieldName doesn't exist, add the new object to the array
-            const newArray = updatedArray.some(
-              (item) => item.fieldName === value.fieldName
-            )
-              ? updatedArray
-              : [...updatedArray, value];
-
-            return {
-              ...resume,
-              [key]: newArray,
-            };
-          } else {
-            // If fieldValue is not an array, create a new array with the new object
-            return {
-              ...resume,
-              [key]: [value],
-            };
-          }
-        }
-        return resume;
-      });
-      localStorage?.setItem('resume', JSON.stringify(state.value));
-    },
-
-    deleteCustomField: (
-      state,
-      action: PayloadAction<{
-        id: string;
-        key: keyof ResumeInterface;
-        fieldName: string;
-      }>
-    ) => {
-      const { id, key, fieldName } = action.payload;
-
-      state.value = state.value.map((resume) => {
-        if (resume.id === id) {
-          const fieldValue = resume[key];
-
-          if (Array.isArray(fieldValue)) {
-            // Filter out the object with the specified fieldName
-            const updatedArray = fieldValue.filter(
-              (item) => item.fieldName !== fieldName
-            );
-
-            return {
-              ...resume,
-              [key]: updatedArray,
-            };
-          }
-        }
-        return resume;
-      });
       localStorage?.setItem('resume', JSON.stringify(state.value));
     },
 
@@ -189,6 +91,106 @@ export const resumeSlice = createSlice({
       });
       localStorage?.setItem('resume', JSON.stringify(state.value));
     },
+
+    updateResumeProfile: (
+      state,
+      action: PayloadAction<{
+        id: string;
+        key: keyof ResumeProfile;
+        value: any;
+      }>
+    ) => {
+      const { id, key, value } = action.payload;
+      state.value = state.value.map((resume) => {
+        if (resume.id === id) {
+          resume.profile[key] = value;
+        }
+        return resume;
+      });
+      localStorage?.setItem('resume', JSON.stringify(state.value));
+    },
+
+    addCustomProfileField: (
+      state,
+      action: PayloadAction<{
+        id: string;
+        key: keyof ResumeProfile;
+        value: { fieldName: string; fieldValue: any };
+      }>
+    ) => {
+      const { id, key, value } = action.payload;
+
+      state.value = state.value.map((resume) => {
+        if (resume.id === id) {
+          const fieldValue = resume.profile[key];
+
+          if (Array.isArray(fieldValue)) {
+            // Check if an object with the same fieldName exists in the array
+            const updatedArray = fieldValue.map((item) => {
+              if (item.fieldName === value.fieldName) {
+                // Update the existing object
+                return {
+                  ...item,
+                  fieldValue: value.fieldValue,
+                };
+              }
+              return item;
+            });
+
+            // If the fieldName doesn't exist, add the new object to the array
+            const newArray = updatedArray.some(
+              (item) => item.fieldName === value.fieldName
+            )
+              ? updatedArray
+              : [...updatedArray, value];
+
+            return {
+              ...resume,
+              profile: { ...resume.profile, [key]: newArray },
+            };
+          } else {
+            // If fieldValue is not an array, create a new array with the new object
+            return {
+              ...resume,
+              profile: { ...resume.profile, [key]: [value] },
+            };
+          }
+        }
+        return resume;
+      });
+      localStorage?.setItem('resume', JSON.stringify(state.value));
+    },
+
+    deleteCustomProfileField: (
+      state,
+      action: PayloadAction<{
+        id: string;
+        key: keyof ResumeProfile;
+        fieldName: string;
+      }>
+    ) => {
+      const { id, key, fieldName } = action.payload;
+
+      state.value = state.value.map((resume) => {
+        if (resume.id === id) {
+          const fieldValue = resume.profile[key];
+
+          if (Array.isArray(fieldValue)) {
+            // Filter out the object with the specified fieldName
+            const updatedArray = fieldValue.filter(
+              (item) => item.fieldName !== fieldName
+            );
+
+            return {
+              ...resume,
+              profile: { ...resume.profile, [key]: updatedArray },
+            };
+          }
+        }
+        return resume;
+      });
+      localStorage?.setItem('resume', JSON.stringify(state.value));
+    },
   },
 });
 
@@ -198,8 +200,8 @@ export const {
   deleteResume,
   duplicateResume,
   renameResume,
-  updateResume,
-  addCustomField,
-  deleteCustomField,
+  updateResumeProfile,
+  addCustomProfileField,
+  deleteCustomProfileField,
 } = resumeSlice.actions;
 export default resumeSlice.reducer;

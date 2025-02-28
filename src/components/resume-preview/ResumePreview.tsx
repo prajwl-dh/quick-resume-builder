@@ -34,7 +34,7 @@ export default function ResumePreview({
           >
             {/* Example content */}
             {Array.from({ length: 100 }).map((_, index) => (
-              <Text key={index}>{resume?.fullName}</Text>
+              <Text key={index}>{resume?.profile.fullName}</Text>
             ))}
           </View>
         </Page>
@@ -51,7 +51,7 @@ export default function ResumePreview({
           <PrimaryButton>
             <PDFDownloadLink
               document={<DesktopPreview />}
-              fileName={`Resume_${resume?.fullName}`}
+              fileName={`Resume_${resume?.profile.fullName}`}
             >
               Download PDF
             </PDFDownloadLink>
