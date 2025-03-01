@@ -1,6 +1,7 @@
 'use client';
 import { DeleteSvg } from '@/components/builder/previousResumes/DeleteSvg';
 import { ResumeInterface } from '@/components/builder/previousResumes/ResumeInterface';
+import { Tooltip } from '@/components/tooltip/ToolTip';
 import RefContext from '@/lib/providers/RefContext';
 import {
   addNewResumeWorkExperience,
@@ -125,23 +126,29 @@ export default function WorkExperience({
             >
               <div className='flex flex-row justify-end gap-6 items-center'>
                 {index === 0 ? null : (
-                  <FaArrowUp
-                    className='text text-xl text-light-text-secondary dark:text-dark-text-secondary cursor-pointer'
-                    onClick={() => moveJobExperienceUp(index)}
-                  />
+                  <Tooltip text='Move Up'>
+                    <FaArrowUp
+                      className='text text-xl text-light-text-secondary dark:text-dark-text-secondary cursor-pointer'
+                      onClick={() => moveJobExperienceUp(index)}
+                    />
+                  </Tooltip>
                 )}
 
                 {index === resume?.experience?.length - 1 ? null : (
-                  <FaArrowDown
-                    className='text text-xl text-light-text-secondary dark:text-dark-text-secondary cursor-pointer'
-                    onClick={() => moveJobExperienceDown(index)}
-                  />
+                  <Tooltip text='Move Down'>
+                    <FaArrowDown
+                      className='text text-xl text-light-text-secondary dark:text-dark-text-secondary cursor-pointer'
+                      onClick={() => moveJobExperienceDown(index)}
+                    />
+                  </Tooltip>
                 )}
 
-                <DeleteSvg
-                  onClick={() => deleteJobExperience(index)}
-                  className='text text-2xl text-light-text-secondary dark:text-dark-text-secondary hover:text-red-500 hover:dark:text-red-500 cursor-pointer'
-                />
+                <Tooltip text='Delete'>
+                  <DeleteSvg
+                    onClick={() => deleteJobExperience(index)}
+                    className='text text-2xl text-light-text-secondary dark:text-dark-text-secondary hover:text-red-500 hover:dark:text-red-500 cursor-pointer'
+                  />
+                </Tooltip>
               </div>
 
               <InputField
