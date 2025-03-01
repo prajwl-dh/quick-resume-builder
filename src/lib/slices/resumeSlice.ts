@@ -4,6 +4,7 @@ import {
 } from '@/components/builder/previousResumes/ResumeInterface';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
+import { ResumeWorkExperience } from '../../components/builder/previousResumes/ResumeInterface';
 
 // Function to check if localStorage is available
 const isLocalStorageAvailable = () => {
@@ -54,6 +55,7 @@ export const resumeSlice = createSlice({
           profile: {
             fullName: action.payload.fullName,
           },
+          experience: [],
         },
       ];
       localStorage?.setItem('resume', JSON.stringify(state.value));
@@ -191,6 +193,69 @@ export const resumeSlice = createSlice({
       });
       localStorage?.setItem('resume', JSON.stringify(state.value));
     },
+
+    updateResumeWorkExperience: (
+      state,
+      action: PayloadAction<{
+        id: string;
+        index: number;
+        value: ResumeWorkExperience;
+      }>
+    ) => {
+      const { id, index, value } = action.payload;
+
+      state.value = state.value.map((resume) => {
+        if (resume.id === id) {
+          return {
+            ...resume,
+            experience: resume.experience
+              ? resume?.experience?.map((exp, i) => (i === index ? value : exp))
+              : [value],
+          };
+        }
+        return resume;
+      });
+      localStorage?.setItem('resume', JSON.stringify(state.value));
+    },
+
+    addNewResumeWorkExperience: (
+      state,
+      action: PayloadAction<{ id: string }>
+    ) => {
+      const { id } = action.payload;
+
+      state.value = state.value.map((resume) => {
+        if (resume.id === id) {
+          resume.experience?.push({
+            companyName: '',
+            jobTitle: '',
+            jobDate: '',
+            jobDescription: '',
+          });
+        }
+        return resume;
+      });
+      localStorage?.setItem('resume', JSON.stringify(state.value));
+    },
+
+    deleteResumeWorkExperience: (
+      state,
+      action: PayloadAction<{ id: string; index: number }>
+    ) => {
+      const { id, index } = action.payload;
+
+      state.value = state.value.map((resume) =>
+        resume.id === id
+          ? {
+              ...resume,
+              experience: resume.experience
+                ? resume.experience.filter((_, i) => i !== index)
+                : [],
+            }
+          : resume
+      );
+      localStorage?.setItem('resume', JSON.stringify(state.value));
+    },
   },
 });
 
@@ -203,5 +268,8 @@ export const {
   updateResumeProfile,
   addCustomProfileField,
   deleteCustomProfileField,
+  updateResumeWorkExperience,
+  addNewResumeWorkExperience,
+  deleteResumeWorkExperience,
 } = resumeSlice.actions;
 export default resumeSlice.reducer;

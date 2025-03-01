@@ -162,7 +162,7 @@ export default function Profile({
                   })
                 )
               }
-              className='text text-3xl mb-1 text-light-text-secondary dark:text-dark-text-secondary hover:text-light-text-primary hover:dark:text-dark-text-primary cursor-pointer'
+              className='text text-2xl mb-2 text-light-text-secondary dark:text-dark-text-secondary hover:text-red-500 hover:dark:text-red-500 cursor-pointer'
             />
           </div>
         );
@@ -173,9 +173,7 @@ export default function Profile({
         className='flex flex-row items-center gap-2 text-light-text-secondary text text-md dark:text-dark-text-secondary hover:text-light-text-primary hover:dark:text-dark-text-primary cursor-pointer group'
       >
         <p className='text text-lg'> + </p>
-        <p className='group-hover:underline underline-offset-2'>
-          Add a custom field
-        </p>
+        <p className='underline underline-offset-2'>Add a custom field</p>
       </div>
 
       <CustomFieldPopup
