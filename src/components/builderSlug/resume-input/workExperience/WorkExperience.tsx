@@ -32,7 +32,6 @@ export default function WorkExperience({
   };
 
   const deleteJobExperience = (index: number) => {
-    console.log(index);
     dispatch(
       deleteResumeWorkExperience({
         id: resume?.id ?? '',

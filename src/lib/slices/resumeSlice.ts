@@ -1,4 +1,5 @@
 import {
+  ResumeEducation,
   ResumeProfile,
   ResumeState,
 } from '@/components/builder/previousResumes/ResumeInterface';
@@ -56,6 +57,7 @@ export const resumeSlice = createSlice({
             fullName: action.payload.fullName,
           },
           experience: [],
+          education: [],
         },
       ];
       localStorage?.setItem('resume', JSON.stringify(state.value));
@@ -256,6 +258,67 @@ export const resumeSlice = createSlice({
       );
       localStorage?.setItem('resume', JSON.stringify(state.value));
     },
+
+    updateResumeEducation: (
+      state,
+      action: PayloadAction<{
+        id: string;
+        index: number;
+        value: ResumeEducation;
+      }>
+    ) => {
+      const { id, index, value } = action.payload;
+
+      state.value = state.value.map((resume) => {
+        if (resume.id === id) {
+          return {
+            ...resume,
+            education: resume.education
+              ? resume?.education?.map((edu, i) => (i === index ? value : edu))
+              : [value],
+          };
+        }
+        return resume;
+      });
+      localStorage?.setItem('resume', JSON.stringify(state.value));
+    },
+
+    addNewResumeEducation: (state, action: PayloadAction<{ id: string }>) => {
+      const { id } = action.payload;
+
+      state.value = state.value.map((resume) => {
+        if (resume.id === id) {
+          resume.education?.push({
+            schoolName: '',
+            schoolDate: '',
+            schoolMajor: '',
+            schoolGPA: '',
+            schoolDescription: '',
+          });
+        }
+        return resume;
+      });
+      localStorage?.setItem('resume', JSON.stringify(state.value));
+    },
+
+    deleteResumeEducation: (
+      state,
+      action: PayloadAction<{ id: string; index: number }>
+    ) => {
+      const { id, index } = action.payload;
+
+      state.value = state.value.map((resume) =>
+        resume.id === id
+          ? {
+              ...resume,
+              education: resume.education
+                ? resume.education.filter((_, i) => i !== index)
+                : [],
+            }
+          : resume
+      );
+      localStorage?.setItem('resume', JSON.stringify(state.value));
+    },
   },
 });
 
@@ -271,5 +334,8 @@ export const {
   updateResumeWorkExperience,
   addNewResumeWorkExperience,
   deleteResumeWorkExperience,
+  updateResumeEducation,
+  addNewResumeEducation,
+  deleteResumeEducation,
 } = resumeSlice.actions;
 export default resumeSlice.reducer;

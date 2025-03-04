@@ -5,6 +5,7 @@ export interface ResumeInterface {
   last_accessed: string;
   profile: ResumeProfile;
   experience: ResumeWorkExperience[];
+  education: ResumeEducation[];
 }
 
 export interface ResumeProfile {
@@ -25,6 +26,14 @@ export interface ResumeWorkExperience {
   jobTitle?: string;
   jobDate?: string;
   jobDescription?: string;
+}
+
+export interface ResumeEducation {
+  schoolName?: string;
+  schoolDate?: string;
+  schoolMajor?: string;
+  schoolGPA?: string;
+  schoolDescription?: string;
 }
 
 export interface ResumeState {
