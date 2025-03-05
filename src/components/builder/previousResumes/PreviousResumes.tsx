@@ -38,7 +38,7 @@ export default function PreviousResumes() {
             viewport={{ once: true }}
             transition={{ type: 'spring', delay: index - index / 1.2 }}
             key={resume.id}
-            className='min-h-60 md:min-h-80 w-full md:w-72 p-3 gap-1 flex flex-col justify-between items-center rounded-md ring-1 ring-light-ring-secondary dark:ring-dark-ring-secondary hover:ring-light-ring-primary hover:dark:ring-dark-ring-primary bg-light-foreground dark:bg-dark-foreground hover:shadow-sm group'
+            className='min-h-60 md:min-h-80 w-full p-3 gap-1 flex flex-col justify-between items-center rounded-md ring-1 ring-light-ring-secondary dark:ring-dark-ring-secondary hover:ring-light-ring-primary hover:dark:ring-dark-ring-primary bg-light-foreground dark:bg-dark-foreground hover:shadow-sm group'
           >
             <div
               onClick={() => {
