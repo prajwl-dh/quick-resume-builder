@@ -9,6 +9,7 @@ import {
   updateResumeEducation,
 } from '@/lib/slices/resumeSlice';
 import { useAppDispatch } from '@/lib/store/hooks';
+import { motion } from 'framer-motion';
 import { useContext } from 'react';
 import { FaArrowDown, FaArrowUp } from 'react-icons/fa6';
 import { EducationSvg } from '../../navbar/svgs/EducationSvg';
@@ -119,8 +120,12 @@ export default function Education({
       <div className='flex flex-col gap-6'>
         {resume?.education?.map((field, index) => {
           return (
-            <div
+            <motion.div
               key={index}
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, ease: 'easeInOut' }}
+              viewport={{ once: true }}
               className='flex flex-col gap-4 border-dark-text-secondary dark:border-light-text-secondary border-b-2 border-dashed'
             >
               <div className='flex flex-row justify-end gap-6 items-center'>
@@ -200,7 +205,7 @@ export default function Education({
               />
 
               <div className='mt-4'></div>
-            </div>
+            </motion.div>
           );
         })}
       </div>
