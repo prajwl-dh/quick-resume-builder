@@ -46,7 +46,7 @@ export default function MobileResumePreview({
       <div className='absolute top-0 z-50 w-full h-14 flex justify-between items-center px-4 bg-light-background dark:bg-dark-foreground'>
         <p className='text-xl font-semibold'>Preview</p>
         <div className='flex gap-4'>
-          <SecondaryButton>Export JSON</SecondaryButton>
+          <SecondaryButton>Reset Zoom</SecondaryButton>
           <PrimaryButton>
             <PDFDownloadLink
               document={<MobilePreview />}
