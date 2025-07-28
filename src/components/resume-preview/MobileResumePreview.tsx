@@ -43,8 +43,7 @@ export default function MobileResumePreview({
   };
   return (
     <div className='bg-light-background dark:bg-dark-foreground h-[calc(100dvh-56px)] lg:hidden w-full fixed mt-14 flex flex-col justify-center items-center overflow-hidden'>
-      <div className='absolute top-0 z-50 w-full h-14 flex justify-between items-center px-4 bg-light-background dark:bg-dark-foreground'>
-        <p className='text-xl font-semibold'>Preview</p>
+      <div className='absolute top-0 z-50 w-full h-14 flex justify-end items-center px-4 bg-light-background dark:bg-dark-foreground'>
         <div className='flex gap-4'>
           <SecondaryButton>Reset Zoom</SecondaryButton>
           <PrimaryButton>

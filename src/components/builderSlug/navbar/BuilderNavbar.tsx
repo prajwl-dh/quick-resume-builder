@@ -9,6 +9,7 @@ import { motion } from 'framer-motion';
 import { useTheme } from 'next-themes';
 import { useRouter } from 'next/navigation';
 import React, { useContext } from 'react';
+import { FaEye, FaEyeSlash } from 'react-icons/fa6';
 import { AwardsSvg } from './svgs/AwardsSvg';
 import { BackSvg } from './svgs/BackSvg';
 import { CertificateSvg } from './svgs/CertificateSvg';
@@ -18,7 +19,6 @@ import { LanguageSvg } from './svgs/LanguageSvg';
 import { ProfileSvg } from './svgs/ProfileSvg';
 import { ProjectSvg } from './svgs/ProjectSvg';
 import { ReferenceSvg } from './svgs/ReferenceSvg';
-import { ResumePreviewSvg } from './svgs/ResumePreviewSvg';
 import { SkillsSvg } from './svgs/SkillsSvg';
 
 interface BuilderNavbarProps {
@@ -155,17 +155,17 @@ export default function BuilderNavbar({
         </button>
         {isResumePreviewOpen ? (
           <PrimaryButton
-            className='py-0 px-1'
+            className='flex justify-center items-center'
             onClick={() => setIsResumePreviewOpen((prev) => !prev)}
           >
-            <ResumePreviewSvg className='text-xl text-dark-text-primary cursor-pointer dark:text-light-text-primary -rotate-6' />
+            <FaEyeSlash />
           </PrimaryButton>
         ) : (
           <SecondaryButton
-            className='py-0 px-1'
+            className='flex justify-center items-center'
             onClick={() => setIsResumePreviewOpen((prev) => !prev)}
           >
-            <ResumePreviewSvg className='text-xl text-light-text-primary cursor-pointer dark:text-dark-text-primary -rotate-6' />
+            <FaEye />
           </SecondaryButton>
         )}
       </div>

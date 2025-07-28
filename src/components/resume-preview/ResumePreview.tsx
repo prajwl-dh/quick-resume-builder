@@ -43,9 +43,8 @@ export default function ResumePreview({
   };
 
   return (
-    <div className='hidden lg:flex flex-col bg-light-background dark:bg-dark-foreground justify-center items-center fixed max-h-dvh w-[calc(100vw-(16rem+35vw))] 2xl:w-[calc(100vw-(16rem+40vw))] lg:ml-[calc(16rem+35vw)] 2xl:ml-[calc(16rem+40vw)] overflow-hidden'>
-      <div className='absolute top-0 z-50 w-full h-14 flex justify-between items-center px-4 bg-light-background dark:bg-dark-foreground'>
-        <p className='text-xl font-semibold'>Preview</p>
+    <div className='hidden lg:flex flex-col bg-white dark:bg-dark-foreground justify-center items-center fixed max-h-dvh w-[calc(100vw-(16rem+35vw))] 2xl:w-[calc(100vw-(16rem+40vw))] lg:ml-[calc(16rem+35vw)] 2xl:ml-[calc(16rem+40vw)] overflow-hidden'>
+      <div className='absolute top-0 z-50 w-full h-14 flex justify-end items-center px-4 bg-white dark:bg-dark-foreground'>
         <div className='flex gap-4'>
           <SecondaryButton>Reset Zoom</SecondaryButton>
           <PrimaryButton>

@@ -14,7 +14,7 @@ const config: Config = {
     extend: {
       colors: {
         'light-foreground': '#FFF',
-        'light-background': '#f9fafb',
+        'light-background': '#faf9f8',
         'light-text-primary': '#1f2937',
         'light-text-secondary': '#424b57',
         'light-form-placeholder': '#b6bec8',
