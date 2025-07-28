@@ -257,6 +257,20 @@ export default function BuilderNavbar({
                 hidden: { x: -50, opacity: 0 },
                 show: { x: 0, opacity: 1 },
               }}
+              onClick={() => handleScroll('skills')}
+            >
+              <div className='flex items-center p-2 rounded-lg cursor-pointer text-light-text-secondary dark:text-dark-text-secondary hover:bg-[#e5e7eb] dark:hover:bg-[#4d4d4e] group'>
+                <SkillsSvg className='w-5 h-5 transition duration-75 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary' />
+                <span className='ms-3 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary'>
+                  Skills
+                </span>
+              </div>
+            </motion.li>
+            <motion.li
+              variants={{
+                hidden: { x: -50, opacity: 0 },
+                show: { x: 0, opacity: 1 },
+              }}
               onClick={() => handleScroll('workExperience')}
             >
               <div className='flex items-center p-2 rounded-lg cursor-pointer text-light-text-secondary dark:text-dark-text-secondary hover:bg-[#e5e7eb] dark:hover:bg-[#4d4d4e] group'>
@@ -285,26 +299,12 @@ export default function BuilderNavbar({
                 hidden: { x: -50, opacity: 0 },
                 show: { x: 0, opacity: 1 },
               }}
-              onClick={() => handleScroll('skills')}
+              onClick={() => handleScroll('projects')}
             >
               <div className='flex items-center p-2 rounded-lg cursor-pointer text-light-text-secondary dark:text-dark-text-secondary hover:bg-[#e5e7eb] dark:hover:bg-[#4d4d4e] group'>
-                <SkillsSvg className='w-5 h-5 transition duration-75 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary' />
+                <ProjectSvg className='w-5 h-5 transition duration-75 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary' />
                 <span className='ms-3 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary'>
-                  Skills
-                </span>
-              </div>
-            </motion.li>
-            <motion.li
-              variants={{
-                hidden: { x: -50, opacity: 0 },
-                show: { x: 0, opacity: 1 },
-              }}
-              onClick={() => handleScroll('awards')}
-            >
-              <div className='flex items-center p-2 rounded-lg cursor-pointer text-light-text-secondary dark:text-dark-text-secondary hover:bg-[#e5e7eb] dark:hover:bg-[#4d4d4e] group'>
-                <AwardsSvg className='w-5 h-5 transition duration-75 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary' />
-                <span className='ms-3 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary'>
-                  Awards
+                  Projects
                 </span>
               </div>
             </motion.li>
@@ -327,12 +327,12 @@ export default function BuilderNavbar({
                 hidden: { x: -50, opacity: 0 },
                 show: { x: 0, opacity: 1 },
               }}
-              onClick={() => handleScroll('projects')}
+              onClick={() => handleScroll('awards')}
             >
               <div className='flex items-center p-2 rounded-lg cursor-pointer text-light-text-secondary dark:text-dark-text-secondary hover:bg-[#e5e7eb] dark:hover:bg-[#4d4d4e] group'>
-                <ProjectSvg className='w-5 h-5 transition duration-75 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary' />
+                <AwardsSvg className='w-5 h-5 transition duration-75 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary' />
                 <span className='ms-3 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary'>
-                  Projects
+                  Awards
                 </span>
               </div>
             </motion.li>

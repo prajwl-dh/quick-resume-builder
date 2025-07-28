@@ -18,12 +18,12 @@ export default function ResumeInput({
     <div className='flex lg:h-screen'>
       <div className='flex flex-col gap-14 lg:ml-64 p-4 w-full mt-14 lg:mt-0 lg:w-[35vw] 2xl:w-[40vw] overflow-x-hidden overflow-y-auto'>
         <Profile resume={resume} />
+        <Skills resume={resume} />
         <WorkExperience resume={resume} />
         <Education resume={resume} />
-        <Skills resume={resume} />
-        <Awards resume={resume} />
-        <Certifications resume={resume} />
         <Projects resume={resume} />
+        <Certifications resume={resume} />
+        <Awards resume={resume} />
         <References resume={resume} />
         <Languages resume={resume} />
       </div>

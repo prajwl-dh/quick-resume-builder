@@ -159,7 +159,7 @@ export default function Skills({
                   label=''
                   type='text'
                   name='skillRelevantSkills'
-                  placeholder='Frontend : HTML, CSS, JavaScript, React, Angular, TailwindCSS'
+                  placeholder='Skill Category : Skill 1, Skill2, ...'
                   value={resume?.skills[index]?.skillRelevantSkills || ''}
                   onChange={(e) => handleChange(e, index)}
                 />

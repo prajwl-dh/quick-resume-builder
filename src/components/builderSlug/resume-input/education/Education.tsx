@@ -160,7 +160,7 @@ export default function Education({
                   label='School Name'
                   type='text'
                   name='schoolName'
-                  placeholder='McNeese State University'
+                  placeholder='Acme University'
                   value={resume?.education[index]?.schoolName || ''}
                   onChange={(e) => handleChange(e, index)}
                 />
@@ -189,7 +189,7 @@ export default function Education({
                   label='GPA'
                   type='text'
                   name='schoolGPA'
-                  placeholder='3.75'
+                  placeholder='4.0'
                   value={resume?.education[index]?.schoolGPA || ''}
                   onChange={(e) => handleChange(e, index)}
                 />
