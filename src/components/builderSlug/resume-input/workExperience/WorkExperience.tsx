@@ -115,7 +115,7 @@ export default function WorkExperience({
         </p>
       </div>
 
-      <div className='border-dark-text-secondary dark:border-light-text-secondary border-b-2 border-dashed'></div>
+      <div className='border-dark-text-secondary dark:border-light-text-secondary border-b-2'></div>
 
       <div className='flex flex-col gap-6'>
         {resume?.experience?.map((field, index) => {

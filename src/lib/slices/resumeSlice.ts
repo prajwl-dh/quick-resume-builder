@@ -1,6 +1,7 @@
 import {
   ResumeEducation,
   ResumeProfile,
+  ResumeSkills,
   ResumeState,
 } from '@/components/builder/previousResumes/ResumeInterface';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
@@ -58,6 +59,7 @@ export const resumeSlice = createSlice({
           },
           experience: [],
           education: [],
+          skills: [],
         },
       ];
       localStorage?.setItem('resume', JSON.stringify(state.value));
@@ -319,6 +321,63 @@ export const resumeSlice = createSlice({
       );
       localStorage?.setItem('resume', JSON.stringify(state.value));
     },
+
+    updateResumeSkills: (
+      state,
+      action: PayloadAction<{
+        id: string;
+        index: number;
+        value: ResumeSkills;
+      }>
+    ) => {
+      const { id, index, value } = action.payload;
+
+      state.value = state.value.map((resume) => {
+        if (resume.id === id) {
+          return {
+            ...resume,
+            skills: resume.skills
+              ? resume?.skills?.map((skill, i) => (i === index ? value : skill))
+              : [value],
+          };
+        }
+        return resume;
+      });
+      localStorage?.setItem('resume', JSON.stringify(state.value));
+    },
+
+    addNewResumeSkills: (state, action: PayloadAction<{ id: string }>) => {
+      const { id } = action.payload;
+
+      state.value = state.value.map((resume) => {
+        if (resume.id === id) {
+          resume.skills?.push({
+            skillRelevantSkills: '',
+          });
+        }
+        return resume;
+      });
+      localStorage?.setItem('resume', JSON.stringify(state.value));
+    },
+
+    deleteResumeSkills: (
+      state,
+      action: PayloadAction<{ id: string; index: number }>
+    ) => {
+      const { id, index } = action.payload;
+
+      state.value = state.value.map((resume) =>
+        resume.id === id
+          ? {
+              ...resume,
+              skills: resume.skills
+                ? resume.skills.filter((_, i) => i !== index)
+                : [],
+            }
+          : resume
+      );
+      localStorage?.setItem('resume', JSON.stringify(state.value));
+    },
   },
 });
 
@@ -337,5 +396,8 @@ export const {
   updateResumeEducation,
   addNewResumeEducation,
   deleteResumeEducation,
+  updateResumeSkills,
+  addNewResumeSkills,
+  deleteResumeSkills,
 } = resumeSlice.actions;
 export default resumeSlice.reducer;

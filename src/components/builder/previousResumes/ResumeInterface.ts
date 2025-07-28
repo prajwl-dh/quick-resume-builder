@@ -6,6 +6,7 @@ export interface ResumeInterface {
   profile: ResumeProfile;
   experience: ResumeWorkExperience[];
   education: ResumeEducation[];
+  skills: ResumeSkills[];
 }
 
 export interface ResumeProfile {
@@ -34,6 +35,10 @@ export interface ResumeEducation {
   schoolMajor?: string;
   schoolGPA?: string;
   schoolDescription?: string;
+}
+
+export interface ResumeSkills {
+  skillRelevantSkills?: string;
 }
 
 export interface ResumeState {
