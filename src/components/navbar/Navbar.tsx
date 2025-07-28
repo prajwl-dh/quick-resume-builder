@@ -28,7 +28,7 @@ export default function Navbar({
     <motion.div
       initial={initial}
       animate={animate}
-      transition={transition}
+      {...transition}
       className={`w-full h-[70px] px-1 md:px-14 flex flex-row justify-between shadow-sm items-center fixed left-0 top-0 z-50 bg-light-foreground dark:bg-dark-foreground backdrop-blur-md bg-opacity-50 dark:bg-opacity-50 border-b-[1px] border-slate-200 dark:border-stone-700`}
     >
       <div
