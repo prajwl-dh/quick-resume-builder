@@ -1,6 +1,7 @@
 import {
   ResumeEducation,
   ResumeProfile,
+  ResumeProjects,
   ResumeSkills,
   ResumeState,
 } from '@/components/builder/previousResumes/ResumeInterface';
@@ -57,9 +58,10 @@ export const resumeSlice = createSlice({
           profile: {
             fullName: action.payload.fullName,
           },
+          skills: [],
           experience: [],
           education: [],
-          skills: [],
+          projects: [],
         },
       ];
       localStorage?.setItem('resume', JSON.stringify(state.value));
@@ -378,6 +380,66 @@ export const resumeSlice = createSlice({
       );
       localStorage?.setItem('resume', JSON.stringify(state.value));
     },
+
+    updateResumeProject: (
+      state,
+      action: PayloadAction<{
+        id: string;
+        index: number;
+        value: ResumeProjects;
+      }>
+    ) => {
+      const { id, index, value } = action.payload;
+
+      state.value = state.value.map((resume) => {
+        if (resume.id === id) {
+          return {
+            ...resume,
+            projects: resume.projects
+              ? resume?.projects?.map((project, i) =>
+                  i === index ? value : project
+                )
+              : [value],
+          };
+        }
+        return resume;
+      });
+      localStorage?.setItem('resume', JSON.stringify(state.value));
+    },
+
+    addNewResumeProject: (state, action: PayloadAction<{ id: string }>) => {
+      const { id } = action.payload;
+
+      state.value = state.value.map((resume) => {
+        if (resume.id === id) {
+          resume.projects?.push({
+            projectName: '',
+            projectDescription: '',
+          });
+        }
+        return resume;
+      });
+      localStorage?.setItem('resume', JSON.stringify(state.value));
+    },
+
+    deleteResumeProject: (
+      state,
+      action: PayloadAction<{ id: string; index: number }>
+    ) => {
+      const { id, index } = action.payload;
+
+      state.value = state.value.map((resume) =>
+        resume.id === id
+          ? {
+              ...resume,
+              projects: resume.projects
+                ? resume.projects.filter((_, i) => i !== index)
+                : [],
+            }
+          : resume
+      );
+      localStorage?.setItem('resume', JSON.stringify(state.value));
+    },
   },
 });
 
@@ -399,5 +461,8 @@ export const {
   updateResumeSkills,
   addNewResumeSkills,
   deleteResumeSkills,
+  updateResumeProject,
+  addNewResumeProject,
+  deleteResumeProject,
 } = resumeSlice.actions;
 export default resumeSlice.reducer;

@@ -4,9 +4,10 @@ export interface ResumeInterface {
   title: string;
   last_accessed: string;
   profile: ResumeProfile;
+  skills: ResumeSkills[];
   experience: ResumeWorkExperience[];
   education: ResumeEducation[];
-  skills: ResumeSkills[];
+  projects: ResumeProjects[];
 }
 
 export interface ResumeProfile {
@@ -20,6 +21,10 @@ export interface ResumeProfile {
   gitHub?: string;
   profileCustomField?: [{ fieldName: string; fieldValue: string }];
   summary?: string;
+}
+
+export interface ResumeSkills {
+  skillRelevantSkills?: string;
 }
 
 export interface ResumeWorkExperience {
@@ -37,8 +42,9 @@ export interface ResumeEducation {
   schoolDescription?: string;
 }
 
-export interface ResumeSkills {
-  skillRelevantSkills?: string;
+export interface ResumeProjects {
+  projectName?: string;
+  projectDescription?: string;
 }
 
 export interface ResumeState {
