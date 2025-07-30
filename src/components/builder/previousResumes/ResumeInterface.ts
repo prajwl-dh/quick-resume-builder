@@ -10,6 +10,8 @@ export interface ResumeInterface {
   projects: ResumeProjects[];
   certifications: ResumeCertifications[];
   awards: ResumeAwards[];
+  references: ResumeReferences[];
+  languages: ResumeLanguages[];
 }
 
 export interface ResumeProfile {
@@ -57,6 +59,15 @@ export interface ResumeCertifications {
 export interface ResumeAwards {
   awardName?: string;
   awardDescription?: string;
+}
+
+export interface ResumeReferences {
+  referenceName?: string;
+  referenceDescription?: string;
+}
+
+export interface ResumeLanguages {
+  language?: string;
 }
 
 export interface ResumeState {
