@@ -9,6 +9,7 @@ export interface ResumeInterface {
   education: ResumeEducation[];
   projects: ResumeProjects[];
   certifications: ResumeCertifications[];
+  awards: ResumeAwards[];
 }
 
 export interface ResumeProfile {
@@ -51,6 +52,11 @@ export interface ResumeProjects {
 export interface ResumeCertifications {
   certificationName?: string;
   certificationDescription?: string;
+}
+
+export interface ResumeAwards {
+  awardName?: string;
+  awardDescription?: string;
 }
 
 export interface ResumeState {
