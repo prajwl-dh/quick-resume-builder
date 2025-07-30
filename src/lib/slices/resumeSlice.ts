@@ -1,4 +1,5 @@
 import {
+  ResumeCertifications,
   ResumeEducation,
   ResumeProfile,
   ResumeProjects,
@@ -62,6 +63,7 @@ export const resumeSlice = createSlice({
           experience: [],
           education: [],
           projects: [],
+          certifications: [],
         },
       ];
       localStorage?.setItem('resume', JSON.stringify(state.value));
@@ -440,6 +442,69 @@ export const resumeSlice = createSlice({
       );
       localStorage?.setItem('resume', JSON.stringify(state.value));
     },
+
+    updateResumeCertification: (
+      state,
+      action: PayloadAction<{
+        id: string;
+        index: number;
+        value: ResumeCertifications;
+      }>
+    ) => {
+      const { id, index, value } = action.payload;
+
+      state.value = state.value.map((resume) => {
+        if (resume.id === id) {
+          return {
+            ...resume,
+            certifications: resume.certifications
+              ? resume?.certifications?.map((certification, i) =>
+                  i === index ? value : certification
+                )
+              : [value],
+          };
+        }
+        return resume;
+      });
+      localStorage?.setItem('resume', JSON.stringify(state.value));
+    },
+
+    addNewResumeCertification: (
+      state,
+      action: PayloadAction<{ id: string }>
+    ) => {
+      const { id } = action.payload;
+
+      state.value = state.value.map((resume) => {
+        if (resume.id === id) {
+          resume.certifications?.push({
+            certificationName: '',
+            certificationDescription: '',
+          });
+        }
+        return resume;
+      });
+      localStorage?.setItem('resume', JSON.stringify(state.value));
+    },
+
+    deleteResumeCertification: (
+      state,
+      action: PayloadAction<{ id: string; index: number }>
+    ) => {
+      const { id, index } = action.payload;
+
+      state.value = state.value.map((resume) =>
+        resume.id === id
+          ? {
+              ...resume,
+              certifications: resume.certifications
+                ? resume.certifications.filter((_, i) => i !== index)
+                : [],
+            }
+          : resume
+      );
+      localStorage?.setItem('resume', JSON.stringify(state.value));
+    },
   },
 });
 
@@ -464,5 +529,8 @@ export const {
   updateResumeProject,
   addNewResumeProject,
   deleteResumeProject,
+  updateResumeCertification,
+  addNewResumeCertification,
+  deleteResumeCertification,
 } = resumeSlice.actions;
 export default resumeSlice.reducer;

@@ -8,6 +8,7 @@ export interface ResumeInterface {
   experience: ResumeWorkExperience[];
   education: ResumeEducation[];
   projects: ResumeProjects[];
+  certifications: ResumeCertifications[];
 }
 
 export interface ResumeProfile {
@@ -45,6 +46,11 @@ export interface ResumeEducation {
 export interface ResumeProjects {
   projectName?: string;
   projectDescription?: string;
+}
+
+export interface ResumeCertifications {
+  certificationName?: string;
+  certificationDescription?: string;
 }
 
 export interface ResumeState {
