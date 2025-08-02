@@ -3,8 +3,8 @@
 import NotFound from '@/app/not-found';
 import BuilderNavbar from '@/components/builderSlug/navbar/BuilderNavbar';
 import ResumeInput from '@/components/builderSlug/resume-input/ResumeInput';
+import DesktopResumePreview from '@/components/resume-preview/DesktopResumePreview';
 import MobileResumePreview from '@/components/resume-preview/MobileResumePreview';
-import ResumePreview from '@/components/resume-preview/ResumePreview';
 import { useAppSelector } from '@/lib/store/hooks';
 import { useState } from 'react';
 
@@ -37,7 +37,7 @@ export default function Slug({ params }: SlugType) {
               setIsResumePreviewOpen={setIsResumePreviewOpen}
             />
             <ResumeInput resume={resume} />
-            <ResumePreview resume={resume} />
+            <DesktopResumePreview resume={resume} />
           </>
         ) : (
           <>
