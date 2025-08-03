@@ -4,7 +4,7 @@ export interface ResumeInterface {
   title: string;
   last_accessed: string;
   profile: ResumeProfile;
-  skills: ResumeSkills[];
+  skills: string;
   experience: ResumeWorkExperience[];
   education: ResumeEducation[];
   projects: ResumeProjects[];
@@ -25,10 +25,6 @@ export interface ResumeProfile {
   gitHub?: string;
   profileCustomField?: [{ fieldName: string; fieldValue: string }];
   summary?: string;
-}
-
-export interface ResumeSkills {
-  skillRelevantSkills?: string;
 }
 
 export interface ResumeWorkExperience {

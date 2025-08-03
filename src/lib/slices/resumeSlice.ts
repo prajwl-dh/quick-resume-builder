@@ -6,7 +6,6 @@ import {
   ResumeProfile,
   ResumeProjects,
   ResumeReferences,
-  ResumeSkills,
   ResumeState,
 } from '@/components/builder/previousResumes/ResumeInterface';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
@@ -62,7 +61,7 @@ export const resumeSlice = createSlice({
           profile: {
             fullName: action.payload.fullName,
           },
-          skills: [],
+          skills: '',
           experience: [],
           education: [],
           projects: [],
@@ -336,8 +335,7 @@ export const resumeSlice = createSlice({
       state,
       action: PayloadAction<{
         id: string;
-        index: number;
-        value: ResumeSkills;
+        value: string;
       }>
     ) => {
       const { id, index, value } = action.payload;
@@ -346,46 +344,11 @@ export const resumeSlice = createSlice({
         if (resume.id === id) {
           return {
             ...resume,
-            skills: resume.skills
-              ? resume?.skills?.map((skill, i) => (i === index ? value : skill))
-              : [value],
+            skills: value,
           };
         }
         return resume;
       });
-      localStorage?.setItem('resume', JSON.stringify(state.value));
-    },
-
-    addNewResumeSkills: (state, action: PayloadAction<{ id: string }>) => {
-      const { id } = action.payload;
-
-      state.value = state.value.map((resume) => {
-        if (resume.id === id) {
-          resume.skills?.push({
-            skillRelevantSkills: '',
-          });
-        }
-        return resume;
-      });
-      localStorage?.setItem('resume', JSON.stringify(state.value));
-    },
-
-    deleteResumeSkills: (
-      state,
-      action: PayloadAction<{ id: string; index: number }>
-    ) => {
-      const { id, index } = action.payload;
-
-      state.value = state.value.map((resume) =>
-        resume.id === id
-          ? {
-              ...resume,
-              skills: resume.skills
-                ? resume.skills.filter((_, i) => i !== index)
-                : [],
-            }
-          : resume
-      );
       localStorage?.setItem('resume', JSON.stringify(state.value));
     },
 
