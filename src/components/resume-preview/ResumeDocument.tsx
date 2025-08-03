@@ -95,20 +95,55 @@ export default function ResumeDocument({
           </View>
 
           {resume?.profile?.summary ? (
-            <View style={{ display: 'flex', flexDirection: 'column' }}>
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                marginBottom: '10px',
+              }}
+            >
               <Text
                 style={{
                   fontWeight: 800,
                   fontSize: 12,
-                  marginBottom: 4,
+                  marginBottom: 6,
                 }}
               >
                 Professional Summary
               </Text>
 
-              {resume.profile.summary
-                .split(/\n\s*\n/)
-                .map((paragraph, index) => (
+              {resume.profile.summary.split('\n').map((line, index) => (
+                <Text
+                  key={index}
+                  style={{
+                    fontSize: 10,
+                    fontWeight: 300,
+                    marginBottom: line.trim() === '' ? 6 : 6,
+                    lineHeight: 1.4,
+                  }}
+                >
+                  {line.trim()}
+                </Text>
+              ))}
+            </View>
+          ) : null}
+
+          {resume?.skills ? (
+            <View style={{ display: 'flex', flexDirection: 'column' }}>
+              <Text
+                style={{
+                  fontWeight: 800,
+                  fontSize: 12,
+                  marginBottom: 6,
+                }}
+              >
+                Skills
+              </Text>
+
+              {resume.skills.split('\n').map((line, index) => {
+                const [beforeColon, afterColon] = line.split(':');
+
+                return (
                   <Text
                     key={index}
                     style={{
@@ -116,11 +151,23 @@ export default function ResumeDocument({
                       fontWeight: 300,
                       marginBottom: 6,
                       lineHeight: 1.4,
+                      marginLeft: 5,
                     }}
                   >
-                    {paragraph.trim()}
+                    •{' '}
+                    {afterColon !== undefined ? (
+                      <>
+                        <Text style={{ fontWeight: 'bold' }}>
+                          {beforeColon.trim()}:
+                        </Text>{' '}
+                        {afterColon.trim()}
+                      </>
+                    ) : (
+                      line.trim()
+                    )}
                   </Text>
-                ))}
+                );
+              })}
             </View>
           ) : null}
         </View>
