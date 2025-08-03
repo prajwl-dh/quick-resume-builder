@@ -338,7 +338,7 @@ export const resumeSlice = createSlice({
         value: string;
       }>
     ) => {
-      const { id, index, value } = action.payload;
+      const { id, value } = action.payload;
 
       state.value = state.value.map((resume) => {
         if (resume.id === id) {
@@ -670,8 +670,6 @@ export const {
   addNewResumeEducation,
   deleteResumeEducation,
   updateResumeSkills,
-  addNewResumeSkills,
-  deleteResumeSkills,
   updateResumeProject,
   addNewResumeProject,
   deleteResumeProject,
