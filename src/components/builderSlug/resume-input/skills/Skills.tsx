@@ -45,7 +45,7 @@ export default function Skills({
         <TextAreaField
           label=''
           placeholder={
-            'For example:\nTechnical Skills: JavaScript, React, Node.js, Python\nSoft Skills: Communication, Teamwork, Problem-solving, Adaptability'
+            'Technical Skills: JavaScript, React, Node.js, Python\n\nSoft Skills: Communication, Teamwork, Problem-solving, Adaptability'
           }
           name='skills'
           onChange={(e) => handleChange(e)}

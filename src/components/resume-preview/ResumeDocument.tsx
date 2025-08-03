@@ -15,6 +15,7 @@ export default function ResumeDocument({
     <Document>
       <Page size='LETTER'>
         <View style={{ padding: 20 }}>
+          {/* Profile Section */}
           <View
             style={{
               display: 'flex',
@@ -128,8 +129,15 @@ export default function ResumeDocument({
             </View>
           ) : null}
 
+          {/* Skills Section */}
           {resume?.skills ? (
-            <View style={{ display: 'flex', flexDirection: 'column' }}>
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                marginBottom: '10px',
+              }}
+            >
               <Text
                 style={{
                   fontWeight: 800,
@@ -140,7 +148,7 @@ export default function ResumeDocument({
                 Skills
               </Text>
 
-              {resume.skills.split('\n').map((line, index) => {
+              {resume.skills.split('\n\n').map((line, index) => {
                 const [beforeColon, afterColon] = line.split(':');
 
                 return (
@@ -157,7 +165,7 @@ export default function ResumeDocument({
                     •{' '}
                     {afterColon !== undefined ? (
                       <>
-                        <Text style={{ fontWeight: 'bold' }}>
+                        <Text style={{ fontWeight: '600' }}>
                           {beforeColon.trim()}:
                         </Text>{' '}
                         {afterColon.trim()}
@@ -168,6 +176,91 @@ export default function ResumeDocument({
                   </Text>
                 );
               })}
+            </View>
+          ) : null}
+
+          {/* Work Experience Section */}
+          {resume?.experience && resume?.experience?.length > 0 ? (
+            <View
+              style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}
+            >
+              <Text
+                style={{
+                  fontWeight: 800,
+                  fontSize: 12,
+                  marginBottom: 6,
+                }}
+              >
+                Work Experience
+              </Text>
+
+              <View
+                style={{ display: 'flex', flexDirection: 'column', gap: 10 }}
+              >
+                {resume.experience.map((workExperience, index) => (
+                  <View
+                    key={index}
+                    style={{ display: 'flex', flexDirection: 'column' }}
+                  >
+                    <View
+                      style={{
+                        fontSize: 10,
+                        fontWeight: 300,
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'baseline',
+                      }}
+                    >
+                      <View
+                        style={{
+                          fontWeight: 600,
+                          display: 'flex',
+                          flexDirection: 'column',
+                        }}
+                      >
+                        <Text>{workExperience.companyName}</Text>
+                        <Text>{workExperience.jobTitle}</Text>
+                        <Text style={{ marginTop: '5px', marginBottom: '5px' }}>
+                          Responsibilities :{' '}
+                        </Text>
+                      </View>
+                      <View style={{ fontWeight: 600 }}>
+                        <Text>{workExperience.jobDate}</Text>
+                      </View>
+                    </View>
+
+                    <View
+                      style={{
+                        fontSize: 10,
+                        fontWeight: 300,
+                        display: 'flex',
+                        flexDirection: 'column',
+                      }}
+                    >
+                      {workExperience.jobDescription &&
+                        workExperience.jobDescription
+                          .split('\n\n')
+                          .map((line, index) => {
+                            return (
+                              <Text
+                                key={index}
+                                style={{
+                                  fontSize: 10,
+                                  fontWeight: 300,
+                                  marginBottom: 6,
+                                  lineHeight: 1.4,
+                                  marginLeft: 5,
+                                }}
+                              >
+                                • <Text>{line}</Text>
+                              </Text>
+                            );
+                          })}
+                    </View>
+                  </View>
+                ))}
+              </View>
             </View>
           ) : null}
         </View>
