@@ -13,8 +13,8 @@ export default function ResumeDocument({
 }) {
   return (
     <Document>
-      <Page size='LETTER'>
-        <View style={{ padding: 20 }}>
+      <Page size='LETTER' style={{ padding: 20 }}>
+        <View>
           {/* Profile Section */}
           <View
             style={{
@@ -338,6 +338,73 @@ export default function ResumeDocument({
                     >
                       {resumeEducation.schoolDescription &&
                         resumeEducation.schoolDescription
+                          .split('\n\n')
+                          .map((line, index) => {
+                            return (
+                              <Text
+                                key={index}
+                                style={{
+                                  fontSize: 10,
+                                  fontWeight: 300,
+                                  marginBottom: 6,
+                                  lineHeight: 1.4,
+                                  marginLeft: 5,
+                                }}
+                              >
+                                • <Text>{line}</Text>
+                              </Text>
+                            );
+                          })}
+                    </View>
+                  </View>
+                ))}
+              </View>
+            </View>
+          ) : null}
+
+          {/* Projects Section */}
+          {resume?.projects && resume?.projects?.length > 0 ? (
+            <View
+              style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}
+            >
+              <Text
+                style={{
+                  fontWeight: 800,
+                  fontSize: 12,
+                  marginBottom: 6,
+                }}
+              >
+                Projects
+              </Text>
+
+              <View
+                style={{ display: 'flex', flexDirection: 'column', gap: 10 }}
+              >
+                {resume.projects.map((project, index) => (
+                  <View
+                    key={index}
+                    style={{ display: 'flex', flexDirection: 'column' }}
+                  >
+                    <Text style={{ fontSize: 10, fontWeight: 600 }}>
+                      {project.projectName}
+                    </Text>
+                    {project.projectDescription && (
+                      <Text style={{ fontSize: 10, fontWeight: 600 }}>
+                        Description :
+                      </Text>
+                    )}
+
+                    <View
+                      style={{
+                        fontSize: 10,
+                        fontWeight: 300,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        marginTop: '5px',
+                      }}
+                    >
+                      {project.projectDescription &&
+                        project.projectDescription
                           .split('\n\n')
                           .map((line, index) => {
                             return (
