@@ -166,7 +166,7 @@ export default function Education({
                 />
 
                 <InputField
-                  label='Date'
+                  label='Graduation Date'
                   type='text'
                   name='schoolDate'
                   placeholder='May 2023'

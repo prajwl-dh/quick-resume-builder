@@ -221,9 +221,13 @@ export default function ResumeDocument({
                       >
                         <Text>{workExperience.companyName}</Text>
                         <Text>{workExperience.jobTitle}</Text>
-                        <Text style={{ marginTop: '5px', marginBottom: '5px' }}>
-                          Responsibilities :{' '}
-                        </Text>
+                        {workExperience.jobDescription && (
+                          <Text
+                            style={{ marginTop: '5px', marginBottom: '5px' }}
+                          >
+                            Responsibilities :{' '}
+                          </Text>
+                        )}
                       </View>
                       <View style={{ fontWeight: 600 }}>
                         <Text>{workExperience.jobDate}</Text>
@@ -240,6 +244,100 @@ export default function ResumeDocument({
                     >
                       {workExperience.jobDescription &&
                         workExperience.jobDescription
+                          .split('\n\n')
+                          .map((line, index) => {
+                            return (
+                              <Text
+                                key={index}
+                                style={{
+                                  fontSize: 10,
+                                  fontWeight: 300,
+                                  marginBottom: 6,
+                                  lineHeight: 1.4,
+                                  marginLeft: 5,
+                                }}
+                              >
+                                • <Text>{line}</Text>
+                              </Text>
+                            );
+                          })}
+                    </View>
+                  </View>
+                ))}
+              </View>
+            </View>
+          ) : null}
+
+          {/* Education Section */}
+          {resume?.education && resume?.education?.length > 0 ? (
+            <View
+              style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}
+            >
+              <Text
+                style={{
+                  fontWeight: 800,
+                  fontSize: 12,
+                  marginBottom: 6,
+                }}
+              >
+                Education
+              </Text>
+
+              <View
+                style={{ display: 'flex', flexDirection: 'column', gap: 10 }}
+              >
+                {resume.education.map((resumeEducation, index) => (
+                  <View
+                    key={index}
+                    style={{ display: 'flex', flexDirection: 'column' }}
+                  >
+                    <View
+                      style={{
+                        fontSize: 10,
+                        fontWeight: 300,
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'baseline',
+                      }}
+                    >
+                      <View
+                        style={{
+                          fontWeight: 600,
+                          display: 'flex',
+                          flexDirection: 'column',
+                        }}
+                      >
+                        <Text>{resumeEducation.schoolName}</Text>
+                        <Text>{resumeEducation.schoolMajor}</Text>
+                        <Text>
+                          {resumeEducation.schoolGPA
+                            ? `GPA : ${resumeEducation.schoolGPA}`
+                            : null}
+                        </Text>
+                        {resumeEducation.schoolDescription && (
+                          <Text
+                            style={{ marginTop: '5px', marginBottom: '5px' }}
+                          >
+                            Highlights :{' '}
+                          </Text>
+                        )}
+                      </View>
+                      <View style={{ fontWeight: 600 }}>
+                        <Text>{resumeEducation.schoolDate}</Text>
+                      </View>
+                    </View>
+
+                    <View
+                      style={{
+                        fontSize: 10,
+                        fontWeight: 300,
+                        display: 'flex',
+                        flexDirection: 'column',
+                      }}
+                    >
+                      {resumeEducation.schoolDescription &&
+                        resumeEducation.schoolDescription
                           .split('\n\n')
                           .map((line, index) => {
                             return (
