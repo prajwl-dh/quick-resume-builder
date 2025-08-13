@@ -16,14 +16,15 @@ export default function Home() {
       className='w-full 2xl:w-10/12 px-1 xl:px-40 flex flex-col justify-center items-start md:items-center gap-10 min-h-[75vh]'
     >
       <p className='text-3xl text-start md:text-center font-bold leading-tight text-light-text-primary dark:text-dark-text-primary sm:text-4xl sm:leading-tight md:text-5xl md:leading-tight mt-5 lg:mt-10'>
-        Build Your Professional Resume in Minutes with Quick Resume - Fast,
-        Easy, Free, and Open Source
+        Create Your Professional Resume in Minutes. Fast, Easy, Free and Open
+        Source
       </p>
       <p className='text-start md:text-center !leading-relaxed sm:text-lg md:text-xl text-light-text-secondary dark:text-dark-text-secondary'>
-        Quick Resume is the free and open-source app for building professional,
-        eye-catching resumes effortlessly. No login or signup required. Use
-        easy-to-use tools and customizable templates to create a standout resume
-        tailored to your career goals.
+        Quick Resume is a free and open-source app that helps you build
+        professional, eye-catching resumes with ease. No login or sign-up
+        required. It runs entirely in your browser, and all data stays on your
+        device. Your privacy is fully respected — nothing is ever uploaded to a
+        server. Start now and create a resume tailored to your career goals.
       </p>
       <div className='flex gap-2'>
         <PrimaryButton
