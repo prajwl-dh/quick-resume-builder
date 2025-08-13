@@ -1,11 +1,21 @@
 'use client';
+import PrimaryButton from '@/components/buttons/PrimaryButton';
 import Navbar from '@/components/navbar/Navbar';
+import { deleteResume } from '@/lib/slices/resumeSlice';
+import { useAppDispatch } from '@/lib/store/hooks';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 
 export default function Error() {
-  const router = useRouter();
+  const params = useParams();
+  const dispatch = useAppDispatch();
+
+  function handleDelete() {
+    dispatch(deleteResume(params.slug));
+    window.location.replace('/builder');
+  }
+
   return (
     <div className='flex flex-col justify-between mt-[70px]'>
       <Navbar
@@ -27,10 +37,21 @@ export default function Error() {
             height={800}
             width={800}
           />
-          <div className='flex flex-col gap-2 justify-center items-center'>
-            <p className='text-start md:text-center !leading-relaxed sm:text-lg md:text-xl text-light-text-secondary dark:text-dark-text-secondary font-bold'>
-              Sorry, An Error Occured
+          <div className='flex flex-col gap-4 justify-center items-center'>
+            <p className='text-center !leading-relaxed sm:text-lg md:text-xl text-light-text-secondary dark:text-dark-text-secondary font-bold'>
+              Oops! Something went wrong while trying to open your resume.
             </p>
+            <p className='text-center !leading-relaxed sm:text-md md:text-lg text-light-text-secondary dark:text-dark-text-secondary'>
+              It looks like this resume is corrupted or can&apos;t be loaded
+              properly. Please delete it and create a new one to continue
+              building without issues.
+            </p>
+            <PrimaryButton
+              className='h-12 min-w-32 bg-red-500 border-none ring-0'
+              onClick={() => handleDelete()}
+            >
+              Delete Resume
+            </PrimaryButton>
           </div>
         </motion.div>
       </div>

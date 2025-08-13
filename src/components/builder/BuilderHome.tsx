@@ -3,10 +3,10 @@ import { useAppSelector } from '@/lib/store/hooks';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import SecondaryButton from '../buttons/SecondaryButton';
+import ExampleResume from './createExampleResume/ExampleResume';
 import CreateConfirmationPopup from './createNew/CreateConfirmationPopup';
 import CreateNew from './createNew/CreateNew';
 import { CreateSvg } from './createNew/CreateSvg';
-import ImportResumeJSON from './importResumeJSON/ImportResumeJSON';
 import PreviousResumes from './previousResumes/PreviousResumes';
 
 export default function BuilderHome() {
@@ -16,7 +16,7 @@ export default function BuilderHome() {
   return (
     <div className='w-full 2xl:w-11/12 px-5 md:px-1 py-5 md:py-10 flex flex-col justify-center items-center mb-10'>
       <div className='flex flex-row justify-end items-center gap-4 w-full mb-6'>
-        <ImportResumeJSON />
+        <ExampleResume />
         <CreateNew />
       </div>
 

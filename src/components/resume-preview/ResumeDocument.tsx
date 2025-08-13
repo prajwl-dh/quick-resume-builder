@@ -428,6 +428,257 @@ export default function ResumeDocument({
               </View>
             </View>
           ) : null}
+
+          {/* Certifications Section */}
+          {resume?.certifications && resume?.certifications?.length > 0 ? (
+            <View
+              style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}
+            >
+              <Text
+                style={{
+                  fontWeight: 800,
+                  fontSize: 12,
+                  marginBottom: 6,
+                }}
+              >
+                Certifications
+              </Text>
+
+              <View
+                style={{ display: 'flex', flexDirection: 'column', gap: 10 }}
+              >
+                {resume.certifications.map((certification, index) => (
+                  <View
+                    key={index}
+                    style={{ display: 'flex', flexDirection: 'column' }}
+                  >
+                    <Text style={{ fontSize: 10, fontWeight: 600 }}>
+                      {certification.certificationName}
+                    </Text>
+                    {certification.certificationDescription && (
+                      <Text style={{ fontSize: 10, fontWeight: 600 }}>
+                        Description :
+                      </Text>
+                    )}
+
+                    <View
+                      style={{
+                        fontSize: 10,
+                        fontWeight: 300,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        marginTop: '5px',
+                      }}
+                    >
+                      {certification.certificationDescription &&
+                        certification.certificationDescription
+                          .split('\n\n')
+                          .map((line, index) => {
+                            return (
+                              <Text
+                                key={index}
+                                style={{
+                                  fontSize: 10,
+                                  fontWeight: 300,
+                                  marginBottom: 6,
+                                  lineHeight: 1.4,
+                                  marginLeft: 5,
+                                }}
+                              >
+                                • <Text>{line}</Text>
+                              </Text>
+                            );
+                          })}
+                    </View>
+                  </View>
+                ))}
+              </View>
+            </View>
+          ) : null}
+
+          {/* Awards Section */}
+          {resume?.awards && resume?.awards?.length > 0 ? (
+            <View
+              style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}
+            >
+              <Text
+                style={{
+                  fontWeight: 800,
+                  fontSize: 12,
+                  marginBottom: 6,
+                }}
+              >
+                Awards
+              </Text>
+
+              <View
+                style={{ display: 'flex', flexDirection: 'column', gap: 10 }}
+              >
+                {resume.awards.map((award, index) => (
+                  <View
+                    key={index}
+                    style={{ display: 'flex', flexDirection: 'column' }}
+                  >
+                    <Text style={{ fontSize: 10, fontWeight: 600 }}>
+                      {award.awardName}
+                    </Text>
+                    {award.awardDescription && (
+                      <Text style={{ fontSize: 10, fontWeight: 600 }}>
+                        Description :
+                      </Text>
+                    )}
+
+                    <View
+                      style={{
+                        fontSize: 10,
+                        fontWeight: 300,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        marginTop: '5px',
+                      }}
+                    >
+                      {award.awardDescription &&
+                        award.awardDescription
+                          .split('\n\n')
+                          .map((line, index) => {
+                            return (
+                              <Text
+                                key={index}
+                                style={{
+                                  fontSize: 10,
+                                  fontWeight: 300,
+                                  marginBottom: 6,
+                                  lineHeight: 1.4,
+                                  marginLeft: 5,
+                                }}
+                              >
+                                • <Text>{line}</Text>
+                              </Text>
+                            );
+                          })}
+                    </View>
+                  </View>
+                ))}
+              </View>
+            </View>
+          ) : null}
+
+          {/* References Section */}
+          {resume?.references && resume?.references?.length > 0 ? (
+            <View
+              style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}
+            >
+              <Text
+                style={{
+                  fontWeight: 800,
+                  fontSize: 12,
+                  marginBottom: 6,
+                }}
+              >
+                References
+              </Text>
+
+              <View
+                style={{ display: 'flex', flexDirection: 'column', gap: 10 }}
+              >
+                {resume.references.map((reference, index) => (
+                  <View
+                    key={index}
+                    style={{ display: 'flex', flexDirection: 'column' }}
+                  >
+                    <Text style={{ fontSize: 10, fontWeight: 600 }}>
+                      {reference.referenceName}
+                    </Text>
+                    {reference.referenceDescription && (
+                      <Text style={{ fontSize: 10, fontWeight: 600 }}>
+                        Description :
+                      </Text>
+                    )}
+
+                    <View
+                      style={{
+                        fontSize: 10,
+                        fontWeight: 300,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        marginTop: '5px',
+                      }}
+                    >
+                      {reference.referenceDescription &&
+                        reference.referenceDescription
+                          .split('\n\n')
+                          .map((line, index) => {
+                            return (
+                              <Text
+                                key={index}
+                                style={{
+                                  fontSize: 10,
+                                  fontWeight: 300,
+                                  marginBottom: 6,
+                                  lineHeight: 1.4,
+                                  marginLeft: 5,
+                                }}
+                              >
+                                • <Text>{line}</Text>
+                              </Text>
+                            );
+                          })}
+                    </View>
+                  </View>
+                ))}
+              </View>
+            </View>
+          ) : null}
+
+          {/* Languages Section */}
+          {resume?.languages ? (
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                marginBottom: '10px',
+              }}
+            >
+              <Text
+                style={{
+                  fontWeight: 800,
+                  fontSize: 12,
+                  marginBottom: 6,
+                }}
+              >
+                Languages
+              </Text>
+
+              {resume.languages.split('\n\n').map((line, index) => {
+                const [beforeColon, afterColon] = line.split(':');
+
+                return (
+                  <Text
+                    key={index}
+                    style={{
+                      fontSize: 10,
+                      fontWeight: 300,
+                      marginBottom: 6,
+                      lineHeight: 1.4,
+                      marginLeft: 5,
+                    }}
+                  >
+                    •{' '}
+                    {afterColon !== undefined ? (
+                      <>
+                        <Text style={{ fontWeight: '600' }}>
+                          {beforeColon.trim()}:
+                        </Text>{' '}
+                        {afterColon.trim()}
+                      </>
+                    ) : (
+                      line.trim()
+                    )}
+                  </Text>
+                );
+              })}
+            </View>
+          ) : null}
         </View>
       </Page>
     </Document>

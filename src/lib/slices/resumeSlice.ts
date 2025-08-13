@@ -2,7 +2,6 @@ import {
   ResumeAwards,
   ResumeCertifications,
   ResumeEducation,
-  ResumeLanguages,
   ResumeProfile,
   ResumeProjects,
   ResumeReferences,
@@ -68,7 +67,7 @@ export const resumeSlice = createSlice({
           certifications: [],
           awards: [],
           references: [],
-          languages: [],
+          languages: '',
         },
       ];
       localStorage?.setItem('resume', JSON.stringify(state.value));
@@ -597,58 +596,20 @@ export const resumeSlice = createSlice({
       state,
       action: PayloadAction<{
         id: string;
-        index: number;
-        value: ResumeLanguages;
+        value: string;
       }>
     ) => {
-      const { id, index, value } = action.payload;
+      const { id, value } = action.payload;
 
       state.value = state.value.map((resume) => {
         if (resume.id === id) {
           return {
             ...resume,
-            languages: resume.languages
-              ? resume?.languages?.map((language, i) =>
-                  i === index ? value : language
-                )
-              : [value],
+            languages: value,
           };
         }
         return resume;
       });
-      localStorage?.setItem('resume', JSON.stringify(state.value));
-    },
-
-    addNewResumeLanguage: (state, action: PayloadAction<{ id: string }>) => {
-      const { id } = action.payload;
-
-      state.value = state.value.map((resume) => {
-        if (resume.id === id) {
-          resume.languages?.push({
-            language: '',
-          });
-        }
-        return resume;
-      });
-      localStorage?.setItem('resume', JSON.stringify(state.value));
-    },
-
-    deleteResumeLanguage: (
-      state,
-      action: PayloadAction<{ id: string; index: number }>
-    ) => {
-      const { id, index } = action.payload;
-
-      state.value = state.value.map((resume) =>
-        resume.id === id
-          ? {
-              ...resume,
-              languages: resume.languages
-                ? resume.languages.filter((_, i) => i !== index)
-                : [],
-            }
-          : resume
-      );
       localStorage?.setItem('resume', JSON.stringify(state.value));
     },
   },
@@ -683,7 +644,5 @@ export const {
   addNewResumeReference,
   deleteResumeReference,
   updateResumeLanguage,
-  addNewResumeLanguage,
-  deleteResumeLanguage,
 } = resumeSlice.actions;
 export default resumeSlice.reducer;
