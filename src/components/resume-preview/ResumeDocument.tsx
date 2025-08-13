@@ -14,7 +14,7 @@ export default function ResumeDocument({
   return (
     <Document>
       <Page size='LETTER' style={{ padding: 20 }}>
-        <View>
+        <View style={{ color: 'black' }}>
           {/* Profile Section */}
           <View
             style={{

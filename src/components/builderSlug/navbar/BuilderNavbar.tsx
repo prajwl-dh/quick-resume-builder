@@ -1,5 +1,4 @@
 'use client';
-import PrimaryButton from '@/components/buttons/PrimaryButton';
 import SecondaryButton from '@/components/buttons/SecondaryButton';
 import { Logo } from '@/components/navbar/Logo';
 import Moon from '@/components/theme-switcher/Moon';
@@ -154,18 +153,20 @@ export default function BuilderNavbar({
           </svg>
         </button>
         {isResumePreviewOpen ? (
-          <PrimaryButton
-            className='flex justify-center items-center'
+          <SecondaryButton
+            className='flex justify-center items-center gap-2'
             onClick={() => setIsResumePreviewOpen((prev) => !prev)}
           >
             <FaEyeSlash />
-          </PrimaryButton>
+            <p className='text text-sm'>Hide</p>
+          </SecondaryButton>
         ) : (
           <SecondaryButton
-            className='flex justify-center items-center'
+            className='flex justify-center items-center gap-2'
             onClick={() => setIsResumePreviewOpen((prev) => !prev)}
           >
             <FaEye />
+            <p className='text text-sm'>Preview</p>
           </SecondaryButton>
         )}
       </div>
