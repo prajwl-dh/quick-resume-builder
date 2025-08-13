@@ -40,7 +40,7 @@ export default function MobileResumePreview({
             </div>
 
             <TransformComponent>
-              <div className='bg-white border-[1px] shadow-md rounded-md mx-2 mb-10 px-4 mt-24 min-h-[90dvh] cursor-grab'>
+              <div className='bg-white border-[1px] shadow-md rounded-md mx-2 mb-10 px-4 mt-24 min-h-[90dvh] w-[calc(100dvw-15px)] cursor-grab'>
                 <ResumeDocument resume={resume} />
               </div>
             </TransformComponent>
