@@ -7,9 +7,10 @@ import { Providers } from './provider';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Quick Resume - Build Free Professional Resumes Instantly',
+  title:
+    'Quick Resume - Build Free Professional ATS Friendly Resumes Instantly',
   description:
-    "Quick Resume is your go-to platform for creating professional resumes effortlessly. Choose from multiple styles, save your resumes locally, and generate PDFs with ease. Perfect for job seekers looking to make a great impression. And it's completely free!",
+    "Quick Resume is your go-to platform for creating professional ats friendly resumes effortlessly. No login/signup required, save your resumes locally, and generate PDFs with ease. Perfect for job seekers looking to make a great impression. And it's completely free!",
 };
 
 export default function RootLayout({
