@@ -13,7 +13,7 @@ export default function Home() {
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.3, type: 'spring' }}
-      className='w-full 2xl:w-10/12 px-1 xl:px-40 flex flex-col justify-center items-start md:items-center gap-10 min-h-[75vh]'
+      className='w-full 2xl:w-10/12 px-4 xl:px-40 flex flex-col justify-center items-center gap-10 min-h-[75vh]'
     >
       <p className='text-3xl text-start md:text-center font-bold leading-tight text-light-text-primary dark:text-dark-text-primary sm:text-4xl sm:leading-tight md:text-5xl md:leading-tight mt-5 lg:mt-10'>
         Create Your Professional ATS Friendly Resume in Minutes. Fast, Easy,
@@ -26,18 +26,19 @@ export default function Home() {
         device. Your privacy is fully respected — nothing is ever uploaded to a
         server. Start now and create a resume tailored to your career goals.
       </p>
-      <div className='flex gap-2'>
+      <div className='flex flex-col md:flex-row gap-4 w-full md:w-auto'>
         <PrimaryButton
-          className='h-12 min-w-32'
+          className='h-12 w-full min-w-36 flex flex-row gap-1 items-center self-center justify-center'
           onClick={() => router.push('/builder')}
         >
-          Get Started 🔥
+          Get Started
+          <span>🔥</span>
         </PrimaryButton>
         <SecondaryButton
           onClick={() =>
             router.push('https://github.com/prajwl-dh/quick-resume-builder')
           }
-          className='h-12 min-w-32 flex flex-row gap-1 items-center'
+          className='h-12 w-full min-w-36 flex flex-row gap-1 items-center self-center justify-center'
         >
           <p>Contribute</p>
           <GitHubIcon />
