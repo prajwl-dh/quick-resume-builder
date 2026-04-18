@@ -1,6 +1,6 @@
 {
   "name": "quick-resume-builder",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -40,6 +40,8 @@
     "typescript": "^5"
   },
   "overrides": {
-    "glob": ">=10.5.0"
+    "glob": ">=10.5.0",
+    "minimatch": "^9.0.7",
+    "brace-expansion": "^1.1.13"
   }
 }
