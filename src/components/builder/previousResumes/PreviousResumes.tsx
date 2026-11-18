@@ -3,7 +3,6 @@ import { duplicateResume, updateLastAccessed } from '@/lib/slices/resumeSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/store/hooks';
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { format } from 'date-fns';
-import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import SecondaryButton from '../../buttons/SecondaryButton';
@@ -30,103 +29,104 @@ export default function PreviousResumes() {
         new Date(b.last_accessed).getTime() - new Date(a.last_accessed).getTime()
     );
 
+  const openResume = (id: string) => {
+    dispatch(updateLastAccessed(id));
+    router.push(`/builder/${id}`);
+  };
+
   return (
     <>
-      {sortedResumes?.map((resume: ResumeInterface, index: number) => {
-        return (
-          <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 100 }}
-            viewport={{ once: true }}
-            transition={{ type: 'spring', delay: index - index / 1.2 }}
-            key={resume.id}
-            className='min-h-60 md:min-h-80 w-full p-3 gap-1 flex flex-col justify-between items-center rounded-md ring-1 ring-light-ring-secondary dark:ring-dark-ring-secondary hover:ring-light-ring-primary hover:dark:ring-dark-ring-primary bg-light-foreground dark:bg-dark-foreground hover:shadow-sm group'
-          >
-            <div
-              onClick={() => {
-                dispatch(updateLastAccessed(resume.id));
-                router.push(`/builder/${resume.id}`);
-              }}
-              className='min-h-40 md:min-h-60 w-full gap-1 flex flex-col justify-between items-center cursor-pointer'
-            >
-              <div className='flex-grow flex justify-center items-center'>
-                <ResumeSvg className='text text-5xl md:text-7xl text-light-text-primary dark:text-dark-text-primary group-hover:scale-125 transition duration-300' />
+      {sortedResumes.map((resume: ResumeInterface) => (
+        <article
+          key={resume.id}
+          className='flex min-h-[210px] flex-col justify-between rounded-xl border border-light-ring-secondary bg-light-foreground p-5 shadow-paper transition-colors duration-150 hover:border-light-ring-primary dark:border-dark-ring-secondary dark:bg-dark-foreground dark:hover:border-dark-ring-primary'
+        >
+          <div>
+            <div className='flex items-start justify-between gap-3'>
+              <div className='flex h-10 w-10 items-center justify-center rounded-lg bg-accent-soft text-accent dark:bg-dark-accent-soft dark:text-dark-accent'>
+                <ResumeSvg className='h-5 w-5' />
               </div>
-              <p className='text text-md line-clamp-2 font-bold self-start text-light-text-primary dark:text-dark-text-primary'>
-                {resume.fileName}
-              </p>
-              <p className='text text-sm text-light-text-secondary self-start dark:text-dark-text-secondary'>
-                Last Edited - {format(resume.last_accessed, 'Pp')}
-              </p>
-            </div>
-            <div className='mt-2 self-start flex flex-row w-full justify-between items-center'>
-              <SecondaryButton
-                onClick={() => {
-                  dispatch(updateLastAccessed(resume.id));
-                  router.push(`/builder/${resume.id}`);
-                }}
-                className='dark:bg-dark-foreground'
-              >
-                Edit Resume
-              </SecondaryButton>
-              <Menu>
-                <MenuButton>
-                  <OptionsSvg className='text text-2xl text-light-text-secondary dark:text-dark-text-secondary cursor-pointer' />
+              <Menu as='div' className='relative'>
+                <MenuButton
+                  aria-label={`Options for ${resume.fileName}`}
+                  className='inline-flex h-8 w-8 items-center justify-center rounded-lg text-light-text-secondary transition-colors hover:bg-light-background hover:text-light-text-primary dark:text-dark-text-secondary dark:hover:bg-dark-background dark:hover:text-dark-text-primary'
+                >
+                  <OptionsSvg className='h-5 w-5' />
                 </MenuButton>
                 <MenuItems
-                  anchor='bottom start'
-                  className='[--anchor-gap:8px] [--anchor-padding:8px] flex flex-col gap-1 justify-between items-start rounded-md ring-1 ring-light-ring-secondary dark:ring-dark-ring-secondary hover:ring-light-ring-primary hover:dark:ring-dark-ring-primary bg-light-background dark:bg-dark-background p-3 w-40'
+                  anchor='bottom end'
+                  className='z-50 w-44 rounded-lg border border-light-ring-secondary bg-light-foreground p-1.5 shadow-paper-lg [--anchor-gap:6px] dark:border-dark-ring-secondary dark:bg-dark-foreground'
                 >
                   <MenuItem>
-                    <div
+                    <button
+                      type='button'
                       onClick={() => setOpenRenamePopup(true)}
-                      className='flex flex-row gap-1 cursor-pointer w-full text-light-text-secondary dark:text-dark-text-secondary py-2 rounded-md hover:bg-[#e5e7eb] dark:hover:bg-dark-foreground'
+                      className='flex w-full items-center gap-2.5 rounded-md px-2.5 py-2 text-left text-[13px] text-light-text-secondary transition-colors hover:bg-light-background hover:text-light-text-primary dark:text-dark-text-secondary dark:hover:bg-dark-background dark:hover:text-dark-text-primary'
                     >
-                      <RenameSvg className='text text-2xl text-light-text-secondary dark:text-dark-text-secondary' />
-                      <button className='text text-md text-light-text-secondary self-start dark:text-dark-text-secondary'>
-                        Rename
-                      </button>
-                    </div>
+                      <RenameSvg className='h-4 w-4' />
+                      Rename
+                    </button>
                   </MenuItem>
                   <MenuItem>
-                    <div
+                    <button
+                      type='button'
                       onClick={() => dispatch(duplicateResume(resume.id))}
-                      className='flex flex-row gap-1 cursor-pointer w-full text-light-text-secondary dark:text-dark-text-secondary py-2 rounded-md hover:bg-[#e5e7eb] dark:hover:bg-dark-foreground'
+                      className='flex w-full items-center gap-2.5 rounded-md px-2.5 py-2 text-left text-[13px] text-light-text-secondary transition-colors hover:bg-light-background hover:text-light-text-primary dark:text-dark-text-secondary dark:hover:bg-dark-background dark:hover:text-dark-text-primary'
                     >
-                      <DuplicateSvg className='text text-2xl text-light-text-secondary dark:text-dark-text-secondary' />
-                      <button className='text text-md text-light-text-secondary self-start dark:text-dark-text-secondary'>
-                        Duplicate
-                      </button>
-                    </div>
+                      <DuplicateSvg className='h-4 w-4' />
+                      Duplicate
+                    </button>
                   </MenuItem>
+                  <div className='my-1 h-px bg-light-ring-secondary dark:bg-dark-ring-secondary' />
                   <MenuItem>
-                    <div
+                    <button
+                      type='button'
                       onClick={() => setOpen(true)}
-                      className='flex flex-row gap-1 cursor-pointer w-full text-light-text-secondary dark:text-dark-text-secondary py-2 rounded-md hover:bg-[#e5e7eb] dark:hover:bg-dark-foreground'
+                      className='flex w-full items-center gap-2.5 rounded-md px-2.5 py-2 text-left text-[13px] text-red-600 transition-colors hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/40'
                     >
-                      <DeleteSvg className='text text-2xl text-light-text-secondary dark:text-dark-text-secondary' />
-                      <button className='text text-md text-light-text-secondary self-start dark:text-dark-text-secondary'>
-                        Delete
-                      </button>
-                    </div>
+                      <DeleteSvg className='h-4 w-4' />
+                      Delete
+                    </button>
                   </MenuItem>
                 </MenuItems>
               </Menu>
             </div>
-            <DeleteConfirmationPopup
-              open={open}
-              setOpen={setOpen}
-              id={resume.id}
-            />
-            <RenameConfirmationPopup
-              openRenamePopup={openRenamePopup}
-              setOpenRenamePopup={setOpenRenamePopup}
-              id={resume.id}
-              fileName={resume.fileName}
-            />
-          </motion.div>
-        );
-      })}
+
+            <button
+              type='button'
+              onClick={() => openResume(resume.id)}
+              className='mt-8 block w-full text-left'
+            >
+              <h3 className='line-clamp-2 text-[16px] font-semibold leading-snug tracking-[-0.01em]'>
+                {resume.fileName}
+              </h3>
+              <p className='mt-1.5 text-[13px] text-light-text-secondary dark:text-dark-text-secondary'>
+                Edited {format(resume.last_accessed, 'PP')}
+              </p>
+            </button>
+          </div>
+
+          <SecondaryButton
+            onClick={() => openResume(resume.id)}
+            className='mt-6 self-start'
+          >
+            Open editor
+            <span aria-hidden='true'>→</span>
+          </SecondaryButton>
+
+          <DeleteConfirmationPopup
+            open={open}
+            setOpen={setOpen}
+            id={resume.id}
+          />
+          <RenameConfirmationPopup
+            openRenamePopup={openRenamePopup}
+            setOpenRenamePopup={setOpenRenamePopup}
+            id={resume.id}
+            fileName={resume.fileName}
+          />
+        </article>
+      ))}
     </>
   );
 }

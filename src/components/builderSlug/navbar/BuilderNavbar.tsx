@@ -1,13 +1,11 @@
 'use client';
-import SecondaryButton from '@/components/buttons/SecondaryButton';
-import { Logo } from '@/components/navbar/Logo';
+import { Brand } from '@/components/navbar/Brand';
 import Moon from '@/components/theme-switcher/Moon';
 import Sun from '@/components/theme-switcher/Sun';
 import RefContext from '@/lib/providers/RefContext';
-import { motion } from 'framer-motion';
 import { useTheme } from 'next-themes';
 import { useRouter } from 'next/navigation';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa6';
 import { AwardsSvg } from './svgs/AwardsSvg';
 import { BackSvg } from './svgs/BackSvg';
@@ -27,352 +25,186 @@ interface BuilderNavbarProps {
   setIsResumePreviewOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+type SectionKey =
+  | 'profile'
+  | 'skills'
+  | 'workExperience'
+  | 'education'
+  | 'projects'
+  | 'certifications'
+  | 'awards'
+  | 'references'
+  | 'languages';
+
 export default function BuilderNavbar({
   isSidebarOpen,
   setSidebarOpen,
   isResumePreviewOpen,
   setIsResumePreviewOpen,
 }: BuilderNavbarProps) {
-  const sidebarRef = React.useRef<HTMLDivElement>(null);
+  const sidebarRef = useRef<HTMLElement>(null);
   const router = useRouter();
-  const { theme, setTheme } = useTheme();
-  const {
-    profileRef,
-    workExperienceRef,
-    educationRef,
-    skillsRef,
-    awardsRef,
-    certificationsRef,
-    projectsRef,
-    referencesRef,
-    languagesRef,
-  } = useContext(RefContext);
+  const { resolvedTheme, setTheme } = useTheme();
+  const [active, setActive] = useState<SectionKey | null>(null);
+  const refs = useContext(RefContext);
 
-  const toggleSidebar = () => {
-    setSidebarOpen(!isSidebarOpen);
-    setIsResumePreviewOpen(false);
-  };
+  const sections: { key: SectionKey; label: string; icon: React.ElementType; ref: React.RefObject<HTMLElement> }[] = [
+    { key: 'profile', label: 'Profile', icon: ProfileSvg, ref: refs.profileRef },
+    { key: 'skills', label: 'Skills', icon: SkillsSvg, ref: refs.skillsRef },
+    { key: 'workExperience', label: 'Work experience', icon: ExperienceSvg, ref: refs.workExperienceRef },
+    { key: 'education', label: 'Education', icon: EducationSvg, ref: refs.educationRef },
+    { key: 'projects', label: 'Projects', icon: ProjectSvg, ref: refs.projectsRef },
+    { key: 'certifications', label: 'Certifications', icon: CertificateSvg, ref: refs.certificationsRef },
+    { key: 'awards', label: 'Awards', icon: AwardsSvg, ref: refs.awardsRef },
+    { key: 'references', label: 'References', icon: ReferenceSvg, ref: refs.referencesRef },
+    { key: 'languages', label: 'Languages', icon: LanguageSvg, ref: refs.languagesRef },
+  ];
 
-  const handleClickOutside = (event: MouseEvent) => {
-    if (
-      sidebarRef.current &&
-      event.target &&
-      !sidebarRef.current.contains(event.target as Node)
-    ) {
-      setSidebarOpen(false);
-    }
-  };
+  useEffect(() => {
+    const nodes = sections
+      .map((section) => section.ref.current)
+      .filter((node): node is HTMLElement => Boolean(node));
+    if (!nodes.length) return;
 
-  React.useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const top = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+        if (!top) return;
+        const match = sections.find((section) => section.ref.current === top.target);
+        if (match) setActive(match.key);
+      },
+      { rootMargin: '-15% 0px -70% 0px' }
+    );
+    nodes.forEach((node) => observer.observe(node));
+    return () => observer.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        sidebarRef.current &&
+        event.target &&
+        !sidebarRef.current.contains(event.target as Node)
+      ) {
+        setSidebarOpen(false);
+      }
+    };
     if (isSidebarOpen) {
       document.addEventListener('mousedown', handleClickOutside);
-    } else {
-      document.removeEventListener('mousedown', handleClickOutside);
     }
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isSidebarOpen, setSidebarOpen]);
 
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  });
-
-  const handleScroll = (section: string) => {
-    if (section == 'profile') {
-      profileRef.current?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
-      });
-    } else if (section == 'workExperience') {
-      workExperienceRef.current?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
-      });
-    } else if (section == 'education') {
-      educationRef.current?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
-      });
-    } else if (section == 'skills') {
-      skillsRef.current?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
-      });
-    } else if (section == 'awards') {
-      awardsRef.current?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
-      });
-    } else if (section == 'certifications') {
-      certificationsRef.current?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
-      });
-    } else if (section == 'projects') {
-      projectsRef.current?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
-      });
-    } else if (section == 'references') {
-      referencesRef.current?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
-      });
-    } else if (section == 'languages') {
-      languagesRef.current?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
-      });
-    }
+  const handleScroll = (key: SectionKey) => {
+    const section = sections.find((item) => item.key === key);
+    section?.ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setActive(key);
     setSidebarOpen(false);
   };
 
+  const previewToggle = (
+    <button
+      type='button'
+      onClick={() => setIsResumePreviewOpen((prev) => !prev)}
+      className='inline-flex items-center gap-2 rounded-lg border border-light-ring-secondary bg-light-foreground px-3 py-2 text-[13px] font-medium text-light-text-secondary transition-colors hover:border-light-ring-primary hover:text-light-text-primary dark:border-dark-ring-secondary dark:bg-dark-foreground dark:text-dark-text-secondary dark:hover:border-dark-ring-primary dark:hover:text-dark-text-primary'
+    >
+      {isResumePreviewOpen ? <FaEyeSlash className='h-4 w-4' /> : <FaEye className='h-4 w-4' />}
+      {isResumePreviewOpen ? 'Hide preview' : 'Preview'}
+    </button>
+  );
+
   return (
-    <div className='flex'>
-      <div className='flex fixed top-0 h-[56px] flex-row justify-between py-3 px-2 lg:hidden backdrop-blur-md bg-opacity-60 dark:bg-opacity-60 bg-light-background dark:bg-dark-background w-screen'>
+    <>
+      {/* Mobile top bar */}
+      <div className='fixed inset-x-0 top-0 z-40 flex h-14 items-center justify-between border-b border-light-ring-secondary bg-light-background/95 px-4 backdrop-blur-xl dark:border-dark-ring-secondary dark:bg-dark-background/95 lg:hidden'>
         <button
-          data-drawer-target='default-sidebar'
-          data-drawer-toggle='default-sidebar'
-          aria-controls='default-sidebar'
           type='button'
-          className='inline-flex items-center text-sm text-gray-500 rounded-lg lg:hidden focus:outline-none'
-          onClick={toggleSidebar}
+          aria-label='Open sections menu'
+          onClick={() => {
+            setSidebarOpen((prev) => !prev);
+            setIsResumePreviewOpen(false);
+          }}
+          className='inline-flex h-9 w-9 items-center justify-center rounded-lg text-light-text-primary dark:text-dark-text-primary'
         >
-          <svg
-            className={`w-8 h-8 text-sm text-light-text-primary cursor-pointer dark:text-dark-text-primary ${
-              isSidebarOpen ? 'hidden' : ''
-            }`}
-            aria-hidden='true'
-            fill='currentColor'
-            viewBox='0 0 20 20'
-            xmlns='http://www.w3.org/2000/svg'
-          >
-            <path
-              clipRule='evenodd'
-              fillRule='evenodd'
-              d='M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z'
-            ></path>
+          <svg width='22' height='22' viewBox='0 0 24 24' fill='none' aria-hidden='true'>
+            <path d='M4 7h16M4 12h16M4 17h16' stroke='currentColor' strokeWidth='1.8' strokeLinecap='round' />
           </svg>
         </button>
-        {isResumePreviewOpen ? (
-          <SecondaryButton
-            className='flex justify-center items-center gap-2'
-            onClick={() => setIsResumePreviewOpen((prev) => !prev)}
-          >
-            <FaEyeSlash />
-            <p className='text text-sm'>Hide</p>
-          </SecondaryButton>
-        ) : (
-          <SecondaryButton
-            className='flex justify-center items-center gap-2'
-            onClick={() => setIsResumePreviewOpen((prev) => !prev)}
-          >
-            <FaEye />
-            <p className='text text-sm'>Preview</p>
-          </SecondaryButton>
-        )}
+        <Brand compact />
+        {previewToggle}
       </div>
 
+      {/* Sidebar */}
       <aside
         ref={sidebarRef}
-        id='default-sidebar'
-        className={`fixed top-0 left-0 z-50 w-64 h-screen transition-transform bg-light-foreground dark:bg-dark-foreground ${
+        aria-label='Resume sections'
+        className={`fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-light-ring-secondary bg-light-foreground transition-transform duration-200 dark:border-dark-ring-secondary dark:bg-dark-foreground lg:static lg:z-auto lg:translate-x-0 ${
           isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        } lg:translate-x-0`}
-        aria-label='Sidebar'
+        }`}
       >
-        <div className='h-full px-3 py-4 overflow-y-auto overflow-x-hidden'>
-          <div className='flex flex-row justify-between items-center mb-4'>
-            <div className='flex flex-row items-center -space-x-1'>
-              <Logo
-                onClick={() => router.push('/builder')}
-                src={'/logo.png'}
-                alt='logo'
-                height={800}
-                width={800}
-                quality={100}
-                className='h-10 w-10 cursor-pointer'
-                priority
-              />
-              <div
-                onClick={() => router.push('/builder')}
-                className='flex flex-col items-center -space-y-1 cursor-pointer'
-              >
-                <p className='text text-xl font-bold text-light-text-primary dark:text-dark-text-primary p-0'>
-                  Quick
-                </p>
-                <p className='text text-md text-light-text-primary dark:text-dark-text-primary p-0'>
-                  &nbsp;Resume
-                </p>
-              </div>
-            </div>
-            {theme === 'dark' ? (
-              <Sun setTheme={setTheme} />
-            ) : (
-              <Moon setTheme={setTheme} />
-            )}
-          </div>
-          <motion.ul
-            variants={{
-              hidden: { opacity: 0 },
-              show: {
-                opacity: 1,
-                transition: {
-                  type: 'spring',
-                  staggerChildren: 0.04,
-                },
-              },
-            }}
-            initial='hidden'
-            whileInView='show'
-            className='space-y-2 font-medium'
+        <div className='flex h-16 shrink-0 items-center justify-between border-b border-light-ring-secondary px-5 dark:border-dark-ring-secondary'>
+          <Brand onClick={() => router.push('/builder')} />
+          {resolvedTheme === 'dark' ? (
+            <Sun setTheme={setTheme} />
+          ) : (
+            <Moon setTheme={setTheme} />
+          )}
+        </div>
+
+        <nav className='min-h-0 flex-1 overflow-y-auto px-3 py-4'>
+          <button
+            type='button'
+            onClick={() => router.push('/builder')}
+            className='mb-3 flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-[13px] font-medium text-light-text-secondary transition-colors hover:bg-light-background hover:text-light-text-primary dark:text-dark-text-secondary dark:hover:bg-dark-background dark:hover:text-dark-text-primary'
           >
-            <motion.li
-              variants={{
-                hidden: { x: -50, opacity: 0 },
-                show: { x: 0, opacity: 1 },
-              }}
-              onClick={() => router.push('/builder')}
-            >
-              <div className='flex items-center p-2 rounded-lg cursor-pointer text-light-text-secondary dark:text-dark-text-secondary hover:bg-[#e5e7eb] dark:hover:bg-[#4d4d4e] group'>
-                <BackSvg className='w-5 h-5 transition duration-75 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary' />
-                <span className='ms-3 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary'>
-                  Go Back
-                </span>
-              </div>
-            </motion.li>
-            <motion.li
-              variants={{
-                hidden: { x: -50, opacity: 0 },
-                show: { x: 0, opacity: 1 },
-              }}
-              onClick={() => handleScroll('profile')}
-            >
-              <div className='flex items-center p-2 rounded-lg cursor-pointer text-light-text-secondary dark:text-dark-text-secondary hover:bg-[#e5e7eb] dark:hover:bg-[#4d4d4e] group'>
-                <ProfileSvg className='w-5 h-5 transition duration-75 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary' />
-                <span className='ms-3 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary'>
-                  Profile
-                </span>
-              </div>
-            </motion.li>
-            <motion.li
-              variants={{
-                hidden: { x: -50, opacity: 0 },
-                show: { x: 0, opacity: 1 },
-              }}
-              onClick={() => handleScroll('skills')}
-            >
-              <div className='flex items-center p-2 rounded-lg cursor-pointer text-light-text-secondary dark:text-dark-text-secondary hover:bg-[#e5e7eb] dark:hover:bg-[#4d4d4e] group'>
-                <SkillsSvg className='w-5 h-5 transition duration-75 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary' />
-                <span className='ms-3 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary'>
-                  Skills
-                </span>
-              </div>
-            </motion.li>
-            <motion.li
-              variants={{
-                hidden: { x: -50, opacity: 0 },
-                show: { x: 0, opacity: 1 },
-              }}
-              onClick={() => handleScroll('workExperience')}
-            >
-              <div className='flex items-center p-2 rounded-lg cursor-pointer text-light-text-secondary dark:text-dark-text-secondary hover:bg-[#e5e7eb] dark:hover:bg-[#4d4d4e] group'>
-                <ExperienceSvg className='w-5 h-5 transition duration-75 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary' />
-                <span className='ms-3 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary'>
-                  Work Experience
-                </span>
-              </div>
-            </motion.li>
-            <motion.li
-              variants={{
-                hidden: { x: -50, opacity: 0 },
-                show: { x: 0, opacity: 1 },
-              }}
-              onClick={() => handleScroll('education')}
-            >
-              <div className='flex items-center p-2 rounded-lg cursor-pointer text-light-text-secondary dark:text-dark-text-secondary hover:bg-[#e5e7eb] dark:hover:bg-[#4d4d4e] group'>
-                <EducationSvg className='w-5 h-5 transition duration-75 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary' />
-                <span className='ms-3 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary'>
-                  Education
-                </span>
-              </div>
-            </motion.li>
-            <motion.li
-              variants={{
-                hidden: { x: -50, opacity: 0 },
-                show: { x: 0, opacity: 1 },
-              }}
-              onClick={() => handleScroll('projects')}
-            >
-              <div className='flex items-center p-2 rounded-lg cursor-pointer text-light-text-secondary dark:text-dark-text-secondary hover:bg-[#e5e7eb] dark:hover:bg-[#4d4d4e] group'>
-                <ProjectSvg className='w-5 h-5 transition duration-75 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary' />
-                <span className='ms-3 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary'>
-                  Projects
-                </span>
-              </div>
-            </motion.li>
-            <motion.li
-              variants={{
-                hidden: { x: -50, opacity: 0 },
-                show: { x: 0, opacity: 1 },
-              }}
-              onClick={() => handleScroll('certifications')}
-            >
-              <div className='flex items-center p-2 rounded-lg cursor-pointer text-light-text-secondary dark:text-dark-text-secondary hover:bg-[#e5e7eb] dark:hover:bg-[#4d4d4e] group'>
-                <CertificateSvg className='w-5 h-5 transition duration-75 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary' />
-                <span className='ms-3 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary'>
-                  Certifications
-                </span>
-              </div>
-            </motion.li>
-            <motion.li
-              variants={{
-                hidden: { x: -50, opacity: 0 },
-                show: { x: 0, opacity: 1 },
-              }}
-              onClick={() => handleScroll('awards')}
-            >
-              <div className='flex items-center p-2 rounded-lg cursor-pointer text-light-text-secondary dark:text-dark-text-secondary hover:bg-[#e5e7eb] dark:hover:bg-[#4d4d4e] group'>
-                <AwardsSvg className='w-5 h-5 transition duration-75 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary' />
-                <span className='ms-3 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary'>
-                  Awards
-                </span>
-              </div>
-            </motion.li>
-            <motion.li
-              variants={{
-                hidden: { x: -50, opacity: 0 },
-                show: { x: 0, opacity: 1 },
-              }}
-              onClick={() => handleScroll('references')}
-            >
-              <div className='flex items-center p-2 rounded-lg cursor-pointer text-light-text-secondary dark:text-dark-text-secondary hover:bg-[#e5e7eb] dark:hover:bg-[#4d4d4e] group'>
-                <ReferenceSvg className='w-5 h-5 transition duration-75 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary' />
-                <span className='ms-3 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary'>
-                  References
-                </span>
-              </div>
-            </motion.li>
-            <motion.li
-              variants={{
-                hidden: { x: -50, opacity: 0 },
-                show: { x: 0, opacity: 1 },
-              }}
-              onClick={() => handleScroll('languages')}
-            >
-              <div className='flex items-center p-2 rounded-lg cursor-pointer text-light-text-secondary dark:text-dark-text-secondary hover:bg-[#e5e7eb] dark:hover:bg-[#4d4d4e] group'>
-                <LanguageSvg className='w-5 h-5 transition duration-75 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary' />
-                <span className='ms-3 group-hover:text-light-text-primary dark:group-hover:text-dark-text-primary'>
-                  Languages
-                </span>
-              </div>
-            </motion.li>
-          </motion.ul>
+            <BackSvg className='h-4 w-4' />
+            All resumes
+          </button>
+          <div className='mb-2 px-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-light-text-secondary dark:text-dark-text-secondary'>
+            Sections
+          </div>
+          <ul className='space-y-0.5'>
+            {sections.map((section) => {
+              const Icon = section.icon;
+              const isActive = active === section.key;
+              return (
+                <li key={section.key}>
+                  <button
+                    type='button'
+                    onClick={() => handleScroll(section.key)}
+                    className={`relative flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-[13px] transition-colors duration-150 ${
+                      isActive
+                        ? 'before:absolute before:inset-y-1.5 before:left-0 before:w-[3px] before:rounded-full before:bg-accent dark:before:bg-dark-accent bg-accent-soft font-semibold text-accent dark:bg-dark-accent-soft dark:text-dark-accent'
+                        : 'text-light-text-secondary hover:bg-light-background hover:text-light-text-primary dark:text-dark-text-secondary dark:hover:bg-dark-background dark:hover:text-dark-text-primary'
+                    }`}
+                  >
+                    <Icon className='h-4 w-4 shrink-0' />
+                    {section.label}
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+
+        <div className='shrink-0 border-t border-light-ring-secondary p-3 dark:border-dark-ring-secondary'>
+          <div className='rounded-lg bg-light-background px-3 py-2.5 text-[12px] leading-relaxed text-light-text-secondary dark:bg-dark-background dark:text-dark-text-secondary'>
+            Changes save to this device as you type.
+          </div>
         </div>
       </aside>
-      <div
-        className={`${
-          !isSidebarOpen ? 'hidden' : ''
-        }fixed z-40 inset-0 bg-light-background dark:bg-dark-background transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in`}
-      />
-    </div>
+
+      {isSidebarOpen && (
+        <button
+          type='button'
+          aria-label='Close menu'
+          onClick={() => setSidebarOpen(false)}
+          className='fixed inset-0 z-40 bg-black/30 lg:hidden'
+        />
+      )}
+    </>
   );
 }

@@ -26,28 +26,20 @@ export default function Slug({ params }: SlugType) {
   }
 
   return (
-    <div className='flex flex-col justify-between'>
-      <div className='w-screen flex flex-col lg:flex-row'>
-        {!isResumePreviewOpen ? (
-          <>
-            <BuilderNavbar
-              isSidebarOpen={isSidebarOpen}
-              setSidebarOpen={setSidebarOpen}
-              isResumePreviewOpen={isResumePreviewOpen}
-              setIsResumePreviewOpen={setIsResumePreviewOpen}
-            />
-            <ResumeInput resume={resume} />
-            <DesktopResumePreview resume={resume} />
-          </>
+    <div className='flex h-dvh flex-col overflow-hidden'>
+      <div className='flex min-h-0 flex-1'>
+        <BuilderNavbar
+          isSidebarOpen={isSidebarOpen}
+          setSidebarOpen={setSidebarOpen}
+          isResumePreviewOpen={isResumePreviewOpen}
+          setIsResumePreviewOpen={setIsResumePreviewOpen}
+        />
+        {isResumePreviewOpen ? (
+          <MobileResumePreview resume={resume} />
         ) : (
           <>
-            <BuilderNavbar
-              isSidebarOpen={isSidebarOpen}
-              setSidebarOpen={setSidebarOpen}
-              isResumePreviewOpen={isResumePreviewOpen}
-              setIsResumePreviewOpen={setIsResumePreviewOpen}
-            />
-            <MobileResumePreview resume={resume} />
+            <ResumeInput resume={resume} />
+            <DesktopResumePreview resume={resume} />
           </>
         )}
       </div>

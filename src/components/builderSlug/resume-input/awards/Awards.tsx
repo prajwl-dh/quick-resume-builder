@@ -41,25 +41,21 @@ export default function Awards({ resume }: { resume: ResumeInterface | undefined
   return (
     <div className={`w-full flex flex-col gap-4 ${hidden ? 'opacity-60' : ''}`}>
       <div ref={awardsRef} className='flex flex-row gap-2 items-center'>
-        <AwardsSvg className='w-8 h-8 text-light-text-primary dark:text-dark-text-primary' />
-        <p className='text text-2xl xl:text-3xl text-light-text-primary dark:text-dark-text-primary'>
+        <AwardsSvg className='h-[18px] w-[18px] shrink-0 text-accent dark:text-dark-accent' />
+        <p className='font-display text-[26px] leading-none tracking-[-0.01em]'>
           Awards
         </p>
         <SectionControls resume={resume} section='awards' />
       </div>
 
-      <div className='border-dark-text-secondary dark:border-light-text-secondary border-b-2'></div>
+      <div className='h-px bg-light-ring-secondary dark:bg-dark-ring-secondary'></div>
 
       <div className='flex flex-col gap-6'>
         {entries.map((field, index) => (
           <motion.div
             key={index}
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
-            viewport={{ once: true }}
             {...dropProps(index)}
-            className={`flex flex-col gap-4 border-dark-text-secondary dark:border-light-text-secondary border-b-2 border-dashed ${
+            className={`flex flex-col gap-4 border-b border-light-ring-secondary dark:border-dark-ring-secondary ${
               dragIndex === index ? 'opacity-40' : ''
             }`}
           >
@@ -107,7 +103,7 @@ export default function Awards({ resume }: { resume: ResumeInterface | undefined
         onClick={() => dispatch(addNewResumeAward({ id: resume?.id ?? '' }))}
         className='self-start flex flex-row items-center gap-2 text-light-text-secondary text text-md dark:text-dark-text-secondary hover:text-light-text-primary hover:dark:text-dark-text-primary cursor-pointer group'
       >
-        <p className='text text-lg'> + </p>
+        <span aria-hidden='true' className='text-[18px] font-light leading-none'>+</span>
         <p className='underline underline-offset-2'>Add Award</p>
       </button>
     </div>

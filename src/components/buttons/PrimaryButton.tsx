@@ -16,7 +16,7 @@ export default function PrimaryButton({
     <button
       {...props}
       className={classNames(
-        'text-light-button-primary-text dark:text-dark-button-primary-text bg-light-button-primary-background dark:bg-dark-button-primary-background hover:bg-light-button-primary-active dark:hover:bg-dark-button-primary-active ring-1 ring-light-button-primary-background dark:ring-dark-button-primary-background hover:ring-light-button-primary-active dark:hover:ring-dark-button-primary-active px-3 py-1.5 rounded-md shadow-sm outline-none transition duration-200 text-md hover:-translate-y-0.5',
+        'inline-flex items-center justify-center gap-2 rounded-lg bg-light-button-primary-background px-4 py-2.5 text-sm font-medium text-light-button-primary-text shadow-sm transition-colors duration-150 hover:bg-light-button-primary-active active:bg-light-button-primary-background disabled:pointer-events-none disabled:opacity-40 dark:bg-dark-button-primary-background dark:text-dark-button-primary-text dark:hover:bg-dark-button-primary-active dark:active:bg-dark-button-primary-background',
         className
       )}
     >

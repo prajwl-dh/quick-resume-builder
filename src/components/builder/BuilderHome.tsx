@@ -1,11 +1,8 @@
 'use client';
 import { useAppSelector } from '@/lib/store/hooks';
-import { motion } from 'framer-motion';
 import { useState } from 'react';
-import SecondaryButton from '../buttons/SecondaryButton';
+import PrimaryButton from '../buttons/PrimaryButton';
 import CreateConfirmationPopup from './createNew/CreateConfirmationPopup';
-import CreateNew from './createNew/CreateNew';
-import { CreateSvg } from './createNew/CreateSvg';
 import ExampleResume from './createExampleResume/ExampleResume';
 import PreviousResumes from './previousResumes/PreviousResumes';
 
@@ -13,48 +10,60 @@ export default function BuilderHome() {
   const resumes = useAppSelector((state) => state.resumeReducer.value);
   const [open, setOpen] = useState<boolean>(false);
 
-  // The example is opened from the button above, not shown as a saved resume.
   const savedResumes = resumes.filter((resume) => !resume.isExample);
 
   return (
-    <div className='w-full 2xl:w-11/12 px-5 md:px-1 py-5 md:py-10 flex flex-col justify-center items-center mb-10'>
-      <div className='flex flex-row justify-end items-center gap-4 w-full mb-6'>
-        <ExampleResume />
-        <CreateNew />
-      </div>
+    <div className='mx-auto max-w-shell px-5 py-12 md:px-10 md:py-16'>
+      <header className='flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between'>
+        <div>
+          <div className='eyebrow'>Workspace</div>
+          <h1 className='mt-3 font-display text-4xl tracking-[-0.02em] sm:text-5xl'>
+            Your resumes
+          </h1>
+          <p className='mt-2 text-[14px] text-light-text-secondary dark:text-dark-text-secondary'>
+            Saved on this device. Nothing leaves your browser.
+          </p>
+        </div>
+        <div className='flex flex-wrap items-center gap-3'>
+          <ExampleResume />
+          <PrimaryButton onClick={() => setOpen(true)}>New resume</PrimaryButton>
+        </div>
+      </header>
 
       {savedResumes.length === 0 ? (
-        <>
-          <div className='w-full flex justify-start'>
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 100 }}
-              viewport={{ once: true }}
-              transition={{ type: 'spring' }}
-              onClick={() => setOpen(true)}
-              className='h-60 md:h-80 w-full md:w-72 p-3 gap-1 flex flex-col justify-start items-center rounded-md ring-1 ring-light-ring-secondary dark:ring-dark-ring-secondary hover:ring-light-ring-primary hover:dark:ring-dark-ring-primary bg-light-foreground dark:bg-dark-foreground cursor-pointer hover:shadow-sm group'
-            >
-              <div className='flex-grow flex justify-center items-center'>
-                <CreateSvg className='text text-5xl md:text-7xl text-light-text-primary dark:text-dark-text-primary group-hover:scale-125 transition duration-300' />
-              </div>
-              <p className='text text-md font-bold self-start text-light-text-primary dark:text-dark-text-primary'>
-                Create New Resume
-              </p>
-              <p className='text text-sm text-light-text-secondary self-start dark:text-dark-text-secondary'>
-                Create a brand new resume from scratch
-              </p>
-              <SecondaryButton className='dark:bg-dark-foreground self-start mt-2'>
-                Create Resume
-              </SecondaryButton>
-            </motion.div>
+        <div className='mt-12 rounded-xl border border-dashed border-light-ring-secondary bg-light-foreground/50 px-6 py-16 text-center dark:border-[#454B53] dark:bg-dark-foreground/40'>
+          <div className='mx-auto flex h-11 w-11 items-center justify-center rounded-lg bg-accent-soft text-accent dark:bg-dark-accent-soft dark:text-dark-accent'>
+            <svg width='22' height='22' viewBox='0 0 24 24' fill='none' aria-hidden='true'>
+              <path
+                d='M7 3.5h6.5L18 8v11a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 6 19V5a1.5 1.5 0 0 1 1-1.5Z'
+                stroke='currentColor'
+                strokeWidth='1.6'
+                strokeLinejoin='round'
+              />
+              <path
+                d='M13.5 3.5V8H18M9.5 13h5M9.5 16.5h3.5'
+                stroke='currentColor'
+                strokeWidth='1.6'
+                strokeLinecap='round'
+                strokeLinejoin='round'
+              />
+            </svg>
           </div>
-          <CreateConfirmationPopup open={open} setOpen={setOpen} />
-        </>
+          <h2 className='mt-5 text-[17px] font-semibold tracking-[-0.01em]'>
+            No resumes yet
+          </h2>
+          <p className='mx-auto mt-2 max-w-sm text-[14px] leading-[1.65] text-light-text-secondary dark:text-dark-text-secondary'>
+            Use “New resume” above to start from a blank page, or open the
+            example to see how a finished resume is put together.
+          </p>
+        </div>
       ) : (
-        <div className='w-full grid grid-cols-1 md:grid-cols-[repeat(auto-fill,minmax(270px,1fr))] gap-10'>
+        <div className='mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3'>
           <PreviousResumes />
         </div>
       )}
+
+      <CreateConfirmationPopup open={open} setOpen={setOpen} />
     </div>
   );
 }

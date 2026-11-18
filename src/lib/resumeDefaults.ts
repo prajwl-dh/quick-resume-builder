@@ -90,7 +90,7 @@ export const DEFAULT_SECTION_ORDER: SectionKey[] = [
 
 export const DEFAULT_THEME: ResumeTheme = {
   template: 'classic',
-  color: '#1f2937',
+  color: '#1E6B54',
   font: 'Helvetica',
   onePage: true,
 };
@@ -102,6 +102,7 @@ export const TEMPLATE_OPTIONS: { value: ResumeTheme['template']; label: string; 
 ];
 
 export const COLOR_OPTIONS = [
+  { value: '#1E6B54', label: 'Forest' },
   { value: '#1f2937', label: 'Slate' },
   { value: '#2563eb', label: 'Blue' },
   { value: '#0f766e', label: 'Teal' },
@@ -253,6 +254,87 @@ export function legacyToLanguageItems(value?: string): ResumeLanguage[] {
     });
 }
 
+/** True when a section has anything worth printing. Empty sections are skipped in output. */
+export function sectionHasContent(
+  resume: ResumeInterface | undefined,
+  section: SectionKey
+): boolean {
+  if (!resume) return false;
+  const hasText = (value?: string) => Boolean(value?.trim());
+  const hasRange = (range?: { startMonth?: string; startYear?: string; endMonth?: string; endYear?: string; present?: boolean }) =>
+    Boolean(
+      range?.present ||
+        hasText(range?.startMonth) ||
+        hasText(range?.startYear) ||
+        hasText(range?.endMonth) ||
+        hasText(range?.endYear)
+    );
+
+  switch (section) {
+    case 'profile':
+      return [
+        resume.profile.fullName,
+        resume.profile.intro,
+        resume.profile.email,
+        resume.profile.phone,
+        resume.profile.location,
+        resume.profile.website,
+        resume.profile.linkedIn,
+        resume.profile.gitHub,
+        resume.profile.summary,
+        ...(resume.profile.profileCustomField ?? []).map((field) => field.fieldValue),
+      ].some(hasText);
+    case 'skills':
+      return (
+        (resume.skillGroups ?? []).some((group) =>
+          group.skills.some((skill) => hasText(skill))
+        ) || hasText(resume.skills)
+      );
+    case 'experience':
+      return (resume.experience ?? []).some(
+        (entry) =>
+          [entry.companyName, entry.jobTitle, entry.jobDescription].some(hasText) ||
+          hasRange(entry.jobDateRange)
+      );
+    case 'education':
+      return (resume.education ?? []).some(
+        (entry) =>
+          [entry.schoolName, entry.schoolMajor, entry.schoolGPA, entry.schoolDescription].some(hasText) ||
+          hasRange(entry.schoolDateRange)
+      );
+    case 'projects':
+    case 'certifications':
+    case 'awards':
+    case 'references': {
+      const nameKey: Record<string, string> = {
+        projects: 'projectName',
+        certifications: 'certificationName',
+        awards: 'awardName',
+        references: 'referenceName',
+      };
+      const descriptionKey: Record<string, string> = {
+        projects: 'projectDescription',
+        certifications: 'certificationDescription',
+        awards: 'awardDescription',
+        references: 'referenceDescription',
+      };
+      const entries = ((resume as any)[section] ?? []) as Record<string, any>[];
+      return entries.some(
+        (entry) =>
+          hasText(entry[nameKey[section]]) || hasText(entry[descriptionKey[section]])
+      );
+    }
+    case 'languages':
+      return (
+        (resume.languageItems ?? []).some(
+          (item) => hasText(item.name) || hasText(item.proficiency)
+        ) || hasText(resume.languages)
+      );
+    default:
+      return false;
+  }
+}
+
 export function normalizeResume(resume: ResumeInterface): ResumeInterface {
   const sectionOrder =
     resume.sectionOrder && resume.sectionOrder.length
@@ -355,7 +437,7 @@ export function createExampleResume(): ResumeInterface {
           present: true,
         },
         jobDescription:
-          'Led a team of 4 engineers to rebuild the customer dashboard, improving load time by 45%.\nIntroduced a shared component library now used across 6 product teams.\nMentored two junior developers through weekly pairing and code reviews.',
+          'Led a small team rebuilding the customer dashboard, making it noticeably faster to load.\nIntroduced a shared component library now used across the product teams.\nMentored two junior developers through weekly pairing and code reviews.',
       },
       {
         companyName: 'Pixel & Code',
@@ -369,7 +451,7 @@ export function createExampleResume(): ResumeInterface {
           present: false,
         },
         jobDescription:
-          'Built responsive e-commerce experiences for 20+ clients using React and Next.js.\nReduced bundle size by 30% through code splitting and image optimization.',
+          'Built responsive storefronts for clients in retail and hospitality using React and Next.js.\nReduced bundle size through code splitting and image optimization.',
       },
     ],
     education: [
@@ -393,7 +475,7 @@ export function createExampleResume(): ResumeInterface {
       {
         projectName: 'OpenUI Component Library',
         projectDescription:
-          'An accessible React component library with 40+ components and full TypeScript support.\nOpen-source project with 1.2k stars on GitHub.',
+          'An accessible React component library with full TypeScript support.\nShared as an open-source project and used by a handful of small teams.',
       },
       {
         projectName: 'Weatherly',
@@ -432,7 +514,7 @@ export function createExampleResume(): ResumeInterface {
     hiddenSections: [],
     theme: {
       template: 'modern',
-      color: '#2563eb',
+      color: '#1E6B54',
       font: 'Helvetica',
       onePage: true,
     },

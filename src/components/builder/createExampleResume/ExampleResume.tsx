@@ -9,7 +9,7 @@ export default function ExampleResume() {
 
   return (
     <SecondaryButton onClick={() => router.push(`/builder/${EXAMPLE_RESUME_ID}`)}>
-      View Example Resume
+      View example
     </SecondaryButton>
   );
 }

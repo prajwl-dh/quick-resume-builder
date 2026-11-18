@@ -1,27 +1,27 @@
-'use client';
-
-import { motion } from 'framer-motion';
-
 export default function Footer() {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.3, type: 'spring' }}
-      className='w-full h-[60px] px-1 md:px-14 justify-center items-center flex flex-row bg-light-foreground dark:bg-dark-foreground backdrop-blur-md bg-opacity-50 dark:bg-opacity-50 border-t-[1px] border-slate-200 dark:border-stone-700 fixed bottom-0'
-    >
-      <div className='flex flex-row gap-0.5 justify-center items-center font-mono'>
-        <p className='text text-sm m text-light-text-primary dark:text-dark-text-primary'>
-          A Fun Project By - @
-        </p>
-        <a
-          className='text text-sm font-bold underline underline-offset-4 text-light-text-primary dark:text-dark-text-primary'
-          href='https://prajwalonline.com'
-          target='_blank'
-        >
-          prajwl-dh
-        </a>
+    <footer className='w-full border-t border-light-ring-secondary dark:border-dark-ring-secondary bg-light-foreground/50 dark:bg-dark-foreground/40'>
+      <div className='mx-auto flex max-w-shell flex-col gap-3 px-5 py-6 text-[13px] text-light-text-secondary dark:text-dark-text-secondary sm:flex-row sm:items-center sm:justify-between md:px-10'>
+        <p>Quick Resume — free and open source. Your documents stay with you.</p>
+        <div className='flex items-center gap-6'>
+          <a
+            className='transition-colors hover:text-accent dark:hover:text-dark-accent'
+            href='https://github.com/prajwl-dh/quick-resume-builder'
+            target='_blank'
+            rel='noreferrer'
+          >
+            Source
+          </a>
+          <a
+            className='transition-colors hover:text-accent dark:hover:text-dark-accent'
+            href='https://prajwalonline.com'
+            target='_blank'
+            rel='noreferrer'
+          >
+            prajwl-dh
+          </a>
+        </div>
       </div>
-    </motion.div>
+    </footer>
   );
 }

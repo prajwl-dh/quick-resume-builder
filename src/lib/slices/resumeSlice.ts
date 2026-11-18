@@ -87,6 +87,7 @@ export const resumeSlice = createSlice({
           last_accessed: new Date().toUTCString(),
           profile: {
             fullName: action.payload.fullName,
+            intro: action.payload.title,
           },
           skills: '',
           skillGroups: [{ id: uuidv4(), name: 'Skills', skills: [] }],

@@ -13,14 +13,14 @@ export default function Skills({ resume }: { resume: ResumeInterface | undefined
   return (
     <div className={`w-full flex flex-col gap-4 ${hidden ? 'opacity-60' : ''}`}>
       <div ref={skillsRef} className='flex flex-row gap-2 items-center'>
-        <SkillsSvg className='w-8 h-8 text-light-text-primary dark:text-dark-text-primary' />
-        <p className='text text-2xl xl:text-3xl text-light-text-primary dark:text-dark-text-primary'>
+        <SkillsSvg className='h-[18px] w-[18px] shrink-0 text-accent dark:text-dark-accent' />
+        <p className='font-display text-[26px] leading-none tracking-[-0.01em]'>
           Skills
         </p>
         <SectionControls resume={resume} section='skills' />
       </div>
 
-      <div className='border-dark-text-secondary dark:border-light-text-secondary border-b-2'></div>
+      <div className='h-px bg-light-ring-secondary dark:bg-dark-ring-secondary'></div>
 
       <SkillsPicker resume={resume} />
     </div>

@@ -3,19 +3,19 @@ import Home from '@/components/home/Home';
 import Navbar from '@/components/navbar/Navbar';
 import ScrollToTheTop from '@/components/scroll-to-top/ScrollToTheTop';
 
-export default function page() {
+export default function HomePage() {
   return (
-    <div className='flex flex-col justify-between mt-[70px]'>
+    <div className='flex min-h-dvh flex-col'>
       <Navbar
-        initial={{ opacity: 0, y: -10 }}
+        initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3, type: 'spring' }}
+        transition={{ delay: 0.1, type: 'spring', stiffness: 260, damping: 26 }}
       />
-      <div className='w-screen h-[calc(100vh-80px)] px-1 md:px-14 flex flex-col items-center bg-[linear-gradient(to_right,#80808010_1px,transparent_1px),linear-gradient(to_bottom,#80808010_1px,transparent_1px)] bg-[size:100px_100px] dark:bg-[linear-gradient(to_right,#80808015_1px,transparent_1px),linear-gradient(to_bottom,#80808015_1px,transparent_1px)]'>
+      <main className='flex-1 pt-16'>
         <Home />
-        <ScrollToTheTop />
-      </div>
+      </main>
       <Footer />
+      <ScrollToTheTop />
     </div>
   );
 }

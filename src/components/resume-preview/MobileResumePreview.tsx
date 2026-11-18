@@ -1,7 +1,7 @@
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
 import { ResumeInterface } from '../builder/previousResumes/ResumeInterface';
 import PreviewToolbar from './PreviewToolbar';
-import ResumeDocument from './ResumeDocument';
+import ResumePaper from './ResumePaper';
 import useOnePageHeight from './useOnePageHeight';
 
 export default function MobileResumePreview({
@@ -9,13 +9,10 @@ export default function MobileResumePreview({
 }: {
   resume: ResumeInterface | undefined;
 }) {
-  const { measureRef, pageHeight } = useOnePageHeight(
-    resume,
-    Boolean(resume?.theme?.onePage)
-  );
+  const { measureRef, pageHeight } = useOnePageHeight(resume);
 
   return (
-    <div className='bg-light-background dark:bg-dark-foreground h-[calc(100dvh-56px)] lg:hidden w-full fixed mt-14 flex flex-col justify-center items-center overflow-hidden'>
+    <div className='fixed inset-x-0 bottom-0 top-14 z-30 flex flex-col overflow-hidden bg-[#EDECE7] dark:bg-[#0B0C0E] lg:hidden'>
       <TransformWrapper
         initialScale={1}
         minScale={0.6}
@@ -29,11 +26,20 @@ export default function MobileResumePreview({
               setTransform={setTransform}
               pageHeight={pageHeight}
             />
-
-            <TransformComponent>
-              <div className='bg-white border-[1px] shadow-md rounded-md mx-2 mb-10 px-2 sm:px-4 mt-24 min-h-[90dvh] w-[calc(100dvw-15px)] cursor-grab'>
-                <div ref={measureRef}>
-                  <ResumeDocument resume={resume} />
+            <TransformComponent
+              wrapperStyle={{ width: '100%', height: '100%' }}
+              contentStyle={{
+                width: '100%',
+                boxSizing: 'border-box',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'flex-start',
+                padding: '60px 12px 72px',
+              }}
+            >
+              <div className='w-full max-w-[794px] overflow-hidden rounded-lg border border-light-ring-secondary bg-white shadow-paper-lg dark:border-dark-ring-secondary'>
+                <div ref={measureRef} className='px-6 py-8 sm:px-10 sm:py-10'>
+                  <ResumePaper resume={resume} />
                 </div>
               </div>
             </TransformComponent>

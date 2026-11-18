@@ -1,7 +1,7 @@
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
 import { ResumeInterface } from '../builder/previousResumes/ResumeInterface';
 import PreviewToolbar from './PreviewToolbar';
-import ResumeDocument from './ResumeDocument';
+import ResumePaper from './ResumePaper';
 import useOnePageHeight from './useOnePageHeight';
 
 export default function DesktopResumePreview({
@@ -9,13 +9,10 @@ export default function DesktopResumePreview({
 }: {
   resume: ResumeInterface | undefined;
 }) {
-  const { measureRef, pageHeight } = useOnePageHeight(
-    resume,
-    Boolean(resume?.theme?.onePage)
-  );
+  const { measureRef, pageHeight } = useOnePageHeight(resume);
 
   return (
-    <div className='hidden lg:flex flex-col bg-white dark:bg-dark-foreground justify-center items-center fixed max-h-dvh w-[calc(100vw-(16rem+35vw))] 2xl:w-[calc(100vw-(16rem+40vw))] lg:ml-[calc(16rem+35vw)] 2xl:ml-[calc(16rem+40vw)] overflow-hidden'>
+    <div className='relative hidden min-h-0 flex-1 flex-col overflow-hidden bg-[#EDECE7] dark:bg-[#0B0C0E] lg:flex'>
       <TransformWrapper initialScale={1} minScale={0.6} maxScale={1}>
         {({ setTransform }) => (
           <>
@@ -24,11 +21,20 @@ export default function DesktopResumePreview({
               setTransform={setTransform}
               pageHeight={pageHeight}
             />
-
-            <TransformComponent>
-              <div className='bg-white border-[1px] shadow-md rounded-md mx-2 xl:mx-10 mb-10 mt-24 px-2 sm:px-4 min-h-[90dvh] cursor-grab min-w-[calc(100vw-(16rem+35vw+24px))] 2xl:min-w-[calc(100vw-(16rem+40vw+80px))] antialiased'>
-                <div ref={measureRef}>
-                  <ResumeDocument resume={resume} />
+            <TransformComponent
+              wrapperStyle={{ width: '100%', height: '100%' }}
+              contentStyle={{
+                width: '100%',
+                boxSizing: 'border-box',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'flex-start',
+                padding: '60px 24px 72px',
+              }}
+            >
+              <div className='w-full max-w-[794px] overflow-hidden rounded-lg border border-light-ring-secondary bg-white shadow-paper-lg dark:border-dark-ring-secondary'>
+                <div ref={measureRef} className='px-10 py-10 2xl:px-14 2xl:py-12'>
+                  <ResumePaper resume={resume} />
                 </div>
               </div>
             </TransformComponent>

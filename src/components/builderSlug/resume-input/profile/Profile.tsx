@@ -60,20 +60,20 @@ export default function Profile({
   return (
     <div className={`w-full flex flex-col gap-4 mt-2 ${hidden ? 'opacity-60' : ''}`}>
       <div ref={profileRef} className='flex flex-row gap-2 items-center'>
-        <ProfileSvg className='w-8 h-8 text-light-text-primary dark:text-dark-text-primary' />
-        <p className='text text-2xl xl:text-3xl text-light-text-primary dark:text-dark-text-primary'>
+        <ProfileSvg className='h-[18px] w-[18px] shrink-0 text-accent dark:text-dark-accent' />
+        <p className='font-display text-[26px] leading-none tracking-[-0.01em]'>
           Profile
         </p>
         <SectionControls resume={resume} section='profile' />
       </div>
 
-      <div className='border-dark-text-secondary dark:border-light-text-secondary border-b-2'></div>
+      <div className='h-px bg-light-ring-secondary dark:bg-dark-ring-secondary'></div>
 
       <InputField
         label='Full Name'
         type='text'
         name='fullName'
-        placeholder='John Doe Smith'
+        placeholder='Alex Morgan'
         value={resume?.profile.fullName || undefined}
         onChange={(e) => handleChange(e)}
       />
@@ -84,10 +84,10 @@ export default function Profile({
         onChange={(e) => handleChange(e)}
         type='text'
         value={resume?.profile.intro || ''}
-        placeholder='An Innovative Web Developer'
+        placeholder='Senior Frontend Engineer'
       />
 
-      <div className='flex flex-row flex-wrap justify-start gap-2'>
+      <div className='grid grid-cols-1 gap-3 sm:grid-cols-2'>
         <InputField
           label='Email'
           type='email'
@@ -107,7 +107,7 @@ export default function Profile({
         />
       </div>
 
-      <div className='flex flex-row flex-wrap justify-start gap-2'>
+      <div className='grid grid-cols-1 gap-3 sm:grid-cols-2'>
         <InputField
           label='Phone'
           type='tel'
@@ -123,11 +123,11 @@ export default function Profile({
           name='website'
           onChange={(e) => handleChange(e)}
           value={resume?.profile.website || ''}
-          placeholder='https://portforlio.com'
+          placeholder='https://alexmorgan.dev'
         />
       </div>
 
-      <div className='flex flex-row flex-wrap justify-start gap-2'>
+      <div className='grid grid-cols-1 gap-3 sm:grid-cols-2'>
         <InputField
           label='LinkedIn'
           type='url'
@@ -177,7 +177,7 @@ export default function Profile({
         onClick={() => setOpen(true)}
         className='flex flex-row items-center gap-2 text-light-text-secondary text text-md dark:text-dark-text-secondary hover:text-light-text-primary hover:dark:text-dark-text-primary cursor-pointer group'
       >
-        <p className='text text-lg'> + </p>
+        <span aria-hidden='true' className='text-[18px] font-light leading-none'>+</span>
         <p className='underline underline-offset-2'>Add a custom field</p>
       </div>
 

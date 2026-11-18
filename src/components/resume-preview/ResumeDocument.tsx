@@ -1,6 +1,10 @@
 import { Document, Page, Text, View } from '@react-pdf/renderer';
 import { ResumeInterface, SectionKey } from '../builder/previousResumes/ResumeInterface';
-import { DEFAULT_SECTION_ORDER, DEFAULT_THEME } from '@/lib/resumeDefaults';
+import {
+  DEFAULT_SECTION_ORDER,
+  DEFAULT_THEME,
+  sectionHasContent,
+} from '@/lib/resumeDefaults';
 import { ReactNode } from 'react';
 
 const lines = (value?: string): string[] =>
@@ -307,7 +311,7 @@ export default function ResumeDocument({
                 {(entry as any)[nameKey[section]]}
               </Text>
               {(entry as any)[descriptionKey[section]] ? (
-                <Text style={{ fontSize: 10, fontWeight: 600 }}>Description :</Text>
+                <Text style={{ fontSize: 10, fontWeight: 600 }}>Details</Text>
               ) : null}
               <View
                 style={{
@@ -385,7 +389,9 @@ export default function ResumeDocument({
       >
         <View style={{ color: 'black', fontFamily: theme.font }}>
           {order
-            .filter((section) => !hidden.includes(section))
+            .filter(
+              (section) => !hidden.includes(section) && sectionHasContent(resume, section)
+            )
             .map((section) => (
               <View key={section}>{sectionViews[section]}</View>
             ))}

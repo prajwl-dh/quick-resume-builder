@@ -4,10 +4,110 @@
 
 @layer base {
   html {
-    @apply p-0 m-0 overflow-hidden overflow-y-auto scroll-smooth;
+    @apply m-0 p-0 scroll-smooth antialiased;
+    -webkit-text-size-adjust: 100%;
   }
 
   body {
-    @apply bg-light-background dark:bg-dark-background flex flex-col place-items-center;
+    @apply bg-light-background text-light-text-primary dark:bg-dark-background dark:text-dark-text-primary font-sans;
+    min-height: 100dvh;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background-color: #c9e4d8;
+    color: #142d24;
+  }
+
+  .dark ::selection {
+    background-color: #1d4a3c;
+    color: #eafaf3;
+  }
+
+  /* One consistent focus treatment everywhere. */
+  :where(button, a, input, textarea, select, [tabindex]):focus-visible {
+    outline: 2px solid #1e6b54;
+    outline-offset: 2px;
+  }
+
+  .dark :where(button, a, input, textarea, select, [tabindex]):focus-visible {
+    outline-color: #63c7a7;
+  }
+
+  /* Scrollbars that belong to the surface, not the browser default. */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #d5d3cb transparent;
+  }
+
+  .dark * {
+    scrollbar-color: #353941 transparent;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #d5d3cb;
+    border: 3px solid transparent;
+    background-clip: content-box;
+    border-radius: 999px;
+  }
+
+  .dark ::-webkit-scrollbar-thumb {
+    background: #353941;
+    background-clip: content-box;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+@layer components {
+  /* Restrained surfaces used across the app. */
+  .surface {
+    @apply bg-light-foreground dark:bg-dark-foreground border border-light-ring-secondary dark:border-dark-ring-secondary;
+  }
+
+  .hairline {
+    @apply border-light-ring-secondary dark:border-dark-ring-secondary;
+  }
+
+  /* Labels above form controls. */
+  .field-label {
+    @apply block text-[13px] font-medium tracking-[-0.005em] text-light-text-secondary dark:text-dark-text-secondary;
+  }
+
+  /* Quiet inline action (add item, text link). */
+  .quiet-action {
+    @apply inline-flex items-center gap-1.5 text-[13px] font-medium text-light-text-secondary dark:text-dark-text-secondary transition-colors duration-150 hover:text-accent dark:hover:text-dark-accent;
+  }
+
+  /* Small section label. Named "eyebrow" to avoid Tailwind's `overline` utility. */
+  .eyebrow {
+    @apply text-[11px] font-semibold uppercase tracking-[0.16em] text-light-text-secondary dark:text-dark-text-secondary;
+  }
+}
+
+/* iOS zooms the page when a focused field is under 16px. */
+@media (max-width: 639px) {
+  input,
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

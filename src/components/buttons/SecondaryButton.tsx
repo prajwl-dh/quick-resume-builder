@@ -16,7 +16,7 @@ export default function SecondaryButton({
     <button
       {...props}
       className={classNames(
-        'text-light-button-secondary-text dark:text-dark-button-secondary-text bg-light-button-secondary-background dark:bg-dark-button-secondary-background hover:bg-light-button-secondary-active dark:hover:bg-dark-button-secondary-active ring-1 ring-light-ring-secondary dark:ring-dark-ring-secondary dark:hover:ring-dark-ring-primary px-3 py-1.5 rounded-md outline-none transition duration-200 text-md shadow-sm hover:-translate-y-0.5',
+        'inline-flex items-center justify-center gap-2 rounded-lg border border-light-ring-secondary bg-light-button-secondary-background px-4 py-2.5 text-sm font-medium text-light-button-secondary-text transition-colors duration-150 hover:border-light-ring-primary hover:bg-light-button-secondary-active disabled:pointer-events-none disabled:opacity-40 dark:border-dark-ring-secondary dark:bg-dark-button-secondary-background dark:text-dark-button-secondary-text dark:hover:border-dark-ring-primary dark:hover:bg-dark-button-secondary-active',
         className
       )}
     >

@@ -14,34 +14,44 @@ import { FaChevronDown } from 'react-icons/fa6';
 import ResumeDocument from './ResumeDocument';
 
 const downloadClass =
-  'whitespace-nowrap text-light-button-primary-text dark:text-dark-button-primary-text bg-light-button-primary-background dark:bg-dark-button-primary-background hover:bg-light-button-primary-active dark:hover:bg-dark-button-primary-active ring-1 ring-light-button-primary-background dark:ring-dark-button-primary-background hover:ring-light-button-primary-active dark:hover:ring-dark-button-primary-active px-2 sm:px-3 py-1.5 rounded-md shadow-sm outline-none transition duration-200 text-sm sm:text-md hover:-translate-y-0.5';
+  'inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-lg bg-light-button-primary-background px-3 py-2 text-[12px] font-medium text-light-button-primary-text transition-colors duration-150 hover:bg-light-button-primary-active dark:bg-dark-button-primary-background dark:text-dark-button-primary-text dark:hover:bg-dark-button-primary-active';
 
 const menuButtonClass =
-  'flex items-center gap-1 px-2 py-1.5 rounded-md ring-1 ring-light-ring-secondary dark:ring-dark-ring-secondary bg-light-foreground dark:bg-dark-foreground text-light-text-secondary dark:text-dark-text-secondary hover:text-light-text-primary dark:hover:text-dark-text-primary text-sm';
+  'group inline-flex h-9 items-center gap-1.5 rounded-full px-2.5 text-[12px] text-light-text-secondary transition-colors duration-150 hover:bg-black/[0.06] hover:text-light-text-primary dark:text-dark-text-secondary dark:hover:bg-white/10 dark:hover:text-dark-text-primary';
 
 const menuItemsClass =
-  '[--anchor-gap:6px] z-[60] w-56 rounded-md ring-1 ring-light-ring-secondary dark:ring-dark-ring-secondary bg-light-background dark:bg-dark-background p-1.5 shadow-lg';
+  'z-[60] w-56 rounded-lg border border-light-ring-secondary bg-light-foreground p-1.5 shadow-paper-lg [--anchor-gap:6px] dark:border-dark-ring-secondary dark:bg-dark-foreground';
 
 const menuItemClass =
-  'flex flex-row items-center gap-2 w-full px-2 py-1.5 rounded-md text-sm text-light-text-secondary dark:text-dark-text-secondary hover:bg-[#e5e7eb] dark:hover:bg-dark-foreground cursor-pointer';
+  'flex w-full flex-row items-center gap-2.5 rounded-md px-2.5 py-2 text-[12px] text-light-text-secondary transition-colors hover:bg-light-background hover:text-light-text-primary dark:text-dark-text-secondary dark:hover:bg-dark-background dark:hover:text-dark-text-primary';
 
 function ToolbarMenu({
   label,
   value,
+  swatch,
   children,
 }: {
   label: string;
   value: string;
+  swatch?: string;
   children: React.ReactNode;
 }) {
   return (
     <Menu as='div' className='relative'>
       <MenuButton className={menuButtonClass} title={label}>
-        <span className='hidden 2xl:inline text-xs opacity-70'>{label}:</span>
-        <span className='font-medium'>{value}</span>
-        <FaChevronDown className='h-3 w-3' />
+        <span className='hidden text-[11px] sm:inline'>{label}</span>
+        <span className='flex items-center gap-1.5 font-medium text-light-text-primary dark:text-dark-text-primary'>
+          {swatch ? (
+            <span
+              className='h-2.5 w-2.5 shrink-0 rounded-full border border-black/10 dark:border-white/20'
+              style={{ backgroundColor: swatch }}
+            />
+          ) : null}
+          {value}
+        </span>
+        <FaChevronDown className='h-3 w-3 opacity-70 transition-transform duration-150 group-data-[open]:rotate-180' />
       </MenuButton>
-      <MenuItems anchor='bottom start' className={menuItemsClass}>
+      <MenuItems anchor='top start' className={menuItemsClass}>
         {children}
       </MenuItems>
     </Menu>
@@ -67,15 +77,63 @@ export default function PreviewToolbar({
     TEMPLATE_OPTIONS.find((option) => option.value === theme?.template)?.label ??
     'Classic';
   const colorLabel =
-    COLOR_OPTIONS.find((option) => option.value === theme?.color)?.label ??
-    'Slate';
+    COLOR_OPTIONS.find((option) => option.value === theme?.color)?.label ?? 'Forest';
   const fontLabel =
     FONT_OPTIONS.find((option) => option.value === theme?.font)?.label ?? 'Sans';
 
+  const fileName = `Resume_${resume?.profile.fullName}`;
+
   return (
-    <div className='absolute top-0 z-50 w-full bg-white dark:bg-dark-foreground border-b border-light-ring-secondary dark:border-dark-ring-secondary px-2 sm:px-4 py-2'>
-      <div className='flex flex-row flex-wrap items-center justify-between gap-x-2 gap-y-1'>
-        <div className='flex flex-row items-center gap-1 sm:gap-2'>
+    <>
+      <div className='absolute inset-x-0 top-0 z-40 flex items-center justify-end border-b border-light-ring-secondary bg-light-foreground/95 px-2 py-2 backdrop-blur-xl dark:border-dark-ring-secondary dark:bg-dark-foreground/95 sm:px-4'>
+        <div className='flex shrink-0 items-center gap-1.5 sm:gap-2'>
+          <SecondaryButton
+            className='h-8 px-2.5 py-0 text-[12px] xl:px-3'
+            onClick={() => setTransform(0, 0, 1)}
+          >
+            <span className='hidden xl:inline'>Reset zoom</span>
+            <span className='xl:hidden'>Reset</span>
+          </SecondaryButton>
+          <Menu as='div' className='relative'>
+            <MenuButton className={downloadClass}>
+              <span className='hidden xl:inline'>Download PDF</span>
+              <span className='xl:hidden'>PDF</span>
+              <FaChevronDown className='h-3 w-3' />
+            </MenuButton>
+            <MenuItems anchor='bottom end' className={menuItemsClass}>
+              <MenuItem as='div'>
+                <PDFDownloadLink
+                  className={menuItemClass}
+                  document={
+                    <ResumeDocument resume={resume} pageHeight={pageHeight} />
+                  }
+                  fileName={fileName}
+                >
+                  <span className='flex flex-col'>
+                    <span className='font-medium'>Single page</span>
+                    <span className='text-[11px]'>Fits everything on one sheet</span>
+                  </span>
+                </PDFDownloadLink>
+              </MenuItem>
+              <MenuItem as='div'>
+                <PDFDownloadLink
+                  className={menuItemClass}
+                  document={<ResumeDocument resume={resume} />}
+                  fileName={fileName}
+                >
+                  <span className='flex flex-col'>
+                    <span className='font-medium'>Multiple pages</span>
+                    <span className='text-[11px]'>Standard letter pages</span>
+                  </span>
+                </PDFDownloadLink>
+              </MenuItem>
+            </MenuItems>
+          </Menu>
+        </div>
+      </div>
+
+      <div className='pointer-events-none absolute inset-x-0 bottom-4 z-40 flex justify-center px-3'>
+        <div className='pointer-events-auto flex items-center rounded-full border border-white/60 bg-white/80 px-1.5 py-1 shadow-[0_10px_36px_-12px_rgba(0,0,0,0.35)] backdrop-blur-2xl backdrop-saturate-150 dark:border-white/10 dark:bg-[#0B0C0E]/85'>
           <ToolbarMenu label='Template' value={templateLabel}>
             {TEMPLATE_OPTIONS.map((option) => (
               <MenuItem key={option.value}>
@@ -84,7 +142,7 @@ export default function PreviewToolbar({
                   onClick={() => update({ template: option.value })}
                 >
                   <span
-                    className='h-4 w-4 rounded-sm border border-current shrink-0'
+                    className='h-4 w-4 shrink-0 rounded-sm border border-current'
                     style={{
                       borderTopWidth: option.value === 'modern' ? 4 : 1,
                       borderColor: theme?.color,
@@ -92,7 +150,7 @@ export default function PreviewToolbar({
                   />
                   <span className='flex flex-col'>
                     <span className='font-medium'>{option.label}</span>
-                    <span className='text-xs opacity-70 hidden sm:block'>
+                    <span className='hidden text-[11px] opacity-60 sm:block'>
                       {option.description}
                     </span>
                   </span>
@@ -101,7 +159,12 @@ export default function PreviewToolbar({
             ))}
           </ToolbarMenu>
 
-          <ToolbarMenu label='Color' value={colorLabel}>
+          <span
+            aria-hidden='true'
+            className='h-4 w-px shrink-0 bg-light-ring-secondary/70 dark:bg-dark-ring-secondary/70'
+          />
+
+          <ToolbarMenu label='Color' value={colorLabel} swatch={theme?.color}>
             {COLOR_OPTIONS.map((option) => (
               <MenuItem key={option.value}>
                 <div
@@ -109,7 +172,7 @@ export default function PreviewToolbar({
                   onClick={() => update({ color: option.value })}
                 >
                   <span
-                    className='h-4 w-4 rounded-full ring-1 ring-light-ring-secondary dark:ring-dark-ring-secondary shrink-0'
+                    className='h-4 w-4 shrink-0 rounded-full border border-light-ring-secondary dark:border-dark-ring-secondary'
                     style={{ backgroundColor: option.value }}
                   />
                   <span>{option.label}</span>
@@ -117,6 +180,11 @@ export default function PreviewToolbar({
               </MenuItem>
             ))}
           </ToolbarMenu>
+
+          <span
+            aria-hidden='true'
+            className='h-4 w-px shrink-0 bg-light-ring-secondary/70 dark:bg-dark-ring-secondary/70'
+          />
 
           <ToolbarMenu label='Font' value={fontLabel}>
             {FONT_OPTIONS.map((option) => (
@@ -131,49 +199,15 @@ export default function PreviewToolbar({
                   >
                     {option.label}
                   </span>
-                  <span className='text-xs opacity-70 hidden sm:block'>
+                  <span className='hidden text-[11px] opacity-60 sm:block'>
                     {option.sample}
                   </span>
                 </div>
               </MenuItem>
             ))}
           </ToolbarMenu>
-
-          <button
-            type='button'
-            title='Fit the whole resume on a single PDF page'
-            aria-pressed={Boolean(theme?.onePage)}
-            onClick={() => update({ onePage: !theme?.onePage })}
-            className={`whitespace-nowrap px-2 py-1.5 rounded-md ring-1 text-sm transition duration-150 ${
-              theme?.onePage
-                ? 'ring-light-ring-primary dark:ring-dark-ring-primary bg-light-background dark:bg-dark-background text-light-text-primary dark:text-dark-text-primary font-medium'
-                : 'ring-light-ring-secondary dark:ring-dark-ring-secondary text-light-text-secondary dark:text-dark-text-secondary hover:text-light-text-primary dark:hover:text-dark-text-primary'
-            }`}
-          >
-            1 Page
-          </button>
-        </div>
-
-        <div className='flex gap-1 sm:gap-2 items-center ml-auto shrink-0'>
-          <SecondaryButton
-            className='whitespace-nowrap px-2 xl:px-3 py-1.5 text-sm xl:text-md'
-            onClick={() => setTransform(0, 0, 1)}
-          >
-            <span className='hidden xl:inline'>Reset Zoom</span>
-            <span className='xl:hidden'>Reset</span>
-          </SecondaryButton>
-          <PDFDownloadLink
-            className={downloadClass}
-            document={
-              <ResumeDocument resume={resume} pageHeight={pageHeight} />
-            }
-            fileName={`Resume_${resume?.profile.fullName}`}
-          >
-            <span className='hidden xl:inline'>Download PDF</span>
-            <span className='xl:hidden'>PDF</span>
-          </PDFDownloadLink>
         </div>
       </div>
-    </div>
+    </>
   );
 }

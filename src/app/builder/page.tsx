@@ -4,12 +4,12 @@ import ScrollToTheTop from '@/components/scroll-to-top/ScrollToTheTop';
 
 export default function Builder() {
   return (
-    <div className='flex flex-col justify-between mt-[70px]'>
+    <div className='flex min-h-dvh flex-col'>
       <Navbar />
-      <div className='w-screen px-1 md:px-14 flex flex-col items-center'>
+      <main className='flex-1 pt-16'>
         <BuilderHome />
-        <ScrollToTheTop />
-      </div>
+      </main>
+      <ScrollToTheTop />
     </div>
   );
 }

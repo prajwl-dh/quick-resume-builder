@@ -8,20 +8,13 @@ const PAGE_PADDING = 20;
 const PAGE_CONTENT_WIDTH = LETTER_WIDTH - PAGE_PADDING * 2;
 const BUFFER = 24;
 
-export default function useOnePageHeight(
-  resume: ResumeInterface | undefined,
-  enabled: boolean
-) {
+/** Measures the on-screen paper so a single-page PDF can use a custom page height. */
+export default function useOnePageHeight(resume: ResumeInterface | undefined) {
   const measureRef = useRef<HTMLDivElement>(null);
   const [pageHeight, setPageHeight] = useState(LETTER_HEIGHT);
   const resumeKey = JSON.stringify(resume);
 
   useEffect(() => {
-    if (!enabled) {
-      setPageHeight(LETTER_HEIGHT);
-      return;
-    }
-
     const element = measureRef.current;
     if (!element) return;
 
@@ -43,7 +36,7 @@ export default function useOnePageHeight(
     const observer = new ResizeObserver(compute);
     observer.observe(element);
     return () => observer.disconnect();
-  }, [enabled, resumeKey]);
+  }, [resumeKey]);
 
   return { measureRef, pageHeight };
 }

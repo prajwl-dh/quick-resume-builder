@@ -18,14 +18,14 @@ export default function DeleteConfirmationPopup({ ...props }) {
     <Dialog className='relative z-50' open={open} onClose={setOpen}>
       <DialogBackdrop
         transition
-        className='fixed inset-0 bg-light-background dark:bg-dark-background bg-opacity-60 backdrop-blur-md transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in'
+        className='fixed inset-0 bg-black/40 backdrop-blur-sm transition-opacity data-[closed]:opacity-0 data-[enter]:duration-200 data-[leave]:duration-150'
       />
 
-      <div className='fixed inset-0 z-10 w-screen overflow-y-auto'>
+      <div className='fixed inset-0 z-10 w-full overflow-y-auto'>
         <div className='flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0'>
           <DialogPanel
             transition
-            className='relative transform overflow-hidden text-left transition-all data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in sm:my-8 sm:w-full sm:max-w-lg da</div>ta-[closed]:sm:translate-y-0 data-[closed]:sm:scale-95 rounded-md ring-1 ring-light-ring-secondary dark:ring-dark-ring-secondary hover:ring-light-ring-primary hover:dark:ring-dark-ring-primary bg-light-foreground dark:bg-dark-foreground hover:shadow-sm'
+            className='relative w-full max-w-md transform overflow-hidden rounded-xl border border-light-ring-secondary bg-light-foreground text-left shadow-paper-lg transition duration-200 data-[closed]:translate-y-2 data-[closed]:opacity-0 sm:my-8 dark:border-dark-ring-secondary dark:bg-dark-foreground'
           >
             <div className='bg-light-foreground dark:bg-dark-foreground px-4 pb-4 pt-5 sm:p-6 sm:pb-4'>
               <div className='sm:flex sm:items-start'>
@@ -44,8 +44,7 @@ export default function DeleteConfirmationPopup({ ...props }) {
                   </DialogTitle>
                   <div className='mt-2'>
                     <p className='text-md text-light-text-secondary dark:text-dark-text-secondary'>
-                      Are you sure you want to delete this resume? This action
-                      cannot be undone
+                      Delete this resume? This cannot be undone.
                     </p>
                   </div>
                 </div>

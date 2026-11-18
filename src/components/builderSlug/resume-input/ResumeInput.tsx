@@ -1,5 +1,8 @@
 'use client';
-import { ResumeInterface, SectionKey } from '@/components/builder/previousResumes/ResumeInterface';
+import {
+  ResumeInterface,
+  SectionKey,
+} from '@/components/builder/previousResumes/ResumeInterface';
 import { DEFAULT_SECTION_ORDER } from '@/lib/resumeDefaults';
 import { reorderSections } from '@/lib/slices/resumeSlice';
 import { useAppDispatch } from '@/lib/store/hooks';
@@ -43,26 +46,38 @@ export default function ResumeInput({
   const { dragIndex, dragHandleProps, dropProps } = useDragReorder(move);
 
   return (
-    <div className='flex lg:h-screen'>
-      <div className='flex flex-col gap-10 xl:gap-14 lg:ml-64 p-3 sm:p-4 w-full mt-14 lg:mt-0 lg:w-[35vw] 2xl:w-[40vw] overflow-x-hidden overflow-y-auto'>
+    <div className='min-h-0 w-full flex-1 overflow-y-auto bg-light-background pt-14 dark:bg-dark-background lg:w-[38%] lg:shrink-0 lg:pt-0 2xl:w-[40%]'>
+      <div className='mx-auto max-w-2xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10'>
+        <header className='mb-10 border-b border-light-ring-secondary pb-6 dark:border-dark-ring-secondary'>
+          <div className='eyebrow'>Resume details</div>
+          <h1 className='mt-2 truncate text-xl font-semibold tracking-[-0.02em]'>
+            {resume?.fileName ?? 'Untitled resume'}
+          </h1>
+          <p className='mt-1.5 text-[13px] text-light-text-secondary dark:text-dark-text-secondary'>
+            Edit a section and the preview updates as you type.
+          </p>
+        </header>
+
         <SectionDragProvider
           value={{
             dragHandleProps,
             isDragging: (index) => dragIndex === index,
           }}
         >
-          {order.map((section, index) => {
-            const Component = sectionComponents[section];
-            return (
-              <div
-                key={section}
-                {...dropProps(index)}
-                className={dragIndex === index ? 'opacity-40' : ''}
-              >
-                <Component resume={resume} />
-              </div>
-            );
-          })}
+          <div className='flex flex-col gap-12'>
+            {order.map((section, index) => {
+              const Component = sectionComponents[section];
+              return (
+                <div
+                  key={section}
+                  {...dropProps(index)}
+                  className={dragIndex === index ? 'opacity-40' : ''}
+                >
+                  <Component resume={resume} />
+                </div>
+              );
+            })}
+          </div>
         </SectionDragProvider>
       </div>
     </div>

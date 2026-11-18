@@ -1,49 +1,102 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import PrimaryButton from '../buttons/PrimaryButton';
-import SecondaryButton from '../buttons/SecondaryButton';
-import { GitHubIcon } from './GitHubIcon';
+import ResumeMock from './ResumeMock';
+
+const steps = [
+  {
+    number: '01',
+    title: 'Start with the essentials',
+    body: 'Your name, how to reach you, and a short summary of what you do.',
+  },
+  {
+    number: '02',
+    title: 'Shape each section',
+    body: 'Add, reorder or hide sections. Work, projects, skills — only what matters.',
+  },
+  {
+    number: '03',
+    title: 'Take it with you',
+    body: 'Download a clean PDF that prints well and parses cleanly by ATS software.',
+  },
+];
 
 export default function Home() {
   const router = useRouter();
+
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.3, type: 'spring' }}
-      className='w-full 2xl:w-10/12 px-4 xl:px-40 flex flex-col justify-center items-center gap-10 min-h-[75vh]'
-    >
-      <p className='text-3xl text-start md:text-center font-bold leading-tight text-light-text-primary dark:text-dark-text-primary sm:text-4xl sm:leading-tight md:text-5xl md:leading-tight mt-5 lg:mt-10'>
-        Create Your Professional ATS Friendly Resume in Minutes. Fast, Easy,
-        Free and Open Source
-      </p>
-      <p className='text-start md:text-center !leading-relaxed sm:text-lg md:text-xl text-light-text-secondary dark:text-dark-text-secondary'>
-        Quick Resume is a free and open-source app that helps you build
-        professional, eye-catching resumes with ease. No login or sign-up
-        required. It runs entirely in your browser, and all data stays on your
-        device. Your privacy is fully respected — nothing is ever uploaded to a
-        server. Start now and create a resume tailored to your career goals.
-      </p>
-      <div className='flex flex-col md:flex-row gap-4 w-full md:w-auto'>
-        <PrimaryButton
-          className='h-12 w-full min-w-36 flex flex-row gap-1 items-center self-center justify-center'
-          onClick={() => router.push('/builder')}
-        >
-          Get Started
-          <span>🔥</span>
-        </PrimaryButton>
-        <SecondaryButton
-          onClick={() =>
-            router.push('https://github.com/prajwl-dh/quick-resume-builder')
-          }
-          className='h-12 w-full min-w-36 flex flex-row gap-1 items-center self-center justify-center'
-        >
-          <p>Contribute</p>
-          <GitHubIcon />
-        </SecondaryButton>
-      </div>
-    </motion.div>
+    <>
+      <section className='mx-auto grid max-w-shell items-start gap-14 px-5 pb-20 pt-14 md:px-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16 lg:pb-28 lg:pt-24'>
+        <div className='max-w-xl'>
+          <div className='eyebrow flex items-center gap-2.5'>
+            <span className='inline-block h-1.5 w-1.5 rounded-full bg-accent dark:bg-dark-accent' />
+            Local-first resume builder
+          </div>
+
+          <h1 className='mt-6 font-display text-[clamp(2.75rem,6vw,4.5rem)] leading-[1.04] tracking-[-0.025em]'>
+            A good resume,
+            <br />
+            <span className='italic text-accent dark:text-dark-accent'>
+              without the noise.
+            </span>
+          </h1>
+
+          <p className='mt-6 max-w-lg text-[16px] leading-[1.75] text-light-text-secondary dark:text-dark-text-secondary sm:text-[17px]'>
+            Fill in the fields, watch the page take shape, and download a
+            print-ready PDF. Everything runs in your browser — no account, no
+            uploads, nothing stored on a server.
+          </p>
+
+          <div className='mt-9 flex flex-wrap items-center gap-x-7 gap-y-4'>
+            <PrimaryButton
+              className='px-5 py-3 text-[14px]'
+              onClick={() => router.push('/builder')}
+            >
+              Start building
+            </PrimaryButton>
+            <button
+              type='button'
+              onClick={() => router.push('/builder/example-resume')}
+              className='group inline-flex items-center gap-2 text-sm font-medium text-light-text-secondary transition-colors duration-150 hover:text-accent dark:text-dark-text-secondary dark:hover:text-dark-accent'
+            >
+              See a finished example
+              <span className='transition-transform duration-150 group-hover:translate-x-0.5'>
+                →
+              </span>
+            </button>
+          </div>
+
+          <p className='mt-6 text-[13px] text-light-text-secondary dark:text-dark-text-secondary'>
+            Free and open source. Your work is saved on this device.
+          </p>
+        </div>
+
+        <ResumeMock />
+      </section>
+
+      <section className='border-t border-light-ring-secondary dark:border-dark-ring-secondary'>
+        <div className='mx-auto max-w-shell px-5 py-16 md:px-10 lg:py-20'>
+          <h2 className='font-display text-3xl tracking-[-0.02em] sm:text-4xl'>
+            Three steps. One PDF.
+          </h2>
+          <div className='mt-10 grid gap-10 sm:grid-cols-3 sm:gap-8'>
+            {steps.map((step) => (
+              <div key={step.number} className='border-t border-light-ring-primary/70 pt-4 dark:border-dark-ring-primary/70'>
+                <span className='text-[12px] font-semibold tabular-nums text-accent dark:text-dark-accent'>
+                  {step.number}
+                </span>
+                <h3 className='mt-3 text-[15px] font-semibold tracking-[-0.01em]'>
+                  {step.title}
+                </h3>
+                <p className='mt-2 text-[14px] leading-[1.65] text-light-text-secondary dark:text-dark-text-secondary'>
+                  {step.body}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    </>
   );
 }
