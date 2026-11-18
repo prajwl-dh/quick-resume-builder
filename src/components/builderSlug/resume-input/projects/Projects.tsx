@@ -1,193 +1,115 @@
 'use client';
-import { DeleteSvg } from '@/components/builder/previousResumes/DeleteSvg';
 import { ResumeInterface } from '@/components/builder/previousResumes/ResumeInterface';
-import { Tooltip } from '@/components/tooltip/ToolTip';
 import RefContext from '@/lib/providers/RefContext';
 import {
   addNewResumeProject,
   deleteResumeProject,
+  reorderEntries,
   updateResumeProject,
 } from '@/lib/slices/resumeSlice';
 import { useAppDispatch } from '@/lib/store/hooks';
 import { motion } from 'framer-motion';
 import { useContext } from 'react';
-import { FaArrowDown, FaArrowUp } from 'react-icons/fa6';
 import { ProjectSvg } from '../../navbar/svgs/ProjectSvg';
 import InputField from '../inputComponents/InputField';
-import TextAreaField from '../inputComponents/TextAreaField';
+import BulletEditor from '../shared/BulletEditor';
+import EntryControls from '../shared/EntryControls';
+import SectionControls from '../shared/SectionControls';
+import useDragReorder from '../shared/useDragReorder';
 
-export default function Projects({
-  resume,
-}: {
-  resume: ResumeInterface | undefined;
-}) {
+export default function Projects({ resume }: { resume: ResumeInterface | undefined }) {
   const { projectsRef } = useContext(RefContext);
   const dispatch = useAppDispatch();
+  const entries = resume?.projects ?? [];
+  const hidden = resume?.hiddenSections?.includes('projects') ?? false;
 
-  const addNewProject = () => {
-    dispatch(
-      addNewResumeProject({
-        id: resume?.id ?? '',
-      })
-    );
-  };
+  const move = (from: number, to: number) =>
+    dispatch(reorderEntries({ id: resume?.id ?? '', section: 'projects', from, to }));
+  const { dragIndex, dragHandleProps, dropProps } = useDragReorder(move);
 
-  const deleteProject = (index: number) => {
-    dispatch(
-      deleteResumeProject({
-        id: resume?.id ?? '',
-        index: index,
-      })
-    );
-  };
-
-  const moveProjectUp = (index: number) => {
-    if (index === 0 || !resume?.projects) return;
-
-    const prevProject = resume.projects[index - 1];
-    const currentProject = resume.projects[index];
-
-    dispatch(
-      updateResumeProject({
-        id: resume.id,
-        index: index - 1,
-        value: currentProject,
-      })
-    );
-
-    dispatch(
-      updateResumeProject({
-        id: resume.id,
-        index: index,
-        value: prevProject,
-      })
-    );
-  };
-
-  const moveProjectDown = (index: number) => {
-    if (!resume?.projects || index === resume.projects.length - 1) return;
-
-    const nextProject = resume.projects[index + 1];
-    const currentProject = resume.projects[index];
-
-    dispatch(
-      updateResumeProject({
-        id: resume.id,
-        index: index + 1,
-        value: currentProject,
-      })
-    );
-
-    dispatch(
-      updateResumeProject({
-        id: resume.id,
-        index: index,
-        value: nextProject,
-      })
-    );
-  };
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    index: number
-  ) => {
-    e.preventDefault();
-
-    const { name, value } = e.target;
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
+    const { name, value } = event.target;
     dispatch(
       updateResumeProject({
         id: resume?.id ?? '',
-        index: index,
-        value: {
-          ...resume?.projects?.[index],
-          [name]: value,
-        },
+        index,
+        value: { ...resume?.projects?.[index], [name]: value },
       })
     );
   };
 
   return (
-    <div className='w-full flex flex-col gap-4'>
+    <div className={`w-full flex flex-col gap-4 ${hidden ? 'opacity-60' : ''}`}>
       <div ref={projectsRef} className='flex flex-row gap-2 items-center'>
         <ProjectSvg className='w-8 h-8 text-light-text-primary dark:text-dark-text-primary' />
-        <p className='text text-3xl text-light-text-primary dark:text-dark-text-primary'>
+        <p className='text text-2xl xl:text-3xl text-light-text-primary dark:text-dark-text-primary'>
           Projects
         </p>
+        <SectionControls resume={resume} section='projects' />
       </div>
 
       <div className='border-dark-text-secondary dark:border-light-text-secondary border-b-2'></div>
 
       <div className='flex flex-col gap-6'>
-        {resume?.projects?.map((field, index) => {
-          return (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, ease: 'easeInOut' }}
-              viewport={{ once: true }}
-              className='flex flex-col gap-4 border-dark-text-secondary dark:border-light-text-secondary border-b-2 border-dashed'
-            >
-              <div className='flex flex-row justify-end gap-6 items-center'>
-                {index === 0 ? null : (
-                  <Tooltip text='Move Up'>
-                    <FaArrowUp
-                      className='text text-xl text-light-text-secondary dark:text-dark-text-secondary cursor-pointer'
-                      onClick={() => moveProjectUp(index)}
-                    />
-                  </Tooltip>
-                )}
+        {entries.map((field, index) => (
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
+            viewport={{ once: true }}
+            {...dropProps(index)}
+            className={`flex flex-col gap-4 border-dark-text-secondary dark:border-light-text-secondary border-b-2 border-dashed ${
+              dragIndex === index ? 'opacity-40' : ''
+            }`}
+          >
+            <EntryControls
+              index={index}
+              total={entries.length}
+              onMoveUp={() => move(index, index - 1)}
+              onMoveDown={() => move(index, index + 1)}
+              onDelete={() => dispatch(deleteResumeProject({ id: resume?.id ?? '', index }))}
+              dragHandleProps={dragHandleProps(index)}
+              isDragging={dragIndex === index}
+            />
 
-                {index === resume?.projects?.length - 1 ? null : (
-                  <Tooltip text='Move Down'>
-                    <FaArrowDown
-                      className='text text-xl text-light-text-secondary dark:text-dark-text-secondary cursor-pointer'
-                      onClick={() => moveProjectDown(index)}
-                    />
-                  </Tooltip>
-                )}
+            <InputField
+              label='Project Name'
+              type='text'
+              name='projectName'
+              placeholder='Acme Project'
+              value={field.projectName || ''}
+              onChange={(event) => handleChange(event, index)}
+            />
 
-                <Tooltip text='Delete'>
-                  <DeleteSvg
-                    onClick={() => deleteProject(index)}
-                    className='text text-2xl text-light-text-secondary dark:text-dark-text-secondary hover:text-red-500 hover:dark:text-red-500 cursor-pointer'
-                  />
-                </Tooltip>
-              </div>
+            <BulletEditor
+              label='Additional Info (If Any)'
+              placeholder='Describe the project'
+              value={field.projectDescription || ''}
+              onChange={(value) =>
+                dispatch(
+                  updateResumeProject({
+                    id: resume?.id ?? '',
+                    index,
+                    value: { ...resume?.projects?.[index], projectDescription: value },
+                  })
+                )
+              }
+            />
 
-              <div className='flex flex-row flex-wrap justify-start gap-2'>
-                <InputField
-                  label='Project Name'
-                  type='text'
-                  name='projectName'
-                  placeholder='Acme Project'
-                  value={resume?.projects[index]?.projectName || ''}
-                  onChange={(e) => handleChange(e, index)}
-                />
-              </div>
-
-              <TextAreaField
-                label='Additional Info (If Any)'
-                placeholder='Description Here'
-                name='projectDescription'
-                rows={5}
-                value={resume?.projects[index]?.projectDescription || ''}
-                onChange={(e) => handleChange(e, index)}
-              />
-
-              <div className='mt-4'></div>
-            </motion.div>
-          );
-        })}
+            <div className='mt-4'></div>
+          </motion.div>
+        ))}
       </div>
 
-      <div
-        onClick={() => addNewProject()}
-        className='flex flex-row items-center gap-2 text-light-text-secondary text text-md dark:text-dark-text-secondary hover:text-light-text-primary hover:dark:text-dark-text-primary cursor-pointer group'
+      <button
+        type='button'
+        onClick={() => dispatch(addNewResumeProject({ id: resume?.id ?? '' }))}
+        className='self-start flex flex-row items-center gap-2 text-light-text-secondary text text-md dark:text-dark-text-secondary hover:text-light-text-primary hover:dark:text-dark-text-primary cursor-pointer group'
       >
         <p className='text text-lg'> + </p>
         <p className='underline underline-offset-2'>Add Project</p>
-      </div>
+      </button>
     </div>
   );
 }

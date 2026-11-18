@@ -1,12 +1,27 @@
 import {
+  DateRange,
   ResumeAwards,
   ResumeCertifications,
   ResumeEducation,
+  ResumeLanguage,
   ResumeProfile,
   ResumeProjects,
   ResumeReferences,
   ResumeState,
+  ResumeTheme,
+  SectionKey,
+  SkillGroup,
 } from '@/components/builder/previousResumes/ResumeInterface';
+import {
+  DEFAULT_SECTION_ORDER,
+  DEFAULT_THEME,
+  EXAMPLE_RESUME_ID,
+  createExampleResume,
+  formatDateRange,
+  languagesToLegacy,
+  normalizeResume,
+  skillsToLegacy,
+} from '@/lib/resumeDefaults';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
 import { ResumeWorkExperience } from '../../components/builder/previousResumes/ResumeInterface';
@@ -23,15 +38,28 @@ const isLocalStorageAvailable = () => {
   }
 };
 
-// Initial state setup
+// Initial state setup. The example resume is always rebuilt from its default
+// data on load so any experimentation with it is discarded on close/reopen.
 let initialState: ResumeState;
 if (isLocalStorageAvailable()) {
+  let stored: unknown = [];
+  try {
+    stored = JSON.parse(localStorage.getItem('resume') ?? '[]');
+  } catch (e) {
+    stored = [];
+  }
+  const value = Array.isArray(stored) ? (stored as any[]) : [];
   initialState = {
-    value: JSON.parse(localStorage.getItem('resume') ?? '[]'),
+    value: [
+      ...value
+        .filter((resume) => resume?.id !== EXAMPLE_RESUME_ID)
+        .map((resume) => normalizeResume(resume)),
+      createExampleResume(),
+    ],
   };
 } else {
   initialState = {
-    value: [],
+    value: [createExampleResume()],
   };
 }
 
@@ -61,6 +89,7 @@ export const resumeSlice = createSlice({
             fullName: action.payload.fullName,
           },
           skills: '',
+          skillGroups: [{ id: uuidv4(), name: 'Skills', skills: [] }],
           experience: [],
           education: [],
           projects: [],
@@ -68,6 +97,10 @@ export const resumeSlice = createSlice({
           awards: [],
           references: [],
           languages: '',
+          languageItems: [],
+          sectionOrder: [...DEFAULT_SECTION_ORDER],
+          hiddenSections: [],
+          theme: { ...DEFAULT_THEME },
         },
       ];
       localStorage?.setItem('resume', JSON.stringify(state.value));
@@ -612,6 +645,135 @@ export const resumeSlice = createSlice({
       });
       localStorage?.setItem('resume', JSON.stringify(state.value));
     },
+
+    setSkillGroups: (
+      state,
+      action: PayloadAction<{ id: string; groups: SkillGroup[] }>
+    ) => {
+      const { id, groups } = action.payload;
+      state.value = state.value.map((resume) =>
+        resume.id === id
+          ? { ...resume, skillGroups: groups, skills: skillsToLegacy(groups) }
+          : resume
+      );
+      localStorage?.setItem('resume', JSON.stringify(state.value));
+    },
+
+    setLanguageItems: (
+      state,
+      action: PayloadAction<{ id: string; items: ResumeLanguage[] }>
+    ) => {
+      const { id, items } = action.payload;
+      state.value = state.value.map((resume) =>
+        resume.id === id
+          ? { ...resume, languageItems: items, languages: languagesToLegacy(items) }
+          : resume
+      );
+      localStorage?.setItem('resume', JSON.stringify(state.value));
+    },
+
+    updateEntryDateRange: (
+      state,
+      action: PayloadAction<{
+        id: string;
+        section: 'experience' | 'education';
+        index: number;
+        value: DateRange;
+      }>
+    ) => {
+      const { id, section, index, value } = action.payload;
+      const formatted = formatDateRange(value);
+      state.value = state.value.map((resume) => {
+        if (resume.id !== id) return resume;
+        if (section === 'experience' && resume.experience?.[index]) {
+          resume.experience[index].jobDateRange = value;
+          resume.experience[index].jobDate = formatted;
+        }
+        if (section === 'education' && resume.education?.[index]) {
+          resume.education[index].schoolDateRange = value;
+          resume.education[index].schoolDate = formatted;
+        }
+        return resume;
+      });
+      localStorage?.setItem('resume', JSON.stringify(state.value));
+    },
+
+    reorderEntries: (
+      state,
+      action: PayloadAction<{
+        id: string;
+        section:
+          | 'experience'
+          | 'education'
+          | 'projects'
+          | 'certifications'
+          | 'awards'
+          | 'references';
+        from: number;
+        to: number;
+      }>
+    ) => {
+      const { id, section, from, to } = action.payload;
+      state.value = state.value.map((resume) => {
+        if (resume.id !== id) return resume;
+        const list = resume[section] as unknown as any[];
+        if (!list || from < 0 || to < 0 || from >= list.length || to >= list.length) {
+          return resume;
+        }
+        const [moved] = list.splice(from, 1);
+        list.splice(to, 0, moved);
+        return resume;
+      });
+      localStorage?.setItem('resume', JSON.stringify(state.value));
+    },
+
+    reorderSections: (
+      state,
+      action: PayloadAction<{ id: string; from: number; to: number }>
+    ) => {
+      const { id, from, to } = action.payload;
+      state.value = state.value.map((resume) => {
+        if (resume.id !== id) return resume;
+        const order = [...(resume.sectionOrder ?? DEFAULT_SECTION_ORDER)];
+        if (from < 0 || to < 0 || from >= order.length || to >= order.length) {
+          return resume;
+        }
+        const [moved] = order.splice(from, 1);
+        order.splice(to, 0, moved);
+        resume.sectionOrder = order;
+        return resume;
+      });
+      localStorage?.setItem('resume', JSON.stringify(state.value));
+    },
+
+    toggleSectionVisibility: (
+      state,
+      action: PayloadAction<{ id: string; section: SectionKey }>
+    ) => {
+      const { id, section } = action.payload;
+      state.value = state.value.map((resume) => {
+        if (resume.id !== id) return resume;
+        const hidden = resume.hiddenSections ?? [];
+        resume.hiddenSections = hidden.includes(section)
+          ? hidden.filter((key) => key !== section)
+          : [...hidden, section];
+        return resume;
+      });
+      localStorage?.setItem('resume', JSON.stringify(state.value));
+    },
+
+    updateResumeTheme: (
+      state,
+      action: PayloadAction<{ id: string; value: Partial<ResumeTheme> }>
+    ) => {
+      const { id, value } = action.payload;
+      state.value = state.value.map((resume) =>
+        resume.id === id
+          ? { ...resume, theme: { ...(resume.theme ?? DEFAULT_THEME), ...value } }
+          : resume
+      );
+      localStorage?.setItem('resume', JSON.stringify(state.value));
+    },
   },
 });
 
@@ -644,5 +806,12 @@ export const {
   addNewResumeReference,
   deleteResumeReference,
   updateResumeLanguage,
+  setSkillGroups,
+  setLanguageItems,
+  updateEntryDateRange,
+  reorderEntries,
+  reorderSections,
+  toggleSectionVisibility,
+  updateResumeTheme,
 } = resumeSlice.actions;
 export default resumeSlice.reducer;

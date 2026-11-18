@@ -23,10 +23,12 @@ export default function PreviousResumes() {
   const [open, setOpen] = useState(false);
   const [openRenamePopup, setOpenRenamePopup] = useState(false);
 
-  const sortedResumes = [...resumes].sort(
-    (a: ResumeInterface, b: ResumeInterface) =>
-      new Date(b.last_accessed).getTime() - new Date(a.last_accessed).getTime()
-  );
+  const sortedResumes = resumes
+    .filter((resume: ResumeInterface) => !resume.isExample)
+    .sort(
+      (a: ResumeInterface, b: ResumeInterface) =>
+        new Date(b.last_accessed).getTime() - new Date(a.last_accessed).getTime()
+    );
 
   return (
     <>

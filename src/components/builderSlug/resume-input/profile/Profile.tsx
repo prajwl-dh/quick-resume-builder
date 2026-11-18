@@ -14,7 +14,8 @@ import { useAppDispatch } from '@/lib/store/hooks';
 import React, { useContext } from 'react';
 import { ProfileSvg } from '../../navbar/svgs/ProfileSvg';
 import InputField from '../inputComponents/InputField';
-import TextAreaField from '../inputComponents/TextAreaField';
+import BulletEditor from '../shared/BulletEditor';
+import SectionControls from '../shared/SectionControls';
 import CustomFieldPopup from '../resume-input-popups/CustomFieldPopup';
 
 export default function Profile({
@@ -25,9 +26,10 @@ export default function Profile({
   const { profileRef } = useContext(RefContext);
   const dispatch = useAppDispatch();
   const [open, setOpen] = React.useState(false);
+  const hidden = resume?.hiddenSections?.includes('profile') ?? false;
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement>
   ) => {
     e.preventDefault();
     dispatch(
@@ -56,12 +58,13 @@ export default function Profile({
   };
 
   return (
-    <div className='w-full flex flex-col gap-4 mt-2'>
+    <div className={`w-full flex flex-col gap-4 mt-2 ${hidden ? 'opacity-60' : ''}`}>
       <div ref={profileRef} className='flex flex-row gap-2 items-center'>
         <ProfileSvg className='w-8 h-8 text-light-text-primary dark:text-dark-text-primary' />
-        <p className='text text-3xl text-light-text-primary dark:text-dark-text-primary'>
+        <p className='text text-2xl xl:text-3xl text-light-text-primary dark:text-dark-text-primary'>
           Profile
         </p>
+        <SectionControls resume={resume} section='profile' />
       </div>
 
       <div className='border-dark-text-secondary dark:border-light-text-secondary border-b-2'></div>
@@ -107,7 +110,7 @@ export default function Profile({
       <div className='flex flex-row flex-wrap justify-start gap-2'>
         <InputField
           label='Phone'
-          type='text'
+          type='tel'
           name='phone'
           onChange={(e) => handleChange(e)}
           value={resume?.profile.phone || ''}
@@ -116,7 +119,7 @@ export default function Profile({
 
         <InputField
           label='Website'
-          type='text'
+          type='url'
           name='website'
           onChange={(e) => handleChange(e)}
           value={resume?.profile.website || ''}
@@ -127,7 +130,7 @@ export default function Profile({
       <div className='flex flex-row flex-wrap justify-start gap-2'>
         <InputField
           label='LinkedIn'
-          type='text'
+          type='url'
           name='linkedIn'
           onChange={(e) => handleChange(e)}
           value={resume?.profile.linkedIn || ''}
@@ -136,7 +139,7 @@ export default function Profile({
 
         <InputField
           label='GitHub'
-          type='text'
+          type='url'
           name='gitHub'
           onChange={(e) => handleChange(e)}
           value={resume?.profile.gitHub || ''}
@@ -185,13 +188,19 @@ export default function Profile({
         resume={resume}
       />
 
-      <TextAreaField
+      <BulletEditor
         label='Summary'
         placeholder='Professional summary here'
-        name='summary'
-        onChange={(e) => handleChange(e)}
         value={resume?.profile.summary || ''}
-        rows={5}
+        onChange={(value) =>
+          dispatch(
+            updateResumeProfile({
+              id: resume?.id ?? '',
+              key: 'summary',
+              value,
+            })
+          )
+        }
       />
     </div>
   );

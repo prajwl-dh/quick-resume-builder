@@ -6,20 +6,24 @@ import SecondaryButton from '../buttons/SecondaryButton';
 import CreateConfirmationPopup from './createNew/CreateConfirmationPopup';
 import CreateNew from './createNew/CreateNew';
 import { CreateSvg } from './createNew/CreateSvg';
+import ExampleResume from './createExampleResume/ExampleResume';
 import PreviousResumes from './previousResumes/PreviousResumes';
 
 export default function BuilderHome() {
-  const resume = useAppSelector((state) => state.resumeReducer.value);
+  const resumes = useAppSelector((state) => state.resumeReducer.value);
   const [open, setOpen] = useState<boolean>(false);
+
+  // The example is opened from the button above, not shown as a saved resume.
+  const savedResumes = resumes.filter((resume) => !resume.isExample);
 
   return (
     <div className='w-full 2xl:w-11/12 px-5 md:px-1 py-5 md:py-10 flex flex-col justify-center items-center mb-10'>
       <div className='flex flex-row justify-end items-center gap-4 w-full mb-6'>
-        {/* <ExampleResume /> */}
+        <ExampleResume />
         <CreateNew />
       </div>
 
-      {resume.length === 0 ? (
+      {savedResumes.length === 0 ? (
         <>
           <div className='w-full flex justify-start'>
             <motion.div

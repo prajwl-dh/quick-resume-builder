@@ -1,193 +1,115 @@
 'use client';
-import { DeleteSvg } from '@/components/builder/previousResumes/DeleteSvg';
 import { ResumeInterface } from '@/components/builder/previousResumes/ResumeInterface';
-import { Tooltip } from '@/components/tooltip/ToolTip';
 import RefContext from '@/lib/providers/RefContext';
 import {
   addNewResumeAward,
   deleteResumeAward,
+  reorderEntries,
   updateResumeAward,
 } from '@/lib/slices/resumeSlice';
 import { useAppDispatch } from '@/lib/store/hooks';
 import { motion } from 'framer-motion';
 import { useContext } from 'react';
-import { FaArrowDown, FaArrowUp } from 'react-icons/fa6';
 import { AwardsSvg } from '../../navbar/svgs/AwardsSvg';
 import InputField from '../inputComponents/InputField';
-import TextAreaField from '../inputComponents/TextAreaField';
+import BulletEditor from '../shared/BulletEditor';
+import EntryControls from '../shared/EntryControls';
+import SectionControls from '../shared/SectionControls';
+import useDragReorder from '../shared/useDragReorder';
 
-export default function Awards({
-  resume,
-}: {
-  resume: ResumeInterface | undefined;
-}) {
+export default function Awards({ resume }: { resume: ResumeInterface | undefined }) {
   const { awardsRef } = useContext(RefContext);
   const dispatch = useAppDispatch();
+  const entries = resume?.awards ?? [];
+  const hidden = resume?.hiddenSections?.includes('awards') ?? false;
 
-  const addNewAward = () => {
-    dispatch(
-      addNewResumeAward({
-        id: resume?.id ?? '',
-      })
-    );
-  };
+  const move = (from: number, to: number) =>
+    dispatch(reorderEntries({ id: resume?.id ?? '', section: 'awards', from, to }));
+  const { dragIndex, dragHandleProps, dropProps } = useDragReorder(move);
 
-  const deleteAward = (index: number) => {
-    dispatch(
-      deleteResumeAward({
-        id: resume?.id ?? '',
-        index: index,
-      })
-    );
-  };
-
-  const moveAwardUp = (index: number) => {
-    if (index === 0 || !resume?.awards) return;
-
-    const prevAward = resume.awards[index - 1];
-    const currentAward = resume.awards[index];
-
-    dispatch(
-      updateResumeAward({
-        id: resume.id,
-        index: index - 1,
-        value: currentAward,
-      })
-    );
-
-    dispatch(
-      updateResumeAward({
-        id: resume.id,
-        index: index,
-        value: prevAward,
-      })
-    );
-  };
-
-  const moveAwardDown = (index: number) => {
-    if (!resume?.awards || index === resume.awards.length - 1) return;
-
-    const nextAward = resume.awards[index + 1];
-    const currentAward = resume.awards[index];
-
-    dispatch(
-      updateResumeAward({
-        id: resume.id,
-        index: index + 1,
-        value: currentAward,
-      })
-    );
-
-    dispatch(
-      updateResumeAward({
-        id: resume.id,
-        index: index,
-        value: nextAward,
-      })
-    );
-  };
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    index: number
-  ) => {
-    e.preventDefault();
-
-    const { name, value } = e.target;
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
+    const { name, value } = event.target;
     dispatch(
       updateResumeAward({
         id: resume?.id ?? '',
-        index: index,
-        value: {
-          ...resume?.awards?.[index],
-          [name]: value,
-        },
+        index,
+        value: { ...resume?.awards?.[index], [name]: value },
       })
     );
   };
 
   return (
-    <div className='w-full flex flex-col gap-4'>
+    <div className={`w-full flex flex-col gap-4 ${hidden ? 'opacity-60' : ''}`}>
       <div ref={awardsRef} className='flex flex-row gap-2 items-center'>
         <AwardsSvg className='w-8 h-8 text-light-text-primary dark:text-dark-text-primary' />
-        <p className='text text-3xl text-light-text-primary dark:text-dark-text-primary'>
+        <p className='text text-2xl xl:text-3xl text-light-text-primary dark:text-dark-text-primary'>
           Awards
         </p>
+        <SectionControls resume={resume} section='awards' />
       </div>
 
       <div className='border-dark-text-secondary dark:border-light-text-secondary border-b-2'></div>
 
       <div className='flex flex-col gap-6'>
-        {resume?.awards?.map((field, index) => {
-          return (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, ease: 'easeInOut' }}
-              viewport={{ once: true }}
-              className='flex flex-col gap-4 border-dark-text-secondary dark:border-light-text-secondary border-b-2 border-dashed'
-            >
-              <div className='flex flex-row justify-end gap-6 items-center'>
-                {index === 0 ? null : (
-                  <Tooltip text='Move Up'>
-                    <FaArrowUp
-                      className='text text-xl text-light-text-secondary dark:text-dark-text-secondary cursor-pointer'
-                      onClick={() => moveAwardUp(index)}
-                    />
-                  </Tooltip>
-                )}
+        {entries.map((field, index) => (
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
+            viewport={{ once: true }}
+            {...dropProps(index)}
+            className={`flex flex-col gap-4 border-dark-text-secondary dark:border-light-text-secondary border-b-2 border-dashed ${
+              dragIndex === index ? 'opacity-40' : ''
+            }`}
+          >
+            <EntryControls
+              index={index}
+              total={entries.length}
+              onMoveUp={() => move(index, index - 1)}
+              onMoveDown={() => move(index, index + 1)}
+              onDelete={() => dispatch(deleteResumeAward({ id: resume?.id ?? '', index }))}
+              dragHandleProps={dragHandleProps(index)}
+              isDragging={dragIndex === index}
+            />
 
-                {index === resume?.awards?.length - 1 ? null : (
-                  <Tooltip text='Move Down'>
-                    <FaArrowDown
-                      className='text text-xl text-light-text-secondary dark:text-dark-text-secondary cursor-pointer'
-                      onClick={() => moveAwardDown(index)}
-                    />
-                  </Tooltip>
-                )}
+            <InputField
+              label='Award Name'
+              type='text'
+              name='awardName'
+              placeholder='Employee of the Year'
+              value={field.awardName || ''}
+              onChange={(event) => handleChange(event, index)}
+            />
 
-                <Tooltip text='Delete'>
-                  <DeleteSvg
-                    onClick={() => deleteAward(index)}
-                    className='text text-2xl text-light-text-secondary dark:text-dark-text-secondary hover:text-red-500 hover:dark:text-red-500 cursor-pointer'
-                  />
-                </Tooltip>
-              </div>
+            <BulletEditor
+              label='Additional Info (If Any)'
+              placeholder='Describe the award'
+              value={field.awardDescription || ''}
+              onChange={(value) =>
+                dispatch(
+                  updateResumeAward({
+                    id: resume?.id ?? '',
+                    index,
+                    value: { ...resume?.awards?.[index], awardDescription: value },
+                  })
+                )
+              }
+            />
 
-              <div className='flex flex-row flex-wrap justify-start gap-2'>
-                <InputField
-                  label='Award Name'
-                  type='text'
-                  name='awardName'
-                  placeholder='Acme Award'
-                  value={resume?.awards[index]?.awardName || ''}
-                  onChange={(e) => handleChange(e, index)}
-                />
-              </div>
-
-              <TextAreaField
-                label='Additional Info (If Any)'
-                placeholder='Description Here'
-                name='awardDescription'
-                rows={5}
-                value={resume?.awards[index]?.awardDescription || ''}
-                onChange={(e) => handleChange(e, index)}
-              />
-
-              <div className='mt-4'></div>
-            </motion.div>
-          );
-        })}
+            <div className='mt-4'></div>
+          </motion.div>
+        ))}
       </div>
 
-      <div
-        onClick={() => addNewAward()}
-        className='flex flex-row items-center gap-2 text-light-text-secondary text text-md dark:text-dark-text-secondary hover:text-light-text-primary hover:dark:text-dark-text-primary cursor-pointer group'
+      <button
+        type='button'
+        onClick={() => dispatch(addNewResumeAward({ id: resume?.id ?? '' }))}
+        className='self-start flex flex-row items-center gap-2 text-light-text-secondary text text-md dark:text-dark-text-secondary hover:text-light-text-primary hover:dark:text-dark-text-primary cursor-pointer group'
       >
         <p className='text text-lg'> + </p>
         <p className='underline underline-offset-2'>Add Award</p>
-      </div>
+      </button>
     </div>
   );
 }

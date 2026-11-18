@@ -1,20 +1,23 @@
 'use client';
-import { DeleteSvg } from '@/components/builder/previousResumes/DeleteSvg';
 import { ResumeInterface } from '@/components/builder/previousResumes/ResumeInterface';
-import { Tooltip } from '@/components/tooltip/ToolTip';
 import RefContext from '@/lib/providers/RefContext';
 import {
   addNewResumeWorkExperience,
   deleteResumeWorkExperience,
+  reorderEntries,
+  updateEntryDateRange,
   updateResumeWorkExperience,
 } from '@/lib/slices/resumeSlice';
 import { useAppDispatch } from '@/lib/store/hooks';
 import { motion } from 'framer-motion';
 import { useContext } from 'react';
-import { FaArrowDown, FaArrowUp } from 'react-icons/fa6';
 import { ExperienceSvg } from '../../navbar/svgs/ExperienceSvg';
 import InputField from '../inputComponents/InputField';
-import TextAreaField from '../inputComponents/TextAreaField';
+import BulletEditor from '../shared/BulletEditor';
+import DateRangePicker from '../shared/DateRangePicker';
+import EntryControls from '../shared/EntryControls';
+import SectionControls from '../shared/SectionControls';
+import useDragReorder from '../shared/useDragReorder';
 
 export default function WorkExperience({
   resume,
@@ -23,189 +26,128 @@ export default function WorkExperience({
 }) {
   const { workExperienceRef } = useContext(RefContext);
   const dispatch = useAppDispatch();
+  const entries = resume?.experience ?? [];
+  const hidden = resume?.hiddenSections?.includes('experience') ?? false;
 
-  const addNewJobExperience = () => {
-    dispatch(
-      addNewResumeWorkExperience({
-        id: resume?.id ?? '',
-      })
-    );
-  };
-
-  const deleteJobExperience = (index: number) => {
-    dispatch(
-      deleteResumeWorkExperience({
-        id: resume?.id ?? '',
-        index: index,
-      })
-    );
-  };
-
-  const moveJobExperienceUp = (index: number) => {
-    if (index === 0 || !resume?.experience) return;
-
-    const prevExp = resume.experience[index - 1];
-    const currentExp = resume.experience[index];
-
-    dispatch(
-      updateResumeWorkExperience({
-        id: resume.id,
-        index: index - 1,
-        value: currentExp,
-      })
-    );
-
-    dispatch(
-      updateResumeWorkExperience({
-        id: resume.id,
-        index: index,
-        value: prevExp,
-      })
-    );
-  };
-
-  const moveJobExperienceDown = (index: number) => {
-    if (!resume?.experience || index === resume.experience.length - 1) return;
-
-    const nextExp = resume.experience[index + 1];
-    const currentExp = resume.experience[index];
-
-    dispatch(
-      updateResumeWorkExperience({
-        id: resume.id,
-        index: index + 1,
-        value: currentExp,
-      })
-    );
-
-    dispatch(
-      updateResumeWorkExperience({
-        id: resume.id,
-        index: index,
-        value: nextExp,
-      })
-    );
-  };
+  const move = (from: number, to: number) =>
+    dispatch(reorderEntries({ id: resume?.id ?? '', section: 'experience', from, to }));
+  const { dragIndex, dragHandleProps, dropProps } = useDragReorder(move);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    event: React.ChangeEvent<HTMLInputElement>,
     index: number
   ) => {
-    e.preventDefault();
-
-    const { name, value } = e.target;
+    const { name, value } = event.target;
     dispatch(
       updateResumeWorkExperience({
         id: resume?.id ?? '',
-        index: index,
-        value: {
-          ...resume?.experience?.[index],
-          [name]: value,
-        },
+        index,
+        value: { ...resume?.experience?.[index], [name]: value },
       })
     );
   };
 
   return (
-    <div className='w-full flex flex-col gap-4'>
+    <div className={`w-full flex flex-col gap-4 ${hidden ? 'opacity-60' : ''}`}>
       <div ref={workExperienceRef} className='flex flex-row gap-2 items-center'>
         <ExperienceSvg className='w-8 h-8 text-light-text-primary dark:text-dark-text-primary' />
-        <p className='text text-3xl text-light-text-primary dark:text-dark-text-primary'>
+        <p className='text text-2xl xl:text-3xl text-light-text-primary dark:text-dark-text-primary'>
           Work Experience
         </p>
+        <SectionControls resume={resume} section='experience' />
       </div>
 
       <div className='border-dark-text-secondary dark:border-light-text-secondary border-b-2'></div>
 
       <div className='flex flex-col gap-6'>
-        {resume?.experience?.map((field, index) => {
-          return (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, ease: 'easeInOut' }}
-              viewport={{ once: true }}
-              className='flex flex-col gap-4 border-dark-text-secondary dark:border-light-text-secondary border-b-2 border-dashed'
-            >
-              <div className='flex flex-row justify-end gap-6 items-center'>
-                {index === 0 ? null : (
-                  <Tooltip text='Move Up'>
-                    <FaArrowUp
-                      className='text text-xl text-light-text-secondary dark:text-dark-text-secondary cursor-pointer'
-                      onClick={() => moveJobExperienceUp(index)}
-                    />
-                  </Tooltip>
-                )}
+        {entries.map((field, index) => (
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
+            viewport={{ once: true }}
+            {...dropProps(index)}
+            className={`flex flex-col gap-4 border-dark-text-secondary dark:border-light-text-secondary border-b-2 border-dashed ${
+              dragIndex === index ? 'opacity-40' : ''
+            }`}
+          >
+            <EntryControls
+              index={index}
+              total={entries.length}
+              onMoveUp={() => move(index, index - 1)}
+              onMoveDown={() => move(index, index + 1)}
+              onDelete={() =>
+                dispatch(
+                  deleteResumeWorkExperience({ id: resume?.id ?? '', index })
+                )
+              }
+              dragHandleProps={dragHandleProps(index)}
+              isDragging={dragIndex === index}
+            />
 
-                {index === resume?.experience?.length - 1 ? null : (
-                  <Tooltip text='Move Down'>
-                    <FaArrowDown
-                      className='text text-xl text-light-text-secondary dark:text-dark-text-secondary cursor-pointer'
-                      onClick={() => moveJobExperienceDown(index)}
-                    />
-                  </Tooltip>
-                )}
+            <InputField
+              label='Company Name'
+              type='text'
+              name='companyName'
+              placeholder='Acme Corporation'
+              value={field.companyName || ''}
+              onChange={(event) => handleChange(event, index)}
+            />
 
-                <Tooltip text='Delete'>
-                  <DeleteSvg
-                    onClick={() => deleteJobExperience(index)}
-                    className='text text-2xl text-light-text-secondary dark:text-dark-text-secondary hover:text-red-500 hover:dark:text-red-500 cursor-pointer'
-                  />
-                </Tooltip>
-              </div>
+            <InputField
+              label='Job Title'
+              type='text'
+              name='jobTitle'
+              placeholder='Software Engineer'
+              value={field.jobTitle || ''}
+              onChange={(event) => handleChange(event, index)}
+            />
 
-              <InputField
-                label='Company Name'
-                type='text'
-                name='companyName'
-                placeholder='Acme Corporation'
-                value={resume?.experience[index]?.companyName || ''}
-                onChange={(e) => handleChange(e, index)}
-              />
+            <DateRangePicker
+              value={field.jobDateRange}
+              onChange={(value) =>
+                dispatch(
+                  updateEntryDateRange({
+                    id: resume?.id ?? '',
+                    section: 'experience',
+                    index,
+                    value,
+                  })
+                )
+              }
+            />
 
-              <div className='flex flex-row flex-wrap justify-start gap-2'>
-                <InputField
-                  label='Job Title'
-                  type='text'
-                  name='jobTitle'
-                  placeholder='Software Engineer'
-                  value={resume?.experience[index]?.jobTitle || ''}
-                  onChange={(e) => handleChange(e, index)}
-                />
+            <BulletEditor
+              label='Description'
+              placeholder='Describe an achievement'
+              value={field.jobDescription || ''}
+              onChange={(value) =>
+                dispatch(
+                  updateResumeWorkExperience({
+                    id: resume?.id ?? '',
+                    index,
+                    value: { ...resume?.experience?.[index], jobDescription: value },
+                  })
+                )
+              }
+            />
 
-                <InputField
-                  label='Date'
-                  type='text'
-                  name='jobDate'
-                  placeholder='July 2024 - Present'
-                  value={resume?.experience[index]?.jobDate || ''}
-                  onChange={(e) => handleChange(e, index)}
-                />
-              </div>
-
-              <TextAreaField
-                label='Description'
-                placeholder='Job Description Here'
-                name='jobDescription'
-                rows={5}
-                value={resume?.experience[index]?.jobDescription || ''}
-                onChange={(e) => handleChange(e, index)}
-              />
-
-              <div className='mt-4'></div>
-            </motion.div>
-          );
-        })}
+            <div className='mt-4'></div>
+          </motion.div>
+        ))}
       </div>
 
-      <div
-        onClick={() => addNewJobExperience()}
-        className='flex flex-row items-center gap-2 text-light-text-secondary text text-md dark:text-dark-text-secondary hover:text-light-text-primary hover:dark:text-dark-text-primary cursor-pointer group'
+      <button
+        type='button'
+        onClick={() =>
+          dispatch(addNewResumeWorkExperience({ id: resume?.id ?? '' }))
+        }
+        className='self-start flex flex-row items-center gap-2 text-light-text-secondary text text-md dark:text-dark-text-secondary hover:text-light-text-primary hover:dark:text-dark-text-primary cursor-pointer group'
       >
         <p className='text text-lg'> + </p>
         <p className='underline underline-offset-2'>Add Work Experience</p>
-      </div>
+      </button>
     </div>
   );
 }
