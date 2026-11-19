@@ -1,12 +1,25 @@
 import {
   DateRange,
   DEFAULT_EMPTY_RANGE,
+  ResumeFont,
   ResumeInterface,
   ResumeLanguage,
   ResumeTheme,
   SectionKey,
   SkillGroup,
 } from '@/components/builder/previousResumes/ResumeInterface';
+import {
+  COLORS,
+  DEFAULT_SECTION_ORDER as DESIGN_SECTION_ORDER,
+  DEFAULT_THEME as DESIGN_DEFAULT_THEME,
+  FONTS,
+  FONT_IDS,
+  MARGIN_SIZES,
+  PAPER_SIZES,
+  TEMPLATES,
+  TEMPLATE_IDS,
+  isHexColor,
+} from '@/lib/resumeDesign';
 import { v4 as uuidv4 } from 'uuid';
 
 export const EXAMPLE_RESUME_ID = 'example-resume';
@@ -46,76 +59,53 @@ export const COMMON_SKILLS = [
   'Next.js',
   'Node.js',
   'Python',
+  'SQL',
+  'GraphQL',
+  'REST APIs',
   'HTML',
   'CSS',
   'Tailwind CSS',
-  'GraphQL',
-  'SQL',
   'Git',
   'Docker',
   'AWS',
   'Figma',
   'Jest',
+  'Accessibility',
+  'Design systems',
+  'Data analysis',
+  'Excel',
+  'Tableau',
+  'Project management',
   'Communication',
   'Leadership',
-  'Teamwork',
-  'Problem Solving',
-  'Project Management',
-  'Public Speaking',
+  'Mentoring',
+  'Problem solving',
+  'Public speaking',
+  'Customer research',
+  'Copywriting',
+  'SEO',
+  'Photoshop',
+  'Illustrator',
 ];
 
-export const SECTION_LABELS: Record<SectionKey, string> = {
-  profile: 'Profile',
-  skills: 'Skills',
-  experience: 'Work Experience',
-  education: 'Education',
-  projects: 'Projects',
-  certifications: 'Certifications',
-  awards: 'Awards',
-  references: 'References',
-  languages: 'Languages',
-};
+export { DEFAULT_SECTION_ORDER } from '@/lib/resumeDesign';
+export { SECTION_LABELS } from '@/lib/resumeDesign';
 
-export const DEFAULT_SECTION_ORDER: SectionKey[] = [
-  'profile',
-  'skills',
-  'experience',
-  'education',
-  'projects',
-  'certifications',
-  'awards',
-  'references',
-  'languages',
-];
+export const DEFAULT_THEME: ResumeTheme = { ...DESIGN_DEFAULT_THEME };
 
-export const DEFAULT_THEME: ResumeTheme = {
-  template: 'classic',
-  color: '#1E6B54',
-  font: 'Helvetica',
-  onePage: true,
-};
+export const TEMPLATE_OPTIONS = TEMPLATES.map((template) => ({
+  value: template.id,
+  label: template.name,
+  description: template.note,
+}));
 
-export const TEMPLATE_OPTIONS: { value: ResumeTheme['template']; label: string; description: string }[] = [
-  { value: 'classic', label: 'Classic', description: 'Timeless, rule-lined sections' },
-  { value: 'modern', label: 'Modern', description: 'Bold accent headings' },
-  { value: 'minimal', label: 'Minimal', description: 'Clean and compact' },
-];
+export const COLOR_OPTIONS = COLORS;
 
-export const COLOR_OPTIONS = [
-  { value: '#1E6B54', label: 'Forest' },
-  { value: '#1f2937', label: 'Slate' },
-  { value: '#2563eb', label: 'Blue' },
-  { value: '#0f766e', label: 'Teal' },
-  { value: '#7c3aed', label: 'Violet' },
-  { value: '#b91c1c', label: 'Crimson' },
-  { value: '#b45309', label: 'Amber' },
-];
-
-export const FONT_OPTIONS: { value: ResumeTheme['font']; label: string; sample: string }[] = [
-  { value: 'Helvetica', label: 'Sans', sample: 'Clean sans-serif' },
-  { value: 'Times-Roman', label: 'Serif', sample: 'Classic serif' },
-  { value: 'Courier', label: 'Mono', sample: 'Monospaced' },
-];
+export const FONT_OPTIONS = FONTS.map((font) => ({
+  value: font.id,
+  label: font.name,
+  sample: font.group,
+}));
 
 export function emptyRange(): DateRange {
   return { ...DEFAULT_EMPTY_RANGE };
@@ -175,9 +165,11 @@ export function parseLegacyDate(value?: string): DateRange {
 }
 
 export function splitBullets(value?: string): string[] {
-  if (!value) return [''];
-  const lines = value.split(/\r?\n/);
-  return lines.length ? lines : [''];
+  if (!value) return [];
+  return value
+    .split(/\r?\n/)
+    .map((line) => line.replace(/^\s*[•\-–]\s*/, '').trim())
+    .filter(Boolean);
 }
 
 export function skillsToLegacy(groups: SkillGroup[]): string {
@@ -191,9 +183,7 @@ export function skillsToLegacy(groups: SkillGroup[]): string {
 
 export function languagesToLegacy(items: ResumeLanguage[]): string {
   return items
-    .map((item) =>
-      [item.name, item.proficiency].filter(Boolean).join(': ')
-    )
+    .map((item) => [item.name, item.proficiency].filter(Boolean).join(': '))
     .filter(Boolean)
     .join('\n');
 }
@@ -254,14 +244,20 @@ export function legacyToLanguageItems(value?: string): ResumeLanguage[] {
     });
 }
 
-/** True when a section has anything worth printing. Empty sections are skipped in output. */
+/** True when a section has anything worth printing. Empty sections are skipped. */
 export function sectionHasContent(
   resume: ResumeInterface | undefined,
   section: SectionKey
 ): boolean {
   if (!resume) return false;
   const hasText = (value?: string) => Boolean(value?.trim());
-  const hasRange = (range?: { startMonth?: string; startYear?: string; endMonth?: string; endYear?: string; present?: boolean }) =>
+  const hasRange = (range?: {
+    startMonth?: string;
+    startYear?: string;
+    endMonth?: string;
+    endYear?: string;
+    present?: boolean;
+  }) =>
     Boolean(
       range?.present ||
         hasText(range?.startMonth) ||
@@ -293,37 +289,48 @@ export function sectionHasContent(
     case 'experience':
       return (resume.experience ?? []).some(
         (entry) =>
-          [entry.companyName, entry.jobTitle, entry.jobDescription].some(hasText) ||
-          hasRange(entry.jobDateRange)
+          [
+            entry.companyName,
+            entry.jobTitle,
+            entry.jobLocation,
+            entry.jobDescription,
+          ].some(hasText) || hasRange(entry.jobDateRange)
       );
     case 'education':
       return (resume.education ?? []).some(
         (entry) =>
-          [entry.schoolName, entry.schoolMajor, entry.schoolGPA, entry.schoolDescription].some(hasText) ||
-          hasRange(entry.schoolDateRange)
+          [
+            entry.schoolName,
+            entry.schoolMajor,
+            entry.schoolGPA,
+            entry.schoolDescription,
+          ].some(hasText) || hasRange(entry.schoolDateRange)
       );
     case 'projects':
-    case 'certifications':
-    case 'awards':
-    case 'references': {
-      const nameKey: Record<string, string> = {
-        projects: 'projectName',
-        certifications: 'certificationName',
-        awards: 'awardName',
-        references: 'referenceName',
-      };
-      const descriptionKey: Record<string, string> = {
-        projects: 'projectDescription',
-        certifications: 'certificationDescription',
-        awards: 'awardDescription',
-        references: 'referenceDescription',
-      };
-      const entries = ((resume as any)[section] ?? []) as Record<string, any>[];
-      return entries.some(
-        (entry) =>
-          hasText(entry[nameKey[section]]) || hasText(entry[descriptionKey[section]])
+      return (resume.projects ?? []).some(
+        (entry) => hasText(entry.projectName) || hasText(entry.projectDescription)
       );
-    }
+    case 'certifications':
+      return (resume.certifications ?? []).some(
+        (entry) =>
+          hasText(entry.certificationName) ||
+          hasText(entry.certificationIssuer) ||
+          hasText(entry.certificationDescription)
+      );
+    case 'awards':
+      return (resume.awards ?? []).some(
+        (entry) =>
+          hasText(entry.awardName) ||
+          hasText(entry.awardIssuer) ||
+          hasText(entry.awardDescription)
+      );
+    case 'references':
+      return (resume.references ?? []).some(
+        (entry) =>
+          hasText(entry.referenceName) ||
+          hasText(entry.referenceRole) ||
+          hasText(entry.referenceDescription)
+      );
     case 'languages':
       return (
         (resume.languageItems ?? []).some(
@@ -335,20 +342,99 @@ export function sectionHasContent(
   }
 }
 
+export function sectionItemCount(
+  resume: ResumeInterface | undefined,
+  section: SectionKey
+): number {
+  if (!resume) return 0;
+  switch (section) {
+    case 'skills':
+      return (resume.skillGroups ?? []).reduce(
+        (count, group) => count + group.skills.length,
+        0
+      );
+    case 'languages':
+      return (resume.languageItems ?? []).filter((item) => item.name?.trim()).length;
+    case 'profile':
+      return [
+        resume.profile.fullName,
+        resume.profile.intro,
+        resume.profile.email,
+        resume.profile.location,
+        resume.profile.summary,
+      ].filter((value) => Boolean(value?.trim())).length;
+    default:
+      return ((resume as unknown as Record<string, unknown[]>)[section] ?? []).length;
+  }
+}
+
+function clamp(value: unknown, min: number, max: number, fallback: number): number {
+  const number = typeof value === 'number' && Number.isFinite(value) ? value : fallback;
+  return Math.min(max, Math.max(min, number));
+}
+
+const LEGACY_TEMPLATES: Record<string, ResumeTheme['template']> = {
+  classic: 'ivory',
+  modern: 'meridian',
+  minimal: 'ledger',
+};
+
+const LEGACY_FONTS: Record<string, ResumeFont> = {
+  Helvetica: 'inter',
+  'Times-Roman': 'source',
+  Courier: 'plex-mono',
+};
+
+export function normalizeTheme(theme?: ResumeTheme): ResumeTheme {
+  const incoming = (theme ?? {}) as Partial<ResumeTheme> & { template?: string; font?: string };
+  const template = LEGACY_TEMPLATES[incoming.template ?? ''] ?? incoming.template;
+  const font = LEGACY_FONTS[incoming.font ?? ''] ?? incoming.font;
+
+  return {
+    template: TEMPLATE_IDS.includes(template as ResumeTheme['template'])
+      ? (template as ResumeTheme['template'])
+      : DESIGN_DEFAULT_THEME.template,
+    font: FONT_IDS.includes(font as ResumeFont)
+      ? (font as ResumeFont)
+      : DESIGN_DEFAULT_THEME.font,
+    color: isHexColor(incoming.color)
+      ? (incoming.color as string)
+      : DESIGN_DEFAULT_THEME.color,
+    onePage: Boolean(incoming.onePage),
+    scale: clamp(incoming.scale, 0.85, 1.2, DESIGN_DEFAULT_THEME.scale),
+    leading: clamp(incoming.leading, 1.25, 1.75, DESIGN_DEFAULT_THEME.leading),
+    spacing: clamp(incoming.spacing, 0.7, 1.5, DESIGN_DEFAULT_THEME.spacing),
+    margin:
+      incoming.margin && incoming.margin in MARGIN_SIZES
+        ? incoming.margin
+        : DESIGN_DEFAULT_THEME.margin,
+    paper:
+      incoming.paper && incoming.paper in PAPER_SIZES
+        ? incoming.paper
+        : DESIGN_DEFAULT_THEME.paper,
+  };
+}
+
 export function normalizeResume(resume: ResumeInterface): ResumeInterface {
-  const sectionOrder =
-    resume.sectionOrder && resume.sectionOrder.length
-      ? DEFAULT_SECTION_ORDER.filter((key) => resume.sectionOrder!.includes(key))
-      : [...DEFAULT_SECTION_ORDER];
+  const incomingOrder = (resume.sectionOrder ?? []).filter((key) =>
+    (DESIGN_SECTION_ORDER as SectionKey[]).includes(key)
+  );
+  // Preserve the order the user chose, then append any sections that were
+  // added to the design after this resume was saved.
+  const sectionOrder = incomingOrder.filter(
+    (key, index) => incomingOrder.indexOf(key) === index
+  );
 
   return {
     ...resume,
     sectionOrder: [
       ...sectionOrder,
-      ...DEFAULT_SECTION_ORDER.filter((key) => !sectionOrder.includes(key)),
+      ...(DESIGN_SECTION_ORDER as SectionKey[]).filter(
+        (key) => !sectionOrder.includes(key)
+      ),
     ],
     hiddenSections: resume.hiddenSections ?? [],
-    theme: { ...DEFAULT_THEME, ...(resume.theme ?? {}) },
+    theme: normalizeTheme(resume.theme),
     skillGroups:
       resume.skillGroups ??
       (typeof resume.skills === 'string' && resume.skills.trim()
@@ -375,59 +461,56 @@ export function normalizeResume(resume: ResumeInterface): ResumeInterface {
     certifications: resume.certifications ?? [],
     awards: resume.awards ?? [],
     references: resume.references ?? [],
+    profile: {
+      ...resume.profile,
+      profileCustomField: resume.profile?.profileCustomField ?? [],
+    },
   };
 }
 
 export function createExampleResume(): ResumeInterface {
   const example: ResumeInterface = {
     id: EXAMPLE_RESUME_ID,
-    fileName: 'Example Resume',
-    title: 'Example Software Engineer Resume',
+    fileName: 'Example resume',
+    title: 'Senior frontend engineer',
     last_accessed: 'Tue, 17 Nov 2026 10:00:00 GMT',
     isExample: true,
     profile: {
       fullName: 'Alex Morgan',
-      intro: 'Senior Frontend Engineer',
+      intro: 'Senior frontend engineer',
       email: 'alex.morgan@example.com',
       location: 'Austin, TX',
       phone: '+1 415 555 0132',
-      website: 'https://alexmorgan.dev',
-      linkedIn: 'https://www.linkedin.com/in/alexmorgan/',
-      gitHub: 'https://github.com/alexmorgan',
+      website: 'alexmorgan.dev',
+      linkedIn: 'linkedin.com/in/alexmorgan',
+      gitHub: 'github.com/alexmorgan',
       profileCustomField: [{ fieldName: 'Portfolio', fieldValue: 'alexmorgan.dev/work' }],
       summary:
-        'Frontend engineer with 8+ years of experience building accessible, high-performance web applications.\nPassionate about design systems, developer experience and mentoring growing teams.',
+        'Frontend engineer with eight years of experience shipping accessible, fast web products. Happiest on a team that reads each other’s code.',
     },
     skills: '',
     skillGroups: [
       {
-        id: uuidv4(),
-        name: 'Technical',
-        skills: [
-          'JavaScript',
-          'TypeScript',
-          'React',
-          'Next.js',
-          'Node.js',
-          'Tailwind CSS',
-          'GraphQL',
-        ],
+        id: 'example-skill-1',
+        name: 'Languages & frameworks',
+        skills: ['TypeScript', 'React', 'Next.js', 'Node.js', 'GraphQL'],
       },
       {
-        id: uuidv4(),
+        id: 'example-skill-2',
         name: 'Tools',
-        skills: ['Git', 'Docker', 'Figma', 'Jest', 'AWS'],
+        skills: ['Figma', 'Playwright', 'GitHub Actions', 'Docker'],
       },
       {
-        id: uuidv4(),
-        name: 'Soft Skills',
-        skills: ['Communication', 'Mentoring', 'Problem Solving'],
+        id: 'example-skill-3',
+        name: 'Working with people',
+        skills: ['Code review', 'Mentoring', 'Design partner'],
       },
     ],
     experience: [
       {
         companyName: 'Northstar Labs',
-        jobTitle: 'Senior Frontend Engineer',
+        jobTitle: 'Senior frontend engineer',
+        jobLocation: 'Austin, TX',
         jobDate: 'Jan 2021 – Present',
         jobDateRange: {
           startMonth: '01',
@@ -437,11 +520,12 @@ export function createExampleResume(): ResumeInterface {
           present: true,
         },
         jobDescription:
-          'Led a small team rebuilding the customer dashboard, making it noticeably faster to load.\nIntroduced a shared component library now used across the product teams.\nMentored two junior developers through weekly pairing and code reviews.',
+          'Rebuilt the customer dashboard around a shared component library. Time to first meaningful paint fell from 4.1s to 1.6s.\nLed the accessibility workstream; the product now passes WCAG 2.2 AA on every core flow.\nMentor two engineers through weekly pairing, code review and release ownership.',
       },
       {
         companyName: 'Pixel & Code',
-        jobTitle: 'Frontend Developer',
+        jobTitle: 'Frontend developer',
+        jobLocation: 'Remote',
         jobDate: 'Jun 2018 – Dec 2020',
         jobDateRange: {
           startMonth: '06',
@@ -451,7 +535,7 @@ export function createExampleResume(): ResumeInterface {
           present: false,
         },
         jobDescription:
-          'Built responsive storefronts for clients in retail and hospitality using React and Next.js.\nReduced bundle size through code splitting and image optimization.',
+          'Built storefronts for retail and hospitality clients in React and Next.js.\nCut average bundle size by 38% with route-level splitting and better image handling.\nWrote the team’s first visual regression suite, which ended most cross-browser surprises.',
       },
     ],
     education: [
@@ -468,55 +552,66 @@ export function createExampleResume(): ResumeInterface {
         },
         schoolGPA: '3.8',
         schoolDescription:
-          'Graduated with honors. Teaching assistant for Data Structures course.\nPresident of the Web Development Student Club.',
+          'Graduated with honors. Teaching assistant for Data Structures.',
       },
     ],
     projects: [
       {
-        projectName: 'OpenUI Component Library',
+        projectName: 'OpenUI',
+        projectLink: 'github.com/alexmorgan/openui',
         projectDescription:
-          'An accessible React component library with full TypeScript support.\nShared as an open-source project and used by a handful of small teams.',
+          'An accessible React component library with typed props and sensible defaults. Used by a handful of small product teams.',
       },
       {
         projectName: 'Weatherly',
+        projectLink: 'weatherly.example.com',
         projectDescription:
-          'A real-time weather dashboard built with Next.js, GraphQL and Chart.js.',
+          'A small weather dashboard built with Next.js and GraphQL. Built to learn how far a thin server layer could go.',
       },
     ],
     certifications: [
       {
         certificationName: 'AWS Certified Developer – Associate',
-        certificationDescription:
-          'Issued 2023 · Valid through 2026.\nHands-on experience with Lambda, S3, DynamoDB and IAM.',
+        certificationIssuer: 'Amazon Web Services',
+        certificationDate: '2023',
+        certificationDescription: 'Lambda, S3, DynamoDB and IAM.',
       },
     ],
     awards: [
       {
-        awardName: 'Employee of the Year, Northstar Labs',
-        awardDescription:
-          'Recognized for outstanding contribution to the design system initiative in 2024.',
+        awardName: 'Employee of the Year',
+        awardIssuer: 'Northstar Labs',
+        awardDate: '2024',
+        awardDescription: 'For the design system rebuild and the accessibility programme.',
       },
     ],
     references: [
       {
-        referenceName: 'Jordan Lee – Engineering Manager',
-        referenceDescription:
-          'Available upon request. jordan.lee@example.com',
+        referenceName: 'Jordan Lee',
+        referenceRole: 'Engineering manager',
+        referenceCompany: 'Northstar Labs',
+        referenceEmail: 'jordan.lee@example.com',
+        referenceDescription: 'Happy to talk about Alex’s work on the dashboard rebuild.',
       },
     ],
     languages: '',
     languageItems: [
-      { id: uuidv4(), name: 'English', proficiency: 'Native' },
-      { id: uuidv4(), name: 'Nepali', proficiency: 'Fluent' },
-      { id: uuidv4(), name: 'Hindi', proficiency: 'Intermediate' },
+      { id: 'example-language-1', name: 'English', proficiency: 'Native' },
+      { id: 'example-language-2', name: 'Nepali', proficiency: 'Fluent' },
+      { id: 'example-language-3', name: 'Hindi', proficiency: 'Intermediate' },
     ],
-    sectionOrder: [...DEFAULT_SECTION_ORDER],
+    sectionOrder: [...DESIGN_SECTION_ORDER],
     hiddenSections: [],
     theme: {
-      template: 'modern',
-      color: '#1E6B54',
-      font: 'Helvetica',
-      onePage: true,
+      template: 'folio',
+      color: '#1E5B49',
+      font: 'source',
+      onePage: false,
+      scale: 1,
+      leading: 1.45,
+      spacing: 1,
+      margin: 'normal',
+      paper: 'a4',
     },
   };
 

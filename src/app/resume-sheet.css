@@ -1,0 +1,983 @@
+/* ------------------------------------------------------------------ */
+/* The resume sheet. Fixed paper geometry, template-specific identity. */
+/* ------------------------------------------------------------------ */
+
+.r-sheet {
+  --r-ink: #1b1a17;
+  --r-muted: #514d45;
+  --r-faint: #7d7668;
+  --r-rule: #ded8ca;
+  --r-paper: #fffdf9;
+  --r-base: 10.2pt;
+
+  position: relative;
+  width: 210mm;
+  min-height: 297mm;
+  padding: var(--r-pad, 15mm);
+  background: var(--r-paper);
+  color: var(--r-ink);
+  font-family: var(--r-font, Arial, sans-serif);
+  font-size: calc(var(--r-base) * var(--r-scale, 1));
+  line-height: var(--r-leading, 1.45);
+  letter-spacing: 0;
+  overflow-wrap: break-word;
+  -webkit-font-smoothing: antialiased;
+}
+
+.r-sheet[data-paper='letter'] {
+  width: 215.9mm;
+  min-height: 279.4mm;
+}
+
+.r-sheet h1,
+.r-sheet h2,
+.r-sheet h3,
+.r-sheet p,
+.r-sheet ul {
+  margin: 0;
+  padding: 0;
+}
+
+.r-sheet ul {
+  list-style: none;
+}
+
+.r-sheet a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.r-sheet * {
+  box-sizing: border-box;
+}
+
+/* ------------------------------- header ------------------------------- */
+
+.r-head {
+  margin-bottom: calc(1.35em * var(--r-gap, 1));
+}
+
+.r-name {
+  font-size: 2.55em;
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -0.022em;
+}
+
+.r-role {
+  margin-top: 0.3em;
+  font-size: 1em;
+  color: var(--r-accent);
+  letter-spacing: 0.01em;
+}
+
+.r-contact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.28em 1.05em;
+  margin-top: 0.7em;
+  font-size: 0.84em;
+  color: var(--r-muted);
+}
+
+.r-contact-item {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.35em;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.r-contact-label {
+  display: none;
+  color: var(--r-faint);
+}
+
+.r-contact-value {
+  min-width: 0;
+}
+
+/* ------------------------------- sections ----------------------------- */
+
+.r-flow > .r-section:first-child {
+  margin-top: 0;
+}
+
+.r-section {
+  margin-top: calc(1.15em * var(--r-gap, 1));
+}
+
+.r-h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.55em;
+  margin-bottom: 0.55em;
+  font-size: 0.8em;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--r-accent);
+}
+
+.r-summary {
+  color: var(--r-muted);
+  font-size: 0.98em;
+}
+
+/* ------------------------------- entries ------------------------------ */
+
+.r-entry {
+  margin-top: calc(0.72em * var(--r-gap, 1));
+}
+
+.r-section > .r-entry:first-of-type {
+  margin-top: 0;
+}
+
+.r-entry-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.2em;
+}
+
+.r-entry-title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.45em;
+  min-width: 0;
+}
+
+.r-entry-title {
+  font-size: 1.02em;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.r-entry-role {
+  font-size: 0.97em;
+  color: var(--r-muted);
+  line-height: 1.3;
+}
+
+.r-entry-sep {
+  color: var(--r-faint);
+  font-size: 0.9em;
+}
+
+.r-entry-meta {
+  font-size: 0.82em;
+  color: var(--r-faint);
+}
+
+.r-entry-date {
+  flex-shrink: 0;
+  font-size: 0.83em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--r-muted);
+}
+
+.r-entry-link {
+  font-size: 0.84em;
+  color: var(--r-accent);
+  overflow-wrap: anywhere;
+}
+
+.r-entry-note {
+  margin-top: 0.22em;
+  font-size: 0.95em;
+  color: var(--r-muted);
+}
+
+.r-bullets {
+  display: flex;
+  flex-direction: column;
+  gap: 0.18em;
+  margin-top: 0.3em;
+}
+
+.r-bullets li {
+  position: relative;
+  padding-left: 0.95em;
+  font-size: 0.96em;
+  color: var(--r-muted);
+}
+
+.r-bullets li::before {
+  content: '';
+  position: absolute;
+  left: 0.08em;
+  top: 0.62em;
+  width: 0.28em;
+  height: 0.28em;
+  border-radius: 50%;
+  background: var(--r-accent);
+  opacity: 0.75;
+}
+
+/* ------------------------------- skills ------------------------------- */
+
+.r-skill-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 0.38em;
+}
+
+.r-skill-group {
+  display: grid;
+  grid-template-columns: minmax(0, 10.5em) 1fr;
+  gap: 0.7em;
+  align-items: baseline;
+}
+
+.r-skill-group-name {
+  font-size: 0.94em;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.r-skill-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.12em 0.05em;
+  min-width: 0;
+}
+
+.r-skill {
+  font-size: 0.92em;
+  color: var(--r-muted);
+  overflow-wrap: anywhere;
+}
+
+.r-skill + .r-skill::before {
+  content: '·';
+  margin: 0 0.45em;
+  color: var(--r-faint);
+}
+
+/* ------------------------------ languages ----------------------------- */
+
+.r-languages {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35em 1.8em;
+}
+
+.r-language {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4em;
+  font-size: 0.94em;
+}
+
+.r-language-name {
+  font-weight: 600;
+}
+
+.r-language-level {
+  color: var(--r-muted);
+}
+
+/* ------------------------------- empty -------------------------------- */
+
+.r-empty {
+  margin-top: 2.2em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+  border: 1px dashed var(--r-rule);
+  border-radius: 6px;
+  padding: 1.5em;
+  font-size: 0.92em;
+  color: var(--r-faint);
+}
+
+.r-empty-note {
+  font-size: 0.86em;
+}
+
+.r-head--quiet .r-name {
+  color: var(--r-ink);
+}
+
+/* ==================================================================== */
+/* 1. Ivory                                                              */
+/* ==================================================================== */
+
+.r-t-ivory .r-head {
+  text-align: center;
+  padding-bottom: 1.15em;
+  border-bottom: 1px solid var(--r-rule);
+}
+
+.r-t-ivory .r-name {
+  font-size: 2.7em;
+  font-weight: 600;
+  letter-spacing: 0.005em;
+}
+
+.r-t-ivory .r-role {
+  margin-top: 0.4em;
+  font-size: 0.9em;
+  letter-spacing: 0.19em;
+  text-transform: uppercase;
+}
+
+.r-t-ivory .r-contact {
+  justify-content: center;
+  margin-top: 0.75em;
+  font-size: 0.83em;
+}
+
+.r-t-ivory .r-h2 {
+  justify-content: center;
+  color: var(--r-ink);
+  font-size: 0.76em;
+  letter-spacing: 0.2em;
+}
+
+.r-t-ivory .r-h2::before,
+.r-t-ivory .r-h2::after {
+  content: '';
+  width: 1.8em;
+  height: 1px;
+  background: var(--r-rule);
+}
+
+.r-t-ivory .r-h2::after {
+  margin-left: 0.15em;
+}
+
+.r-t-ivory .r-h2::before {
+  margin-right: 0.15em;
+}
+
+.r-t-ivory .r-entry-title {
+  font-weight: 700;
+}
+
+/* ==================================================================== */
+/* 2. Meridian                                                           */
+/* ==================================================================== */
+
+.r-t-meridian .r-head {
+  border-left: 3px solid var(--r-accent);
+  padding-left: 1em;
+}
+
+.r-t-meridian .r-name {
+  font-size: 2.65em;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.r-t-meridian .r-role {
+  font-size: 1.02em;
+  font-weight: 500;
+}
+
+.r-t-meridian .r-contact {
+  margin-top: 0.55em;
+}
+
+.r-t-meridian .r-h2 {
+  padding-bottom: 0.32em;
+  border-bottom: 1px solid color-mix(in srgb, var(--r-accent) 32%, #fffdf9);
+  letter-spacing: 0.16em;
+}
+
+.r-t-meridian .r-entry-title {
+  color: var(--r-ink);
+}
+
+.r-t-meridian .r-skill,
+.r-t-atlas .r-skill,
+.r-t-studio .r-skill,
+.r-t-swiss .r-skill {
+  padding: 0.1em 0.48em;
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--r-accent) 9%, #fffdf9);
+  color: var(--r-ink);
+  font-size: 0.86em;
+}
+
+.r-t-meridian .r-skill + .r-skill::before,
+.r-t-atlas .r-skill + .r-skill::before,
+.r-t-studio .r-skill + .r-skill::before,
+.r-t-swiss .r-skill + .r-skill::before {
+  content: none;
+  margin: 0;
+}
+
+.r-t-meridian .r-skill-list,
+.r-t-atlas .r-skill-list,
+.r-t-studio .r-skill-list,
+.r-t-swiss .r-skill-list {
+  gap: 0.25em 0.3em;
+}
+
+/* ==================================================================== */
+/* 3. Folio                                                              */
+/* ==================================================================== */
+
+.r-t-folio .r-head {
+  padding-bottom: 1em;
+  border-bottom: 2px solid var(--r-ink);
+}
+
+.r-t-folio .r-name {
+  font-size: 3.3em;
+  font-weight: 600;
+  line-height: 0.94;
+  letter-spacing: -0.035em;
+}
+
+.r-t-folio .r-role {
+  margin-top: 0.55em;
+  font-size: 0.92em;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.r-t-folio .r-contact {
+  margin-top: 0.95em;
+  font-size: 0.81em;
+}
+
+.r-t-folio .r-h2 {
+  gap: 0.5em;
+  color: var(--r-ink);
+  font-size: 0.72em;
+  letter-spacing: 0.22em;
+}
+
+.r-t-folio .r-h2::before {
+  content: '';
+  width: 0.5em;
+  height: 0.5em;
+  background: var(--r-accent);
+  border-radius: 1px;
+}
+
+.r-t-folio .r-section {
+  margin-top: calc(1.35em * var(--r-gap, 1));
+}
+
+.r-t-folio .r-entry-title {
+  font-weight: 700;
+}
+
+/* ==================================================================== */
+/* 4. Onyx                                                               */
+/* ==================================================================== */
+
+.r-t-onyx .r-head {
+  padding: 1.05em 1.25em;
+  background: #171614;
+  border-radius: 3px;
+  color: #fff;
+}
+
+.r-t-onyx .r-name {
+  color: #fff;
+  font-size: 2.7em;
+  font-weight: 800;
+}
+
+.r-t-onyx .r-role {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.95em;
+  letter-spacing: 0.06em;
+}
+
+.r-t-onyx .r-contact {
+  color: rgba(255, 255, 255, 0.74);
+  margin-top: 0.65em;
+}
+
+.r-t-onyx .r-contact a {
+  color: inherit;
+}
+
+.r-t-onyx .r-h2 {
+  padding-bottom: 0.16em;
+  border-bottom: 1.5px solid var(--r-accent);
+  letter-spacing: 0.15em;
+}
+
+.r-t-onyx .r-skill {
+  padding: 0.1em 0.48em;
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--r-accent) 10%, #fffdf9);
+  color: var(--r-ink);
+  font-size: 0.86em;
+}
+
+.r-t-onyx .r-skill + .r-skill::before {
+  content: none;
+  margin: 0;
+}
+
+.r-t-onyx .r-skill-list {
+  gap: 0.25em 0.3em;
+}
+
+/* ==================================================================== */
+/* 5. Ledger                                                             */
+/* ==================================================================== */
+
+.r-t-ledger {
+  --r-base: 9.7pt;
+}
+
+.r-t-ledger .r-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 1.2em;
+  padding-bottom: 0.75em;
+  border-bottom: 1px solid var(--r-ink);
+}
+
+.r-t-ledger .r-name {
+  font-size: 1.78em;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.r-t-ledger .r-role {
+  margin-top: 0.22em;
+  font-size: 0.88em;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--r-muted);
+}
+
+.r-t-ledger .r-contact {
+  justify-content: flex-end;
+  max-width: 60mm;
+  margin-top: 0;
+  font-size: 0.77em;
+  gap: 0.2em 0.8em;
+}
+
+.r-t-ledger .r-h2 {
+  gap: 0.6em;
+  font-size: 0.74em;
+  letter-spacing: 0.17em;
+  color: var(--r-ink);
+}
+
+.r-t-ledger .r-h2::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--r-rule);
+}
+
+.r-t-ledger .r-section {
+  margin-top: calc(0.95em * var(--r-gap, 1));
+}
+
+.r-t-ledger .r-bullets li {
+  font-size: 0.95em;
+}
+
+/* ==================================================================== */
+/* 6. Mono                                                               */
+/* ==================================================================== */
+
+.r-t-mono .r-name {
+  font-size: 2.55em;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.r-t-mono .r-role {
+  font-family: var(--font-plex-mono), ui-monospace, monospace;
+  font-size: 0.88em;
+  letter-spacing: 0.02em;
+  color: var(--r-muted);
+}
+
+.r-t-mono .r-contact {
+  font-family: var(--font-plex-mono), ui-monospace, monospace;
+  font-size: 0.76em;
+  gap: 0.3em 1.25em;
+}
+
+.r-t-mono .r-contact-label {
+  display: inline;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.r-t-mono .r-h2 {
+  gap: 0.45em;
+  font-family: var(--font-plex-mono), ui-monospace, monospace;
+  font-size: 0.76em;
+  letter-spacing: 0.1em;
+  color: var(--r-ink);
+}
+
+.r-t-mono .r-h2::before {
+  content: '//';
+  color: var(--r-accent);
+  letter-spacing: -0.08em;
+}
+
+.r-t-mono .r-section {
+  padding-top: 0.5em;
+  border-top: 1px solid var(--r-rule);
+}
+
+.r-t-mono .r-entry-date {
+  font-family: var(--font-plex-mono), ui-monospace, monospace;
+  font-size: 0.78em;
+}
+
+.r-t-mono .r-skill {
+  font-family: var(--font-plex-mono), ui-monospace, monospace;
+  font-size: 0.86em;
+}
+
+.r-t-mono .r-skill + .r-skill::before {
+  content: '/';
+  color: var(--r-faint);
+}
+
+/* ==================================================================== */
+/* 7. Linea                                                              */
+/* ==================================================================== */
+
+.r-t-linea .r-name {
+  font-size: 2.9em;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.r-t-linea .r-role {
+  color: var(--r-accent);
+  font-size: 1.02em;
+}
+
+.r-t-linea .r-h2 {
+  gap: 0.5em;
+  color: var(--r-ink);
+  font-size: 0.78em;
+  padding-bottom: 0.4em;
+  border-bottom: 1px solid var(--r-rule);
+}
+
+.r-t-linea .r-h2::before {
+  content: '';
+  width: 0.46em;
+  height: 0.46em;
+  border-radius: 50%;
+  background: var(--r-accent);
+}
+
+.r-t-linea .r-section[data-section='experience'] .r-entry,
+.r-t-linea .r-section[data-section='education'] .r-entry {
+  position: relative;
+  margin-left: 0.75em;
+  padding-left: 1.15em;
+  border-left: 1px solid var(--r-rule);
+}
+
+.r-t-linea .r-section[data-section='experience'] .r-entry::before,
+.r-t-linea .r-section[data-section='education'] .r-entry::before {
+  content: '';
+  position: absolute;
+  left: -0.26em;
+  top: 0.42em;
+  width: 0.5em;
+  height: 0.5em;
+  border-radius: 50%;
+  background: var(--r-accent);
+  box-shadow: 0 0 0 3px var(--r-paper);
+}
+
+/* ==================================================================== */
+/* 8. Swiss                                                              */
+/* ==================================================================== */
+
+.r-t-swiss .r-head {
+  padding-top: 0.65em;
+  border-top: 5px solid var(--r-ink);
+}
+
+.r-t-swiss .r-name {
+  font-size: 2.95em;
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -0.045em;
+  text-transform: uppercase;
+}
+
+.r-t-swiss .r-role {
+  margin-top: 0.55em;
+  color: var(--r-muted);
+  font-size: 0.92em;
+  letter-spacing: 0.08em;
+}
+
+.r-t-swiss .r-contact {
+  margin-top: 0.9em;
+}
+
+.r-t-swiss .r-flow {
+  counter-reset: rsec;
+}
+
+.r-t-swiss .r-section {
+  counter-increment: rsec;
+  margin-top: calc(0.85em * var(--r-gap, 1));
+  padding-top: 0.55em;
+  border-top: 1px solid var(--r-ink);
+}
+
+.r-t-swiss .r-h2 {
+  font-size: 0.71em;
+  letter-spacing: 0.15em;
+  color: var(--r-ink);
+}
+
+.r-t-swiss .r-h2::before {
+  content: counter(rsec, decimal-leading-zero);
+  color: var(--r-accent);
+  font-variant-numeric: tabular-nums;
+  margin-right: 0.55em;
+}
+
+.r-t-swiss .r-entry-title {
+  font-weight: 800;
+}
+
+/* ==================================================================== */
+/* 9. Gazette                                                            */
+/* ==================================================================== */
+
+.r-t-gazette .r-head {
+  text-align: center;
+  padding: 0.45em 0 0.8em;
+  border-top: 1px solid var(--r-ink);
+  border-bottom: 3px double var(--r-ink);
+}
+
+.r-t-gazette .r-name {
+  font-size: 3.1em;
+  font-weight: 600;
+  letter-spacing: 0.045em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.r-t-gazette .r-role {
+  margin-top: 0.55em;
+  font-size: 0.78em;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--r-muted);
+}
+
+.r-t-gazette .r-contact {
+  justify-content: center;
+  margin-top: 0.8em;
+  font-size: 0.77em;
+}
+
+.r-t-gazette .r-h2 {
+  justify-content: center;
+  color: var(--r-ink);
+  font-size: 0.74em;
+  letter-spacing: 0.2em;
+  padding-bottom: 0.24em;
+  border-bottom: 1px solid var(--r-rule);
+}
+
+.r-t-gazette .r-summary,
+.r-t-gazette .r-bullets li {
+  text-align: justify;
+}
+
+.r-t-gazette .r-entry-date {
+  font-style: italic;
+}
+
+/* ==================================================================== */
+/* 10. Studio                                                            */
+/* ==================================================================== */
+
+.r-t-studio .r-head {
+  padding: 1.4em 1.45em;
+  background: var(--r-accent);
+  border-radius: 4px;
+  color: #fff;
+}
+
+.r-t-studio .r-name {
+  color: #fff;
+  font-size: 2.85em;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.r-t-studio .r-role {
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.98em;
+}
+
+.r-t-studio .r-contact {
+  margin-top: 0.85em;
+  color: rgba(255, 255, 255, 0.84);
+}
+
+.r-t-studio .r-contact a {
+  color: inherit;
+}
+
+.r-t-studio .r-h2 {
+  gap: 0.5em;
+  letter-spacing: 0.17em;
+  font-size: 0.78em;
+}
+
+.r-t-studio .r-h2::before {
+  content: '';
+  width: 0.5em;
+  height: 0.5em;
+  background: var(--r-accent);
+}
+
+.r-t-studio .r-entry-title {
+  color: var(--r-accent);
+}
+
+.r-t-studio .r-bullets li::before {
+  opacity: 1;
+}
+
+/* ==================================================================== */
+/* 11. Atlas                                                             */
+/* ==================================================================== */
+
+.r-t-atlas .r-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1.06fr) minmax(0, 0.94fr);
+  background: #eef1ed;
+  background: color-mix(in srgb, var(--r-accent) 9%, #fffdf9);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.r-t-atlas .r-head-name {
+  padding: 1.05em;
+  background: var(--r-accent);
+  color: #fff;
+}
+
+.r-t-atlas .r-name {
+  color: #fff;
+  font-size: 2.35em;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+.r-t-atlas .r-role {
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.94em;
+}
+
+.r-t-atlas .r-contact {
+  display: grid;
+  align-content: center;
+  gap: 0.12em;
+  margin-top: 0;
+  padding: 0.85em 1.15em;
+  font-size: 0.8em;
+  color: var(--r-muted);
+}
+
+.r-t-atlas .r-contact-label {
+  display: inline;
+  margin-right: 0.5em;
+  font-size: 0.86em;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.r-t-atlas .r-h2 {
+  padding-bottom: 0.1em;
+  border-bottom: 1px solid var(--r-rule);
+  color: var(--r-ink);
+}
+
+.r-t-atlas .r-h2::before {
+  content: '';
+  width: 0.48em;
+  height: 0.48em;
+  background: var(--r-accent);
+}
+
+.r-t-atlas .r-entry-title {
+  color: var(--r-accent);
+}
+
+/* ==================================================================== */
+/* 12. Column                                                            */
+/* ==================================================================== */
+
+.r-t-column .r-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 2em;
+  padding-bottom: 1em;
+  border-bottom: 1px solid var(--r-rule);
+}
+
+.r-t-column .r-name {
+  font-size: 2.85em;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.r-t-column .r-role {
+  font-size: 1em;
+}
+
+.r-t-column .r-contact {
+  display: grid;
+  justify-items: end;
+  gap: 0.2em;
+  margin-top: 0;
+  max-width: 62mm;
+  text-align: right;
+  font-size: 0.79em;
+}
+
+.r-t-column .r-contact-label {
+  display: inline;
+  margin-right: 0.45em;
+  font-size: 0.9em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.r-t-column .r-h2 {
+  padding-left: 0.55em;
+  border-left: 2px solid var(--r-accent);
+  color: var(--r-ink);
+  font-size: 0.79em;
+}
+
+.r-t-column .r-entry-title {
+  color: var(--r-accent);
+}
+

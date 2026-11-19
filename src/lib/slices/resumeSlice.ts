@@ -7,6 +7,7 @@ import {
   ResumeProfile,
   ResumeProjects,
   ResumeReferences,
+  ResumeInterface,
   ResumeState,
   ResumeTheme,
   SectionKey,
@@ -775,6 +776,23 @@ export const resumeSlice = createSlice({
       );
       localStorage?.setItem('resume', JSON.stringify(state.value));
     },
+
+    importResumes: (state, action: PayloadAction<ResumeInterface[]>) => {
+      const incoming = (Array.isArray(action.payload) ? action.payload : [])
+        .filter((resume) => resume && typeof resume === 'object' && resume.profile)
+        .map((resume) =>
+          normalizeResume({
+            ...resume,
+            id: uuidv4(),
+            isExample: false,
+            fileName: resume.fileName || 'Imported resume',
+            last_accessed: new Date().toUTCString(),
+          })
+        );
+      const example = state.value.filter((resume) => resume.isExample);
+      state.value = [...state.value.filter((resume) => !resume.isExample), ...incoming, ...example];
+      localStorage?.setItem('resume', JSON.stringify(state.value));
+    },
   },
 });
 
@@ -814,5 +832,6 @@ export const {
   reorderSections,
   toggleSectionVisibility,
   updateResumeTheme,
+  importResumes,
 } = resumeSlice.actions;
 export default resumeSlice.reducer;
