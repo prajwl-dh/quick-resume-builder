@@ -1,8 +1,8 @@
 'use client';
 
+import type { ResumeInterface } from '@/components/builder/previousResumes/ResumeInterface';
 import Logo from '@/components/ui/Logo';
 import ThemeToggle from '@/components/ui/ThemeToggle';
-import type { ResumeInterface } from '@/components/builder/previousResumes/ResumeInterface';
 import { downloadJson } from '@/lib/downloads';
 import { renameResume } from '@/lib/slices/resumeSlice';
 import { useAppDispatch } from '@/lib/store/hooks';
@@ -122,7 +122,7 @@ export default function TopBar({
       <button
         type='button'
         onClick={onOpenDesign}
-        className={`icon-btn md:hidden ${
+        className={`btn btn-secondary btn-sm lg:hidden ${
           active === 'design' ? 'bg-accent-soft text-accent' : ''
         }`}
         aria-label='Design'
@@ -132,21 +132,9 @@ export default function TopBar({
         <LuLayoutTemplate className='h-4 w-4' />
       </button>
 
-      <button
-        type='button'
-        onClick={onOpenDesign}
-        aria-current={active === 'design' ? 'true' : undefined}
-        className={`btn btn-ghost btn-sm hidden md:inline-flex ${
-          active === 'design' ? 'bg-accent-soft text-accent' : ''
-        }`}
-      >
-        <LuLayoutTemplate className='h-4 w-4' />
-        Design
-      </button>
-
-      <button type='button' onClick={onOpenCheck} className='btn btn-secondary btn-sm'>
+      <button type='button' onClick={onOpenCheck} className={`btn btn-secondary btn-sm lg:hidden ${active === 'check' ? 'bg-accent-soft text-accent' : ''}`}>
         <LuShieldCheck className='h-4 w-4' />
-        <span className='hidden sm:inline'>Resume check</span>
+        <span className='hidden lg:inline'>Resume check</span>
       </button>
 
       <ThemeToggle className='hidden sm:inline-flex' />

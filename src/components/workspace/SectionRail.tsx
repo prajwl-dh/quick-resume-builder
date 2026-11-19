@@ -121,9 +121,6 @@ export default function SectionRail({
           <LuShieldCheck className='h-4 w-4 shrink-0' />
           <span className='text-[13px] font-medium'>Resume check</span>
         </button>
-        <p className='px-2.5 pb-1 pt-3 text-[10.5px] leading-[1.5] text-ink-faint'>
-          Saved in this browser as you type.
-        </p>
       </div>
     </nav>
   );
