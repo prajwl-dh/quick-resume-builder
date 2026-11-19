@@ -308,7 +308,7 @@ export default function Dashboard() {
       <footer className='border-t border-line py-6'>
         <div className='shell flex flex-col gap-2 text-[11.5px] text-ink-faint sm:flex-row sm:items-center sm:justify-between'>
           <span>Quick Resume. Your files stay in your browser.</span>
-          <span>Built to be printed, not to collect data.</span>
+          <span>Built for a clean download, not to collect data.</span>
         </div>
       </footer>
 
@@ -332,7 +332,7 @@ export default function Dashboard() {
               Rename this resume
             </DialogTitle>
             <p className='mt-1 text-[12.5px] leading-[1.5] text-ink-soft'>
-              The name only appears here and in the editor. It is not printed.
+              The name only appears here and in the editor. It does not appear on the resume.
             </p>
             <input
               autoFocus

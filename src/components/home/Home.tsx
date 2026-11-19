@@ -18,7 +18,7 @@ const steps = [
   {
     number: '03',
     title: 'Take it with you',
-    body: 'Download a clean PDF that prints well and parses cleanly by ATS software.',
+    body: 'Download a clean PDF that reads well for people and parses cleanly in ATS software.',
   },
 ];
 
@@ -43,9 +43,9 @@ export default function Home() {
           </h1>
 
           <p className='mt-6 max-w-lg text-[16px] leading-[1.75] text-light-text-secondary dark:text-dark-text-secondary sm:text-[17px]'>
-            Fill in the fields, watch the page take shape, and download a
-            print-ready PDF. Everything runs in your browser — no account, no
-            uploads, nothing stored on a server.
+            Fill in the fields, watch the page take shape, and download a clean
+            PDF. Everything runs in your browser — no account, no uploads,
+            nothing stored on a server.
           </p>
 
           <div className='mt-9 flex flex-wrap items-center gap-x-7 gap-y-4'>

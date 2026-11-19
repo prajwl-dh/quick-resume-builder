@@ -37,17 +37,17 @@ export default function ExportDialog({
   open,
   onClose,
   resume,
-  onToggleOnePage,
 }: {
   open: boolean;
   onClose: () => void;
   resume: ResumeInterface;
-  onToggleOnePage: (onePage: boolean) => void;
 }) {
   const theme = normalizeTheme(resume.theme);
   const paper = PAPER_SIZES[theme.paper ?? 'a4'];
   const margin = MARGIN_SIZES[theme.margin ?? 'normal'];
-  const onePage = Boolean(theme.onePage);
+  // A single page is the default for every theme. Unchecking it only applies
+  // to this build; the next time the dialog opens it starts checked again.
+  const [onePage, setOnePage] = useState(true);
   const [state, setState] = useState<BuildState>({ status: 'building' });
   const [attempt, setAttempt] = useState(0);
   const runId = useRef(0);
@@ -58,13 +58,18 @@ export default function ExportDialog({
     const id = ++runId.current;
     let cancelled = false;
 
-    setState((current) => ({
-      status: 'building',
-      previous: current.status === 'ready' ? current.preview : current.previous,
-    }));
+    setState((current) => {
+      const previous =
+        current.status === 'ready'
+          ? current.preview
+          : current.status === 'building'
+            ? current.previous
+            : undefined;
+      return { status: 'building', previous };
+    });
 
     import('@/lib/pdf/exportResumePdf')
-      .then(({ buildResumePdf }) => buildResumePdf(resume))
+      .then(({ buildResumePdf }) => buildResumePdf(resume, onePage))
       .then((result) => {
         if (cancelled || id !== runId.current) return;
         if (previewUrl.current) URL.revokeObjectURL(previewUrl.current);
@@ -93,7 +98,7 @@ export default function ExportDialog({
     return () => {
       cancelled = true;
     };
-  }, [open, resume, attempt]);
+  }, [open, resume, attempt, onePage]);
 
   // Release the preview file when the dialog closes or the component unmounts.
   useEffect(() => {
@@ -102,6 +107,7 @@ export default function ExportDialog({
     previewUrl.current = null;
     if (url) window.setTimeout(() => URL.revokeObjectURL(url), 320);
     setState({ status: 'building' });
+    setOnePage(true);
   }, [open]);
 
   useEffect(
@@ -244,7 +250,7 @@ export default function ExportDialog({
             <div className='rounded-xl border border-line p-3.5'>
               <Checkbox
                 checked={onePage}
-                onChange={onToggleOnePage}
+                onChange={setOnePage}
                 label='Fit everything on one page'
               />
               <p className='mt-2 pl-[26px] text-[11.5px] leading-[1.5] text-ink-faint'>

@@ -1,8 +1,11 @@
+'use client';
+
 import Footer from '@/components/footer/Footer';
 import Hero from '@/components/marketing/Hero';
 import MarketingNav from '@/components/marketing/MarketingNav';
 import TemplateShowcase from '@/components/marketing/TemplateShowcase';
 import Link from 'next/link';
+import { useRef } from 'react';
 import {
   LuArrowRight,
   LuCheck,
@@ -16,6 +19,8 @@ import {
   LuShieldCheck,
   LuType,
 } from 'react-icons/lu';
+
+type SectionKey = 'templates' | 'editor' | 'privacy' | 'questions';
 
 const questions = [
   {
@@ -35,25 +40,36 @@ const questions = [
     a: 'Yes. Open the menu in the editor and download a backup, then use “Import a backup” on the workspace page of the other device.',
   },
   {
-    q: 'Why does Download PDF open the print dialog?',
-    a: 'Because that is the route to a real PDF: vector type, working links and selectable text. Choose “Save as PDF” as the destination. We keep the page size and margins out of your way.',
-  },
-  {
     q: 'Will an applicant tracking system read it?',
     a: 'The PDF contains real text in a single reading order, not an image, so parsers can read it. We cannot promise how a particular system will score you, and you should still check the job posting for specific requirements.',
   },
 ];
 
 export default function HomePage() {
+  const templatesRef = useRef<HTMLElement>(null);
+  const editorRef = useRef<HTMLElement>(null);
+  const privacyRef = useRef<HTMLElement>(null);
+  const questionsRef = useRef<HTMLElement>(null);
+
+  const scrollToSection = (section: SectionKey) => {
+    const refs = {
+      templates: templatesRef,
+      editor: editorRef,
+      privacy: privacyRef,
+      questions: questionsRef,
+    };
+    refs[section].current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
   return (
     <div className='flex min-h-dvh flex-col bg-canvas'>
-      <MarketingNav />
+      <MarketingNav onNavigate={scrollToSection} />
 
       <main className='flex-1'>
-        <Hero />
-        <TemplateShowcase />
+        <Hero onBrowseTemplates={() => scrollToSection('templates')} />
+        <TemplateShowcase sectionRef={templatesRef} />
 
-        <section id='editor' className='scroll-mt-16 py-16 lg:py-24'>
+        <section ref={editorRef} id='editor' className='scroll-mt-16 py-16 lg:py-24'>
           <div className='shell grid gap-10 lg:grid-cols-[minmax(0,0.86fr)_minmax(0,1.14fr)] lg:gap-14'>
             <div className='max-w-md lg:sticky lg:top-24 lg:self-start'>
               <p className='eyebrow'>The editor</p>
@@ -182,7 +198,7 @@ export default function HomePage() {
                 </h3>
                 <p className='mt-1 text-[12.5px] leading-[1.6] text-ink-soft'>
                   Text stays text and links stay links. Choose one page or let it run to a
-                  second, on A4 or US Letter, straight from the browser dialog.
+                  second, on A4 or US Letter, straight from the export dialog.
                 </p>
               </article>
 
@@ -225,7 +241,7 @@ export default function HomePage() {
             <div className='max-w-xl'>
               <p className='eyebrow'>Three steps</p>
               <h2 className='mt-3 font-display text-[38px] leading-[1.02] tracking-[-0.02em] text-ink sm:text-[46px]'>
-                From a blank page to a printed page.
+                From a blank page to a finished page.
               </h2>
               <p className='mt-3 text-[14px] leading-[1.7] text-ink-soft'>
                 You do not need to finish the resume in one sitting. It is saved where you
@@ -247,8 +263,8 @@ export default function HomePage() {
                 },
                 {
                   n: '03',
-                  title: 'Print it, or keep going.',
-                  text: 'Download a PDF through the browser, or close the tab and come back. Both work.',
+                  title: 'Download it, or keep going.',
+                  text: 'Download a PDF directly, or close the tab and come back. Both work.',
                 },
               ].map((step) => (
                 <li key={step.n} className='group bg-surface p-6 transition-colors hover:bg-canvas'>
@@ -267,7 +283,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section id='privacy' className='scroll-mt-16 bg-ink py-16 text-canvas lg:py-24'>
+        <section ref={privacyRef} id='privacy' className='scroll-mt-16 bg-ink py-16 text-canvas lg:py-24'>
           <div className='shell grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.95fr)] lg:items-center lg:gap-16'>
             <div>
               <p className='text-[11px] font-semibold uppercase tracking-[0.18em] text-canvas/50'>
@@ -330,7 +346,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section id='questions' className='scroll-mt-16 py-16 lg:py-24'>
+        <section ref={questionsRef} id='questions' className='scroll-mt-16 py-16 lg:py-24'>
           <div className='shell grid gap-10 lg:grid-cols-[minmax(0,0.72fr)_minmax(0,1.28fr)] lg:gap-16'>
             <div className='max-w-sm'>
               <p className='eyebrow'>Questions</p>

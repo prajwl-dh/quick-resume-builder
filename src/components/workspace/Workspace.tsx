@@ -1,7 +1,7 @@
 'use client';
 
 import type { ResumeInterface, SectionKey } from '@/components/builder/previousResumes/ResumeInterface';
-import { deleteResume, updateResumeTheme } from '@/lib/slices/resumeSlice';
+import { deleteResume } from '@/lib/slices/resumeSlice';
 import { useAppDispatch } from '@/lib/store/hooks';
 import {
   Dialog,
@@ -140,9 +140,6 @@ export default function Workspace({ resume }: { resume: ResumeInterface }) {
         open={exportOpen}
         onClose={() => setExportOpen(false)}
         resume={resume}
-        onToggleOnePage={(onePage) =>
-          dispatch(updateResumeTheme({ id: resume.id, value: { onePage } }))
-        }
       />
 
       <Dialog open={deleteOpen} onClose={() => setDeleteOpen(false)} className='relative z-[90]'>

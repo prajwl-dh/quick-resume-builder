@@ -7,13 +7,19 @@ import { useEffect, useState } from 'react';
 import { LuArrowRight, LuMenu, LuX } from 'react-icons/lu';
 
 const links = [
-  { href: '#templates', label: 'Templates' },
-  { href: '#editor', label: 'The editor' },
-  { href: '#privacy', label: 'Privacy' },
-  { href: '#questions', label: 'Questions' },
-];
+  { key: 'templates', label: 'Templates' },
+  { key: 'editor', label: 'The editor' },
+  { key: 'privacy', label: 'Privacy' },
+  { key: 'questions', label: 'Questions' },
+] as const;
 
-export default function MarketingNav() {
+type SectionKey = (typeof links)[number]['key'];
+
+export default function MarketingNav({
+  onNavigate,
+}: {
+  onNavigate: (section: SectionKey) => void;
+}) {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -31,9 +37,14 @@ export default function MarketingNav() {
 
           <nav aria-label='Main' className='hidden items-center gap-0.5 lg:flex'>
             {links.map((link) => (
-              <a key={link.href} href={link.href} className='nav-link'>
+              <button
+                key={link.key}
+                type='button'
+                onClick={() => onNavigate(link.key)}
+                className='nav-link'
+              >
                 {link.label}
-              </a>
+              </button>
             ))}
           </nav>
 
@@ -64,15 +75,18 @@ export default function MarketingNav() {
         >
           <nav aria-label='Mobile' className='flex flex-col'>
             {links.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                onClick={() => setOpen(false)}
-                className='flex items-center justify-between border-b border-line py-4 text-[17px] font-medium text-ink'
+              <button
+                key={link.key}
+                type='button'
+                onClick={() => {
+                  setOpen(false);
+                  window.setTimeout(() => onNavigate(link.key), 0);
+                }}
+                className='flex items-center justify-between border-b border-line py-4 text-left text-[17px] font-medium text-ink'
               >
                 {link.label}
                 <LuArrowRight className='h-4 w-4 text-ink-faint' />
-              </a>
+              </button>
             ))}
           </nav>
           <div className='mt-auto space-y-3 pt-8'>

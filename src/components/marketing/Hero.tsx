@@ -30,7 +30,11 @@ const fonts: { id: ResumeFont; name: string; label: string }[] = [
   { id: 'plex-mono', name: 'Plex Mono', label: 'Mono' },
 ];
 
-export default function Hero() {
+export default function Hero({
+  onBrowseTemplates,
+}: {
+  onBrowseTemplates?: () => void;
+}) {
   const base = useMemo(() => createExampleResume(), []);
   const [template, setTemplate] = useState<ResumeTemplate>('folio');
   const [color, setColor] = useState('#1E5B49');
@@ -58,7 +62,7 @@ export default function Hero() {
           </h1>
           <p className='mt-5 max-w-[470px] text-[15px] leading-[1.7] text-ink-soft sm:text-[16px]'>
             Twelve templates, twelve typefaces and twenty-eight inks. The page updates as
-            you type, and the PDF prints with real, selectable text. Everything stays in
+            you type, and the PDF downloads with real, selectable text. Everything stays in
             this browser.
           </p>
 
@@ -67,9 +71,13 @@ export default function Hero() {
               Start a resume
               <LuArrowRight className='h-4 w-4' />
             </Link>
-            <a href='#templates' className='btn btn-secondary btn-lg w-full sm:w-auto'>
+            <button
+              type='button'
+              onClick={onBrowseTemplates}
+              className='btn btn-secondary btn-lg w-full sm:w-auto'
+            >
               Browse the templates
-            </a>
+            </button>
           </div>
 
           <ul className='mt-6 flex flex-wrap gap-x-5 gap-y-2 text-[12px] text-ink-faint'>

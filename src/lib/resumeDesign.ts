@@ -134,7 +134,7 @@ export const DEFAULT_THEME: Required<Omit<ResumeTheme, 'onePage'>> & { onePage: 
   template: 'ivory',
   color: FALLBACK_COLOR,
   font: 'inter',
-  onePage: false,
+  onePage: true,
   scale: 1,
   leading: 1.45,
   spacing: 1,

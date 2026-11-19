@@ -400,7 +400,7 @@ export function normalizeTheme(theme?: ResumeTheme): ResumeTheme {
     color: isHexColor(incoming.color)
       ? (incoming.color as string)
       : DESIGN_DEFAULT_THEME.color,
-    onePage: Boolean(incoming.onePage),
+    onePage: incoming.onePage ?? true,
     scale: clamp(incoming.scale, 0.85, 1.2, DESIGN_DEFAULT_THEME.scale),
     leading: clamp(incoming.leading, 1.25, 1.75, DESIGN_DEFAULT_THEME.leading),
     spacing: clamp(incoming.spacing, 0.7, 1.5, DESIGN_DEFAULT_THEME.spacing),
@@ -606,7 +606,7 @@ export function createExampleResume(): ResumeInterface {
       template: 'folio',
       color: '#1E5B49',
       font: 'source',
-      onePage: false,
+      onePage: true,
       scale: 1,
       leading: 1.45,
       spacing: 1,

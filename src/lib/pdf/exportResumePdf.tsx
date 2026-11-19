@@ -32,11 +32,15 @@ async function render(resume: ResumeInterface, fit: number) {
  * scales until it fits. The smallest acceptable scale is 75%, below which
  * the type stops being readable.
  */
-export async function buildResumePdf(resume: ResumeInterface): Promise<BuiltPdf> {
+export async function buildResumePdf(
+  resume: ResumeInterface,
+  onePage?: boolean
+): Promise<BuiltPdf> {
   registerPdfFonts();
   const theme = normalizeTheme(resume.theme);
+  const fitToOnePage = onePage ?? theme.onePage ?? true;
 
-  if (!theme.onePage) {
+  if (!fitToOnePage) {
     return render(resume, 1);
   }
 

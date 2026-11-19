@@ -5,10 +5,14 @@ import { createExampleResume, normalizeTheme } from '@/lib/resumeDefaults';
 import { TEMPLATES } from '@/lib/resumeDesign';
 import type { ResumeTemplate } from '@/components/builder/previousResumes/ResumeInterface';
 import Link from 'next/link';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, type Ref } from 'react';
 import { LuArrowRight, LuCheck } from 'react-icons/lu';
 
-export default function TemplateShowcase() {
+export default function TemplateShowcase({
+  sectionRef,
+}: {
+  sectionRef?: Ref<HTMLElement>;
+}) {
   const base = useMemo(() => createExampleResume(), []);
   const [selected, setSelected] = useState<ResumeTemplate>('folio');
   const template = TEMPLATES.find((item) => item.id === selected) ?? TEMPLATES[0];
@@ -22,7 +26,11 @@ export default function TemplateShowcase() {
   );
 
   return (
-    <section id='templates' className='scroll-mt-16 border-y border-line bg-surface/50 py-16 lg:py-20'>
+    <section
+      ref={sectionRef}
+      id='templates'
+      className='scroll-mt-16 border-y border-line bg-surface/50 py-16 lg:py-20'
+    >
       <div className='shell'>
         <div className='flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between'>
           <div className='max-w-xl'>
@@ -59,8 +67,8 @@ export default function TemplateShowcase() {
           ))}
         </div>
 
-        <div className='mt-6 grid grid-cols-1 gap-8 lg:mt-9 lg:grid-cols-[minmax(0,1fr)_minmax(0,420px)] lg:gap-12'>
-          <div className='hidden content-start gap-x-8 gap-y-1 lg:grid lg:grid-cols-2'>
+        <div className='mt-6 grid grid-cols-1 gap-8 lg:mt-9 lg:grid-cols-[minmax(0,1fr)_minmax(0,400px)] lg:items-center lg:gap-12'>
+          <div className='hidden gap-x-8 gap-y-1 lg:grid lg:grid-cols-2 lg:content-center'>
             {TEMPLATES.map((item) => {
               const active = item.id === selected;
               return (
@@ -113,7 +121,7 @@ export default function TemplateShowcase() {
                 A4 · letter
               </span>
             </div>
-            <div className='mx-auto w-full min-w-0 max-w-[380px] overflow-hidden rounded-sm bg-[#fffdf9] shadow-sheet'>
+            <div className='mx-auto w-full min-w-0 max-w-[320px] overflow-hidden rounded-sm bg-[#fffdf9] shadow-sheet'>
               <ScaledSheet resume={resume} crop rounded={false} />
             </div>
             <p className='mt-3 text-center text-[11.5px] leading-[1.5] text-ink-faint lg:text-left'>

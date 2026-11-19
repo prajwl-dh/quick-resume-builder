@@ -180,13 +180,13 @@ function ContactRow({
               style={{
                 fontFamily: ctx.monoFont,
                 fontSize: em(ctx, size * 0.84),
-                letterSpacing: em(ctx, size * 0.05),
+                letterSpacing: 0,
                 textTransform: 'uppercase',
                 color: color ?? FAINT,
                 marginRight: em(ctx, 0.35),
               }}
             >
-              {contact.label}
+              {`${contact.label}:`}
             </Text>
           ) : null}
           <Text
@@ -216,7 +216,7 @@ function Header({ resume, ctx }: { resume: ResumeInterface; ctx: Ctx }) {
     fontSize: em(ctx, size),
     fontWeight: weight,
     lineHeight: 1.02,
-    letterSpacing: em(ctx, -0.018),
+    letterSpacing: 0,
     ...extra,
   });
 
@@ -240,7 +240,7 @@ function Header({ resume, ctx }: { resume: ResumeInterface; ctx: Ctx }) {
       >
         <Text
           style={nameStyle(2.7, 600, {
-            letterSpacing: em(ctx, 0.005),
+            letterSpacing: 0,
             textAlign: 'center',
           })}
         >
@@ -250,7 +250,7 @@ function Header({ resume, ctx }: { resume: ResumeInterface; ctx: Ctx }) {
           <Text
             style={{
               fontSize: em(ctx, 0.9),
-              letterSpacing: em(ctx, 0.17),
+              letterSpacing: 0,
               textTransform: 'uppercase',
               color: ctx.accent,
               marginTop: em(ctx, 0.4),
@@ -274,10 +274,10 @@ function Header({ resume, ctx }: { resume: ResumeInterface; ctx: Ctx }) {
           paddingLeft: em(ctx, 1),
         }}
       >
-        <Text style={nameStyle(2.65, 800, { letterSpacing: em(ctx, -0.03) })}>
+        <Text style={nameStyle(2.65, 700, { letterSpacing: 0 })}>
           {name}
         </Text>
-        {role ? <Text style={roleStyle({ fontWeight: 500 })}>{role}</Text> : null}
+        {role ? <Text style={roleStyle({ fontWeight: 400 })}>{role}</Text> : null}
         <ContactRow ctx={ctx} contacts={contacts} marginTop={0.55} />
       </View>
     );
@@ -295,7 +295,7 @@ function Header({ resume, ctx }: { resume: ResumeInterface; ctx: Ctx }) {
         <Text
           style={nameStyle(3.3, 600, {
             lineHeight: 0.94,
-            letterSpacing: em(ctx, -0.035),
+            letterSpacing: 0,
           })}
         >
           {name}
@@ -304,7 +304,7 @@ function Header({ resume, ctx }: { resume: ResumeInterface; ctx: Ctx }) {
           <Text
             style={{
               fontSize: em(ctx, 0.92),
-              letterSpacing: em(ctx, 0.18),
+              letterSpacing: 0,
               textTransform: 'uppercase',
               color: ctx.accent,
               marginTop: em(ctx, 0.55),
@@ -328,14 +328,14 @@ function Header({ resume, ctx }: { resume: ResumeInterface; ctx: Ctx }) {
           paddingVertical: em(ctx, 1.05),
         }}
       >
-        <Text style={nameStyle(2.7, 800, { color: WHITE })}>{name}</Text>
+        <Text style={nameStyle(2.7, 700, { color: WHITE })}>{name}</Text>
         {role ? (
           <Text
             style={{
               fontSize: em(ctx, 0.95),
               color: '#c9c6c0',
               marginTop: em(ctx, 0.32),
-              letterSpacing: em(ctx, 0.06),
+              letterSpacing: 0,
             }}
           >
             {role}
@@ -360,7 +360,7 @@ function Header({ resume, ctx }: { resume: ResumeInterface; ctx: Ctx }) {
         <View style={{ flex: 1, paddingRight: em(ctx, 1) }}>
           <Text
             style={nameStyle(1.78, 700, {
-              letterSpacing: em(ctx, 0.03),
+              letterSpacing: 0,
               textTransform: 'uppercase',
             })}
           >
@@ -370,7 +370,7 @@ function Header({ resume, ctx }: { resume: ResumeInterface; ctx: Ctx }) {
             <Text
               style={{
                 fontSize: em(ctx, 0.88),
-                letterSpacing: em(ctx, 0.09),
+                letterSpacing: 0,
                 textTransform: 'uppercase',
                 color: MUTED,
                 marginTop: em(ctx, 0.2 * ctx.spacing),
@@ -397,7 +397,7 @@ function Header({ resume, ctx }: { resume: ResumeInterface; ctx: Ctx }) {
   if (t === 'mono') {
     return (
       <View>
-        <Text style={nameStyle(2.55, 600, { letterSpacing: em(ctx, -0.02) })}>
+        <Text style={nameStyle(2.55, 600, { letterSpacing: 0 })}>
           {name}
         </Text>
         {role ? (
@@ -405,7 +405,7 @@ function Header({ resume, ctx }: { resume: ResumeInterface; ctx: Ctx }) {
             style={{
               fontFamily: ctx.monoFont,
               fontSize: em(ctx, 0.88),
-              letterSpacing: em(ctx, 0.02),
+              letterSpacing: 0,
               color: MUTED,
               marginTop: em(ctx, 0.35),
             }}
@@ -421,7 +421,7 @@ function Header({ resume, ctx }: { resume: ResumeInterface; ctx: Ctx }) {
   if (t === 'linea') {
     return (
       <View>
-        <Text style={nameStyle(2.9, 700, { letterSpacing: em(ctx, -0.03) })}>
+        <Text style={nameStyle(2.9, 700, { letterSpacing: 0 })}>
           {name}
         </Text>
         {role ? <Text style={roleStyle({ fontSize: em(ctx, 1.02) })}>{role}</Text> : null}
@@ -440,10 +440,10 @@ function Header({ resume, ctx }: { resume: ResumeInterface; ctx: Ctx }) {
         }}
       >
         <Text
-          style={nameStyle(2.95, 800, {
+          style={nameStyle(2.95, 700, {
             textTransform: 'uppercase',
             lineHeight: 0.9,
-            letterSpacing: em(ctx, -0.045),
+            letterSpacing: 0,
           })}
         >
           {name}
@@ -454,7 +454,7 @@ function Header({ resume, ctx }: { resume: ResumeInterface; ctx: Ctx }) {
               fontSize: em(ctx, 0.92),
               color: MUTED,
               marginTop: em(ctx, 0.55),
-              letterSpacing: em(ctx, 0.08),
+              letterSpacing: 0,
             }}
           >
             {role}
@@ -479,7 +479,7 @@ function Header({ resume, ctx }: { resume: ResumeInterface; ctx: Ctx }) {
         <Text
           style={nameStyle(3.1, 600, {
             textTransform: 'uppercase',
-            letterSpacing: em(ctx, 0.045),
+            letterSpacing: 0,
             lineHeight: 1,
             textAlign: 'center',
           })}
@@ -490,7 +490,7 @@ function Header({ resume, ctx }: { resume: ResumeInterface; ctx: Ctx }) {
           <Text
             style={{
               fontSize: em(ctx, 0.78),
-              letterSpacing: em(ctx, 0.22),
+              letterSpacing: 0,
               textTransform: 'uppercase',
               color: MUTED,
               marginTop: em(ctx, 0.55),
@@ -519,7 +519,7 @@ function Header({ resume, ctx }: { resume: ResumeInterface; ctx: Ctx }) {
           paddingVertical: em(ctx, 1.4),
         }}
       >
-        <Text style={nameStyle(2.85, 800, { color: WHITE, letterSpacing: em(ctx, -0.03) })}>
+        <Text style={nameStyle(2.85, 700, { color: WHITE, letterSpacing: 0 })}>
           {name}
         </Text>
         {role ? (
@@ -555,7 +555,7 @@ function Header({ resume, ctx }: { resume: ResumeInterface; ctx: Ctx }) {
             padding: em(ctx, 1.05),
           }}
         >
-          <Text style={nameStyle(2.35, 700, { color: WHITE, letterSpacing: em(ctx, -0.025) })}>
+          <Text style={nameStyle(2.35, 700, { color: WHITE, letterSpacing: 0 })}>
             {name}
           </Text>
           {role ? (
@@ -597,7 +597,7 @@ function Header({ resume, ctx }: { resume: ResumeInterface; ctx: Ctx }) {
       }}
     >
       <View style={{ flex: 1, paddingRight: em(ctx, 1.5) }}>
-        <Text style={nameStyle(2.85, 700, { letterSpacing: em(ctx, -0.03) })}>
+        <Text style={nameStyle(2.85, 700, { letterSpacing: 0 })}>
           {name}
         </Text>
         {role ? <Text style={roleStyle({ fontSize: em(ctx, 1) })}>{role}</Text> : null}
@@ -619,19 +619,17 @@ function Header({ resume, ctx }: { resume: ResumeInterface; ctx: Ctx }) {
 
 function SectionHeading({
   section,
-  number,
   ctx,
 }: {
   section: SectionKey;
-  number: number;
   ctx: Ctx;
 }) {
-  const label = SECTION_LABELS[section];
+  const label = section === 'profile' ? 'Summary' : SECTION_LABELS[section];
   const base = {
     fontFamily: ctx.bodyFont,
     fontSize: em(ctx, 0.8),
     fontWeight: 700,
-    letterSpacing: em(ctx, 0.14),
+    letterSpacing: 0,
     textTransform: 'uppercase' as const,
     lineHeight: 1.2,
   };
@@ -651,7 +649,7 @@ function SectionHeading({
     return wrap(
       <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
         <View style={{ width: em(ctx, 1.4), height: 0.7, backgroundColor: RULE }} />
-        <Text style={{ ...base, color: INK, fontSize: em(ctx, 0.76), letterSpacing: em(ctx, 0.2), marginHorizontal: em(ctx, 0.55) }}>
+        <Text style={{ ...base, color: INK, fontSize: em(ctx, 0.76), letterSpacing: 0, marginHorizontal: em(ctx, 0.55) }}>
           {label}
         </Text>
         <View style={{ width: em(ctx, 1.4), height: 0.7, backgroundColor: RULE }} />
@@ -665,7 +663,7 @@ function SectionHeading({
         style={{
           ...base,
           color: ctx.accent,
-          letterSpacing: em(ctx, 0.16),
+          letterSpacing: 0,
           paddingBottom: em(ctx, 0.32),
           borderBottomWidth: 1,
           borderBottomColor: mix(ctx.accent, PAPER, 0.32),
@@ -687,7 +685,7 @@ function SectionHeading({
             marginRight: em(ctx, 0.5),
           }}
         />
-        <Text style={{ ...base, color: INK, fontSize: em(ctx, 0.72), letterSpacing: em(ctx, 0.22) }}>
+        <Text style={{ ...base, color: INK, fontSize: em(ctx, 0.72), letterSpacing: 0 }}>
           {label}
         </Text>
       </View>
@@ -700,7 +698,7 @@ function SectionHeading({
         style={{
           ...base,
           color: ctx.accent,
-          letterSpacing: em(ctx, 0.15),
+          letterSpacing: 0,
           paddingBottom: em(ctx, 0.16),
           borderBottomWidth: 1.5,
           borderBottomColor: ctx.accent,
@@ -714,7 +712,7 @@ function SectionHeading({
   if (t === 'ledger') {
     return wrap(
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <Text style={{ ...base, color: INK, fontSize: em(ctx, 0.74), letterSpacing: em(ctx, 0.17) }}>
+        <Text style={{ ...base, color: INK, fontSize: em(ctx, 0.74), letterSpacing: 0 }}>
           {label}
         </Text>
         <View
@@ -732,25 +730,21 @@ function SectionHeading({
   if (t === 'mono') {
     return wrap(
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <Text
+        <View
           style={{
-            fontFamily: ctx.monoFont,
-            fontSize: em(ctx, 0.76),
-            fontWeight: 700,
-            letterSpacing: em(ctx, 0.1),
-            color: ctx.accent,
+            width: em(ctx, 0.4),
+            height: em(ctx, 0.4),
+            backgroundColor: ctx.accent,
             marginRight: em(ctx, 0.45),
           }}
-        >
-          {'//'}
-        </Text>
+        />
         <Text
           style={{
             ...base,
             fontFamily: ctx.monoFont,
             color: INK,
             fontSize: em(ctx, 0.76),
-            letterSpacing: em(ctx, 0.1),
+            letterSpacing: 0,
           }}
         >
           {label}
@@ -787,24 +781,18 @@ function SectionHeading({
 
   if (t === 'swiss') {
     return wrap(
-      <View>
-        <View style={{ flexDirection: 'row', alignItems: 'baseline' }}>
-          <Text
-            style={{
-              fontFamily: ctx.bodyFont,
-              fontSize: em(ctx, 0.71),
-              fontWeight: 700,
-              letterSpacing: em(ctx, 0.15),
-              color: ctx.accent,
-              marginRight: em(ctx, 0.55),
-            }}
-          >
-            {String(number).padStart(2, '0')}
-          </Text>
-          <Text style={{ ...base, color: INK, fontSize: em(ctx, 0.71), letterSpacing: em(ctx, 0.15) }}>
-            {label}
-          </Text>
-        </View>
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <View
+          style={{
+            width: em(ctx, 0.38),
+            height: em(ctx, 0.38),
+            backgroundColor: ctx.accent,
+            marginRight: em(ctx, 0.55),
+          }}
+        />
+        <Text style={{ ...base, color: INK, fontSize: em(ctx, 0.71), letterSpacing: 0 }}>
+          {label}
+        </Text>
       </View>,
       { paddingTop: em(ctx, 0.55), borderTopWidth: 1, borderTopColor: INK }
     );
@@ -817,7 +805,7 @@ function SectionHeading({
           ...base,
           color: INK,
           fontSize: em(ctx, 0.74),
-          letterSpacing: em(ctx, 0.2),
+          letterSpacing: 0,
           paddingBottom: em(ctx, 0.24),
           borderBottomWidth: 1,
           borderBottomColor: RULE,
@@ -840,7 +828,7 @@ function SectionHeading({
             marginRight: em(ctx, 0.5),
           }}
         />
-        <Text style={{ ...base, color: ctx.accent, fontSize: em(ctx, 0.78), letterSpacing: em(ctx, 0.17) }}>
+        <Text style={{ ...base, color: ctx.accent, fontSize: em(ctx, 0.78), letterSpacing: 0 }}>
           {label}
         </Text>
       </View>
@@ -1074,7 +1062,7 @@ function SectionBody({
 
   const sectionWrap = (children: ReactNode) => (
     <View style={{ marginTop: number === 1 ? 0 : em(ctx, 0.8 * ctx.spacing) }}>
-      <SectionHeading section={section} number={number} ctx={ctx} />
+      <SectionHeading section={section} ctx={ctx} />
       {children}
     </View>
   );
@@ -1514,7 +1502,6 @@ export default function ResumePdfDocument({
         {flow.map((section) => {
           if (section === 'profile') {
             if (!hasSummary) return null;
-            sectionNumber += 1;
             return (
               <View
                 key='profile'
@@ -1522,7 +1509,6 @@ export default function ResumePdfDocument({
               >
                 <SectionHeading
                   section='profile'
-                  number={sectionNumber}
                   ctx={ctx}
                 />
                 <Text

@@ -23,11 +23,23 @@ const PDF_FONTS: Record<ResumeFont, PdfFontMeta> = {
   lora: { family: 'Lora PDF', slug: 'lora', weights: [400, 600, 700] },
   garamond: { family: 'EB Garamond PDF', slug: 'garamond', weights: [400, 600, 700] },
   playfair: { family: 'Playfair Display PDF', slug: 'playfair', weights: [400, 600, 700] },
-  instrument: { family: 'Instrument Serif PDF', slug: 'instrument', weights: [400] },
+  instrument: { family: 'Instrument Serif PDF', slug: 'instrument', weights: [400, 600, 700] },
   'plex-mono': { family: 'IBM Plex Mono PDF', slug: 'plex-mono', weights: [400, 600, 700] },
 };
 
 let registered = false;
+
+/**
+ * Browsers fetch the files from the public folder. In a Node context (tests or
+ * server-side rendering) the same files are resolved from the repo instead.
+ */
+function fontSrc(slug: string, weight: number): string {
+  const relative = `/fonts/pdf/${slug}-${weight}.ttf`;
+  if (typeof window === 'undefined' && typeof process !== 'undefined' && process.cwd) {
+    return `${process.cwd()}/public${relative}`;
+  }
+  return relative;
+}
 
 export function registerPdfFonts() {
   if (registered) return;
@@ -36,7 +48,10 @@ export function registerPdfFonts() {
     Font.register({
       family: font.family,
       fonts: font.weights.map((weight) => ({
-        src: `/fonts/pdf/${font.slug}-${weight}.ttf`,
+        // Instrument Serif only ships one file. Registering the same file for
+        // the heavier weights keeps the embedded font's character map intact
+        // instead of letting a missing weight corrupt the PDF text layer.
+        src: fontSrc(font.slug, font.slug === 'instrument' ? 400 : weight),
         fontWeight: weight,
       })),
     });

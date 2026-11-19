@@ -35,6 +35,7 @@ const PreviewPane = function PreviewPane({
   const viewportRef = useRef<HTMLDivElement>(null);
   const sheetWrapRef = useRef<HTMLDivElement>(null);
   const [viewportWidth, setViewportWidth] = useState(0);
+  const [viewportHeight, setViewportHeight] = useState(0);
   const [sheetHeight, setSheetHeight] = useState(0);
   const [zoom, setZoom] = useState<Zoom>('fit');
 
@@ -62,9 +63,11 @@ const PreviewPane = function PreviewPane({
     if (!viewport) return;
     const observer = new ResizeObserver(([entry]) => {
       setViewportWidth(entry.contentRect.width);
+      setViewportHeight(entry.contentRect.height);
     });
     observer.observe(viewport);
     setViewportWidth(viewport.clientWidth);
+    setViewportHeight(viewport.clientHeight);
     return () => observer.disconnect();
   }, []);
 
@@ -134,46 +137,48 @@ const PreviewPane = function PreviewPane({
 
       <div
         ref={viewportRef}
-        className='preview-stage relative min-h-0 flex-1 overflow-auto px-4 py-6 pb-24 sm:px-6 lg:pb-6'
+        className='preview-stage relative min-h-0 flex-1 overflow-auto'
       >
         <div
-          className='relative mx-auto'
-          style={{ width: baseWidth * scale, minHeight: scaledHeight }}
+          className='flex w-full flex-col justify-center px-3 py-3 pb-16 lg:pb-3'
+          style={{ minHeight: viewportHeight || undefined }}
         >
           <div
-            aria-hidden='true'
-            style={{
-              width: baseWidth,
-              transform: `scale(${scale})`,
-              transformOrigin: 'top left',
-            }}
+            className='relative mx-auto'
+            style={{ width: baseWidth * scale, height: scaledHeight }}
           >
-            <div ref={sheetWrapRef} className='bg-[#fffdf9] shadow-sheet'>
-              <ResumeSheet resume={resume} />
-            </div>
-          </div>
-
-          {breakOffsets.map((offset, index) => (
             <div
-              key={index}
               aria-hidden='true'
-              className='pointer-events-none absolute inset-x-[-14px] flex items-center gap-2'
-              style={{ top: offset }}
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: baseWidth,
+                transform: `scale(${scale})`,
+                transformOrigin: 'top left',
+              }}
             >
-              <span className='h-px flex-1 border-t border-dashed border-ink/20' />
-              <span className='rounded-full border border-line bg-canvas/90 px-1.5 py-0.5 text-[9.5px] font-medium uppercase tracking-[0.06em] text-ink-faint'>
-                Page {index + 2}
-              </span>
-              <span className='h-px flex-1 border-t border-dashed border-ink/20' />
+              <div ref={sheetWrapRef} className='bg-[#fffdf9] shadow-sheet'>
+                <ResumeSheet resume={resume} />
+              </div>
             </div>
-          ))}
-        </div>
 
-        {zoom !== 'fit' ? (
-          <p className='mx-auto mt-5 max-w-sm text-center text-[11.5px] leading-[1.5] text-ink-faint'>
-            The preview is zoomed in. Use Fit to see the whole page at once.
-          </p>
-        ) : null}
+            {breakOffsets.map((offset, index) => (
+              <div
+                key={index}
+                aria-hidden='true'
+                className='pointer-events-none absolute inset-x-[-14px] flex items-center gap-2'
+                style={{ top: offset }}
+              >
+                <span className='h-px flex-1 border-t border-dashed border-ink/20' />
+                <span className='rounded-full border border-line bg-canvas/90 px-1.5 py-0.5 text-[9.5px] font-medium uppercase tracking-[0.06em] text-ink-faint'>
+                  Page {index + 2}
+                </span>
+                <span className='h-px flex-1 border-t border-dashed border-ink/20' />
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

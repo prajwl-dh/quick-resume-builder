@@ -308,7 +308,7 @@ export default function DesignPanel({ resume }: { resume: ResumeInterface }) {
               ).map(([value, item]) => ({ value, label: item.label }))}
             />
             <p className='mt-3 text-[12px] text-ink-faint'>
-              Margins print at {MARGIN_SIZES[theme.margin].mm}mm on every page.
+              Margins are {MARGIN_SIZES[theme.margin].mm}mm on every page.
             </p>
           </div>
 
@@ -318,7 +318,7 @@ export default function DesignPanel({ resume }: { resume: ResumeInterface }) {
               <span className='text-[11.5px] text-ink-faint'>Drag to reorder</span>
             </div>
             <p className='mb-3 text-[12px] leading-[1.5] text-ink-faint'>
-              Hidden sections keep their content. They simply do not print.
+              Hidden sections keep their content. They simply do not appear in the PDF.
             </p>
             <div className='overflow-hidden rounded-xl border border-line bg-surface'>
               {order.map((section, index) => {
