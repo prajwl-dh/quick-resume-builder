@@ -1118,6 +1118,10 @@ function SectionBody({
           fontWeight: 700,
           color: accent && ctx.entryTitleAccent ? ctx.accent : INK,
           lineHeight: INLINE_LINE_HEIGHT,
+          // pdf.js splits monospaced bold titles at word gaps that sit just
+          // above its typical character width. A hair of negative tracking
+          // keeps the whole name in one extracted text item.
+          letterSpacing: ctx.bodyFont === PDF_MONO_FONT ? -0.35 : 0,
         }}
       >
         {text}
