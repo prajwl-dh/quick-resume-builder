@@ -82,13 +82,6 @@ export default function Footer() {
           </ul>
         </nav>
       </div>
-
-      <div className='border-t border-line'>
-        <div className='shell flex flex-col gap-2 py-5 text-[11px] text-ink-faint sm:flex-row sm:items-center sm:justify-between'>
-          <p>Quick Resume. Your documents stay with you.</p>
-          <p>Typefaces from Google Fonts. No tracking scripts.</p>
-        </div>
-      </div>
     </footer>
   );
 }

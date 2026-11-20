@@ -379,42 +379,6 @@ export default function HomePage() {
             </div>
           </div>
         </section>
-
-        <section className='pb-20 pt-4 lg:pb-28'>
-          <div className='shell'>
-            <div className='relative overflow-hidden rounded-2xl border border-line bg-surface px-6 py-14 text-center sm:px-12 sm:py-16'>
-              <div
-                aria-hidden='true'
-                className='pointer-events-none absolute inset-0 bg-[radial-gradient(50%_100%_at_50%_0%,rgb(var(--c-accent)/0.09),transparent_70%)]'
-              />
-              <div className='relative mx-auto max-w-lg'>
-                <p className='eyebrow'>Start here</p>
-                <h2 className='mt-3 font-display text-[40px] leading-[1.02] tracking-[-0.02em] text-ink sm:text-[52px]'>
-                  The page is waiting.
-                </h2>
-                <p className='mx-auto mt-4 max-w-md text-[14px] leading-[1.7] text-ink-soft'>
-                  Start with your name and one job. You can decide on the rest as you go,
-                  and the example is there if you want to see the shape of a finished one.
-                </p>
-                <div className='mt-7 flex flex-col items-center justify-center gap-2.5 sm:flex-row'>
-                  <Link href='/builder' className='btn btn-primary btn-lg w-full sm:w-auto'>
-                    Start a resume
-                    <LuArrowRight className='h-4 w-4' />
-                  </Link>
-                  <Link
-                    href='/builder/example-resume'
-                    className='btn btn-secondary btn-lg w-full sm:w-auto'
-                  >
-                    Open the example
-                  </Link>
-                </div>
-                <p className='mt-4 text-[11.5px] text-ink-faint'>
-                  No account. No email. Just the file.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
       </main>
 
       <Footer />

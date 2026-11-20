@@ -1,8 +1,8 @@
 'use client';
 
+import type { ResumeInterface } from '@/components/builder/previousResumes/ResumeInterface';
 import Logo from '@/components/ui/Logo';
 import ThemeToggle from '@/components/ui/ThemeToggle';
-import type { ResumeInterface } from '@/components/builder/previousResumes/ResumeInterface';
 import {
   deleteResume,
   importResumes,
@@ -95,9 +95,6 @@ export default function Dashboard() {
         <div className='shell flex h-16 items-center justify-between gap-4'>
           <Logo href='/builder' />
           <div className='flex items-center gap-1.5 sm:gap-2.5'>
-            <Link href='/#templates' className='nav-link hidden sm:inline-flex'>
-              Templates
-            </Link>
             <ThemeToggle />
             <button
               type='button'
