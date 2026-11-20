@@ -1,6 +1,6 @@
 import {
-  DateRange,
   DEFAULT_EMPTY_RANGE,
+  DateRange,
   ResumeFont,
   ResumeInterface,
   ResumeLanguage,
@@ -10,8 +10,8 @@ import {
 } from '@/components/builder/previousResumes/ResumeInterface';
 import {
   COLORS,
-  DEFAULT_SECTION_ORDER as DESIGN_SECTION_ORDER,
   DEFAULT_THEME as DESIGN_DEFAULT_THEME,
+  DEFAULT_SECTION_ORDER as DESIGN_SECTION_ORDER,
   FONTS,
   FONT_IDS,
   MARGIN_SIZES,
@@ -88,8 +88,7 @@ export const COMMON_SKILLS = [
   'Illustrator',
 ];
 
-export { DEFAULT_SECTION_ORDER } from '@/lib/resumeDesign';
-export { SECTION_LABELS } from '@/lib/resumeDesign';
+export { DEFAULT_SECTION_ORDER, SECTION_LABELS } from '@/lib/resumeDesign';
 
 export const DEFAULT_THEME: ResumeTheme = { ...DESIGN_DEFAULT_THEME };
 
@@ -508,10 +507,10 @@ export function createExampleResume(): ResumeInterface {
       email: 'alex.morgan@example.com',
       location: 'Austin, TX',
       phone: '+1 415 555 0132',
-      website: 'alexmorgan.dev',
-      linkedIn: 'linkedin.com/in/alexmorgan',
-      gitHub: 'github.com/alexmorgan',
-      profileCustomField: [{ fieldName: 'Portfolio', fieldValue: 'alexmorgan.dev/work' }],
+      website: '',
+      linkedIn: '',
+      gitHub: '',
+      profileCustomField: [],
       summary:
         'Frontend engineer with eight years of experience shipping accessible, fast web products. Happiest on a team that reads each other’s code.',
     },
@@ -630,7 +629,7 @@ export function createExampleResume(): ResumeInterface {
     sectionOrder: [...DESIGN_SECTION_ORDER],
     hiddenSections: [],
     theme: {
-      template: 'folio',
+      template: 'meridian',
       color: '#1E5B49',
       font: 'source',
       onePage: true,

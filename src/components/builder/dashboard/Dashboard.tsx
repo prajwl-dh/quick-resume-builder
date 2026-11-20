@@ -93,7 +93,7 @@ export default function Dashboard() {
     <div className='flex min-h-dvh flex-col bg-canvas'>
       <header className='no-print sticky top-0 z-40 border-b border-line bg-canvas/80 backdrop-blur-md'>
         <div className='shell flex h-16 items-center justify-between gap-4'>
-          <Logo href='/builder' />
+          <Logo href='/' />
           <div className='flex items-center gap-1.5 sm:gap-2.5'>
             <ThemeToggle />
             <button
