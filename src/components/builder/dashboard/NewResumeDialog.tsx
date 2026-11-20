@@ -16,9 +16,9 @@ import { v4 as uuidv4 } from 'uuid';
 import { LuArrowRight, LuFilePlus2 } from 'react-icons/lu';
 
 const STARTERS: { id: ResumeTemplate; name: string }[] = [
+  { id: 'meridian', name: 'Meridian' },
   { id: 'ivory', name: 'Ivory' },
   { id: 'folio', name: 'Folio' },
-  { id: 'meridian', name: 'Meridian' },
   { id: 'ledger', name: 'Ledger' },
 ];
 
@@ -33,7 +33,7 @@ export default function NewResumeDialog({
   const router = useRouter();
   const [name, setName] = useState('');
   const [role, setRole] = useState('');
-  const [template, setTemplate] = useState<ResumeTemplate>('ivory');
+  const [template, setTemplate] = useState<ResumeTemplate>('meridian');
 
   const ready = name.trim().length > 0 && role.trim().length > 0;
 

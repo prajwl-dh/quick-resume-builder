@@ -131,7 +131,7 @@ export const COLORS: ColorOption[] = COLOR_GROUPS.flatMap((group) => group.color
 export const FALLBACK_COLOR = '#1E5B49';
 
 export const DEFAULT_THEME: Required<Omit<ResumeTheme, 'onePage'>> & { onePage: boolean } = {
-  template: 'ivory',
+  template: 'meridian',
   color: FALLBACK_COLOR,
   font: 'inter',
   onePage: true,

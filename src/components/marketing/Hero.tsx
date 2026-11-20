@@ -11,9 +11,9 @@ import { useMemo, useState } from 'react';
 import { LuArrowRight, LuCheck } from 'react-icons/lu';
 
 const templates: { id: ResumeTemplate; name: string }[] = [
+  { id: 'meridian', name: 'Meridian' },
   { id: 'ivory', name: 'Ivory' },
   { id: 'folio', name: 'Folio' },
-  { id: 'meridian', name: 'Meridian' },
   { id: 'ledger', name: 'Ledger' },
 ];
 
@@ -36,7 +36,7 @@ export default function Hero({
   onBrowseTemplates?: () => void;
 }) {
   const base = useMemo(() => createExampleResume(), []);
-  const [template, setTemplate] = useState<ResumeTemplate>('folio');
+  const [template, setTemplate] = useState<ResumeTemplate>('meridian');
   const [color, setColor] = useState('#1E5B49');
   const [font, setFont] = useState<ResumeFont>('source');
 

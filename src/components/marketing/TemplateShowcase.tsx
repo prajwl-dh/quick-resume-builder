@@ -14,7 +14,7 @@ export default function TemplateShowcase({
   sectionRef?: Ref<HTMLElement>;
 }) {
   const base = useMemo(() => createExampleResume(), []);
-  const [selected, setSelected] = useState<ResumeTemplate>('folio');
+  const [selected, setSelected] = useState<ResumeTemplate>('meridian');
   const template = TEMPLATES.find((item) => item.id === selected) ?? TEMPLATES[0];
 
   const resume = useMemo(
