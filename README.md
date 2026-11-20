@@ -1,63 +1,43 @@
 # Quick Resume Builder
 
-Quick Resume is a free and open-source app for building professional, eye-catching resumes quickly and effortlessly. No login or signup required. This README provides instructions on how to set up and run the project locally, as well as an overview of the tech stack used.
+A free, open-source resume builder that runs entirely in your browser. No account, no uploads — resumes are saved in local storage and exported as real, text-based PDFs.
 
-## Features
+## What it does
 
-- Fast, easy, and intuitive resume builder
-- Free and open-source
-- No login or signup required
-- Customizable templates
-- Responsive design
+- 12 templates and 12 fonts, with controls for type, spacing, margins and colour
+- One-section-at-a-time editor with drag-to-reorder and hide/show sections
+- Live preview beside the editor
+- PDF export on A4 or Letter, one page or two, with selectable text and working links
+- Resume check that flags missing dates, summary, contact details and thin bullets
+- JSON backup and import, plus light and dark themes
 
-## Tech Stack
+## Stack
 
-- **React**: A JavaScript library for building user interfaces.
-- **Next.js**: A React framework for server-side rendering and static site generation.
-- **Tailwind CSS**: A utility-first CSS framework for rapid UI development.
-- **TypeScript**: A typed superset of JavaScript that compiles to plain JavaScript.
-- **Framer Motion**: A library for animations and gestures in React.
-- **ESLint**: A tool for identifying and reporting on patterns found in ECMAScript/JavaScript code.
+Next.js 14 (App Router) · React 18 · TypeScript · Redux Toolkit · Tailwind CSS · Headless UI · Framer Motion · React PDF
 
-## Getting Started
+## Run locally
 
-Follow these steps to clone the repository and run the app locally.
+Requires Node.js and npm.
 
-### Prerequisites
+```bash
+npm install
+npm run dev
+```
 
-Make sure you have the following installed:
+Open `http://localhost:3000`. Other scripts: `npm run build`, `npm start`, `npm run lint`.
 
-- Node.js
-- npm (Node package manager)
+## ATS checks
 
-### Installation
+The test harness renders PDFs with the app's own renderer and parses them with a pdf.js-based OpenResume-style parser, so it checks what an ATS actually reads rather than how the page looks.
 
-1. Clone the repository:
+```bash
+npm run ats:test
+npm run ats:parse -- ./resume.pdf
+```
 
-   ```bash
-   git clone https://github.com/prajwl-dh/quick-resume-builder.git
+See [tests/ats/README.md](tests/ats/README.md) for the full matrix and options.
 
-   ```
+## Links
 
-2. Change to project directory:
-
-   ```bash
-   cd quick-resume-builder
-
-   ```
-
-3. Install dependencies:
-
-   ```bash
-   npm install
-
-   ```
-
-4. Start the development server:
-
-   ```bash
-   npm run dev
-
-   ```
-
-5. Open your browser and visit `http://localhost:3000` , or `http://localhost:PORT` if PORT 3000 is already in use.
+- Live: https://get-quick-resume.netlify.app
+- Source: https://github.com/prajwl-dh/quick-resume-builder
