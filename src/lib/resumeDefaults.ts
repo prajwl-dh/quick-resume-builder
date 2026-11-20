@@ -9,14 +9,11 @@ import {
   SkillGroup,
 } from '@/components/builder/previousResumes/ResumeInterface';
 import {
-  COLORS,
   DEFAULT_THEME as DESIGN_DEFAULT_THEME,
   DEFAULT_SECTION_ORDER as DESIGN_SECTION_ORDER,
-  FONTS,
   FONT_IDS,
   MARGIN_SIZES,
   PAPER_SIZES,
-  TEMPLATES,
   TEMPLATE_IDS,
   isHexColor,
 } from '@/lib/resumeDesign';
@@ -91,20 +88,6 @@ export const COMMON_SKILLS = [
 export { DEFAULT_SECTION_ORDER, SECTION_LABELS } from '@/lib/resumeDesign';
 
 export const DEFAULT_THEME: ResumeTheme = { ...DESIGN_DEFAULT_THEME };
-
-export const TEMPLATE_OPTIONS = TEMPLATES.map((template) => ({
-  value: template.id,
-  label: template.name,
-  description: template.note,
-}));
-
-export const COLOR_OPTIONS = COLORS;
-
-export const FONT_OPTIONS = FONTS.map((font) => ({
-  value: font.id,
-  label: font.name,
-  sample: font.group,
-}));
 
 export function emptyRange(): DateRange {
   return { ...DEFAULT_EMPTY_RANGE };

@@ -2,7 +2,7 @@
 
 import { MONTHS, YEARS } from '@/lib/resumeDefaults';
 import type { DateRange } from '@/components/builder/previousResumes/ResumeInterface';
-import type { InputHTMLAttributes, ReactNode, SelectHTMLAttributes, TextareaHTMLAttributes } from 'react';
+import type { InputHTMLAttributes, ReactNode, TextareaHTMLAttributes } from 'react';
 import { useId } from 'react';
 import { LuCheck, LuPlus } from 'react-icons/lu';
 
@@ -57,34 +57,6 @@ export function TextAreaField({
         ) : null}
       </div>
       <textarea id={id} className='textarea' {...props} />
-      {hint ? <p className='mt-1.5 text-[12px] leading-[1.5] text-ink-faint'>{hint}</p> : null}
-    </div>
-  );
-}
-
-/* --------------------------------- select ------------------------------- */
-
-export function SelectField({
-  label,
-  hint,
-  className = '',
-  children,
-  ...props
-}: SelectHTMLAttributes<HTMLSelectElement> & {
-  label: string;
-  hint?: string;
-  className?: string;
-  children: ReactNode;
-}) {
-  const id = useId();
-  return (
-    <div className={`min-w-0 ${className}`}>
-      <label htmlFor={id} className='label'>
-        {label}
-      </label>
-      <select id={id} className='select' {...props}>
-        {children}
-      </select>
       {hint ? <p className='mt-1.5 text-[12px] leading-[1.5] text-ink-faint'>{hint}</p> : null}
     </div>
   );
