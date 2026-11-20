@@ -262,8 +262,15 @@ function getDescriptionsLineIdx(lines) {
 }
 
 function getBulletPoints(lines) {
+  // OpenResume returns one description per line when there are no bullets at
+  // all; only bullet-marked lines get merged with their wrapped continuations.
+  const hasBullet = lines.some((line) =>
+    line.some((item) => BULLET_POINTS.some((bullet) => item.text.includes(bullet)))
+  );
+  if (!hasBullet) {
+    return lines.map((line) => line.map((item) => item.text).join(' ').trim());
+  }
   const start = getDescriptionsLineIdx(lines);
-  if (start === -1) return lines.map((line) => line.map((item) => item.text).join(' ').trim());
   const text = lines
     .slice(start)
     .flat()
@@ -370,6 +377,15 @@ export function extractEducation(sections) {
   });
 }
 
+/** Skills: OpenResume takes all skill-section lines as description text. */
+export function extractSkills(sections) {
+  const section = Object.entries(sections).find(([name]) =>
+    name.toLowerCase().includes('skill')
+  );
+  if (!section) return [];
+  return getBulletPoints(section[1]);
+}
+
 /** Convenience entry point used by check.mjs and the parse CLI. */
 export async function parseResumePdf(file) {
   const lines = groupTextItemsIntoLines(await readPdf(file));
@@ -378,6 +394,7 @@ export async function parseResumePdf(file) {
     profile: extractProfile(sections),
     experience: extractWorkExperience(sections),
     education: extractEducation(sections),
+    skills: extractSkills(sections),
     sections: Object.keys(sections),
     lines: lines.map((line) => line.map((item) => item.text)),
   };

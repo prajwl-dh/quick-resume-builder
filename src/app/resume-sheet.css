@@ -223,34 +223,19 @@
 .r-skill-groups {
   display: flex;
   flex-direction: column;
-  gap: 0.38em;
+  gap: 0.55em;
 }
 
 .r-skill-group {
-  display: grid;
-  grid-template-columns: minmax(0, 10.5em) 1fr;
-  gap: 0.7em;
-  align-items: baseline;
-}
-
-.r-skill-group-name {
-  font-size: 0.94em;
-  font-weight: 600;
-  line-height: 1.3;
-}
-
-.r-skill-list {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.12em 0.42em;
-  min-width: 0;
-}
-
-.r-skill {
+  margin: 0;
   font-size: 0.92em;
   color: var(--r-muted);
   overflow-wrap: anywhere;
+}
+
+.r-skill-group-name {
+  font-weight: 700;
+  color: var(--r-ink);
 }
 
 /* ------------------------------ languages ----------------------------- */
@@ -388,24 +373,6 @@
   color: var(--r-ink);
 }
 
-.r-t-meridian .r-skill,
-.r-t-atlas .r-skill,
-.r-t-studio .r-skill,
-.r-t-swiss .r-skill {
-  padding: 0.1em 0.48em;
-  border-radius: 3px;
-  background: color-mix(in srgb, var(--r-accent) 9%, #fffdf9);
-  color: var(--r-ink);
-  font-size: 0.86em;
-}
-
-.r-t-meridian .r-skill-list,
-.r-t-atlas .r-skill-list,
-.r-t-studio .r-skill-list,
-.r-t-swiss .r-skill-list {
-  gap: 0.25em 0.3em;
-}
-
 /* ==================================================================== */
 /* 3. Folio                                                              */
 /* ==================================================================== */
@@ -493,18 +460,6 @@
   padding-bottom: 0.16em;
   border-bottom: 1.5px solid var(--r-accent);
   letter-spacing: 0.15em;
-}
-
-.r-t-onyx .r-skill {
-  padding: 0.1em 0.48em;
-  border-radius: 3px;
-  background: color-mix(in srgb, var(--r-accent) 10%, #fffdf9);
-  color: var(--r-ink);
-  font-size: 0.86em;
-}
-
-.r-t-onyx .r-skill-list {
-  gap: 0.25em 0.3em;
 }
 
 /* ==================================================================== */
@@ -622,7 +577,7 @@
   font-size: 0.78em;
 }
 
-.r-t-mono .r-skill {
+.r-t-mono .r-skill-group {
   font-family: var(--font-plex-mono), ui-monospace, monospace;
   font-size: 0.86em;
 }

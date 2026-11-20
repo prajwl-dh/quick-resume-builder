@@ -28,6 +28,33 @@ export async function renderResumePdf(template, font) {
   return Buffer.from(await blob.arrayBuffer());
 }
 
+/** A long skill group that wraps, to verify continuations stay with their category. */
+export async function writeWrappedSkillsPdf() {
+  const base = createExampleResume();
+  const resume = {
+    ...base,
+    theme: { ...base.theme, template: 'meridian', onePage: false },
+    skillGroups: [
+      {
+        id: 'long',
+        name: 'Languages & frameworks',
+        skills: [
+          'TypeScript', 'React', 'Next.js', 'Node.js', 'GraphQL', 'JavaScript',
+          'Python', 'SQL', 'REST APIs', 'HTML', 'CSS', 'Tailwind CSS', 'Git',
+          'AWS', 'Jest', 'Accessibility',
+        ],
+      },
+      { id: 'tools', name: 'Tools', skills: ['Figma', 'Playwright', 'GitHub Actions', 'Docker'] },
+      { id: 'people', name: 'Working with people', skills: ['Code review', 'Mentoring', 'Design partner'] },
+    ],
+  };
+  const blob = await pdf(React.createElement(ResumePdfDocument, { resume, fit: 1 })).toBlob();
+  mkdirSync(OUT_DIR, { recursive: true });
+  const file = path.join(OUT_DIR, 'wrapped-skills.pdf');
+  writeFileSync(file, Buffer.from(await blob.arrayBuffer()));
+  return file;
+}
+
 export async function writeResumePdf(template, font) {
   mkdirSync(OUT_DIR, { recursive: true });
   const buffer = await renderResumePdf(template, font);

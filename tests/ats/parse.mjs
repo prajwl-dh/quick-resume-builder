@@ -20,6 +20,7 @@ console.log(JSON.stringify({
   profile: result.profile,
   experience: result.experience,
   education: result.education,
+  skills: result.skills,
   sections: result.sections,
   ...(args.includes('--lines') ? { lines: result.lines } : {}),
 }, null, 2));

@@ -292,7 +292,10 @@ function ContactRow({
                   lineHeight: INLINE_LINE_HEIGHT,
                   letterSpacing: 0,
                   color: color ?? FAINT,
-                  marginRight: em(ctx, 0.35),
+                  // A wide gap keeps the label as its own PDF text item. If it
+                  // merges with the value, OpenResume penalises the letters
+                  // in "PHONE:"/"EMAIL:" and loses the field entirely.
+                  marginRight: em(ctx, 1.2),
                 }}
               >
                 {`${contact.label.toUpperCase()}:`}
@@ -1234,110 +1237,26 @@ function SectionBody({
       (group) => group.skills.filter((skill) => skill.trim()).length > 0
     );
     if (!groups.length) return null;
-    const pills = ['meridian', 'onyx', 'atlas', 'studio', 'swiss'].includes(ctx.template);
     return sectionWrap(
       <View>
         {groups.map((group, groupIndex) => (
-          <View
+          <Text
             key={group.id}
             style={{
-              flexDirection: 'row',
-              alignItems: 'flex-start',
-              marginTop: groupIndex === 0 ? 0 : em(ctx, 0.38 * ctx.spacing),
+              fontFamily: ctx.template === 'mono' ? ctx.monoFont : ctx.bodyFont,
+              fontSize: em(ctx, 0.92),
+              color: MUTED,
+              lineHeight: ctx.leading,
+              marginTop: groupIndex === 0 ? 0 : em(ctx, 0.55 * ctx.spacing),
             }}
           >
             {group.name?.trim() ? (
-              <Text
-                style={{
-                  width: em(ctx, 13.4),
-                  paddingRight: em(ctx, 0.6),
-                  flexShrink: 0,
-                  fontFamily: ctx.bodyFont,
-                  fontSize: em(ctx, 0.94),
-                  fontWeight: 600,
-                  lineHeight: INLINE_LINE_HEIGHT,
-                }}
-              >
-                {group.name}
+              <Text style={{ fontFamily: ctx.bodyFont, fontWeight: 700, color: INK }}>
+                {`• ${group.name}: `}
               </Text>
             ) : null}
-            {pills ? (
-              <View
-                style={{
-                  flex: 1,
-                  flexDirection: 'row',
-                  flexWrap: 'wrap',
-                  alignItems: 'center',
-                }}
-              >
-                {group.skills
-                  .filter((skill) => skill.trim())
-                  .map((skill, index, skills) => (
-                    <Fragment key={`${skill}-${index}`}>
-                      <View
-                        style={{
-                          backgroundColor:
-                            ctx.template === 'onyx'
-                              ? mix(ctx.accent, PAPER, 0.1)
-                              : mix(ctx.accent, PAPER, 0.09),
-                          borderRadius: 2,
-                          paddingHorizontal: em(ctx, 0.42),
-                          paddingVertical: em(ctx, 0.06),
-                          marginRight: em(ctx, 0.3),
-                          marginBottom: em(ctx, 0.25),
-                        }}
-                      >
-                        <Text
-                          style={{
-                            fontFamily:
-                              ctx.template === 'mono' ? ctx.monoFont : ctx.bodyFont,
-                            fontSize: em(ctx, 0.86),
-                            color: INK,
-                          }}
-                        >
-                          {skill}
-                        </Text>
-                      </View>
-                      {index < skills.length - 1 ? (
-                        <Text
-                          style={{
-                            fontFamily: ctx.bodyFont,
-                            fontSize: em(ctx, 0.76),
-                            color: FAINT,
-                            marginRight: em(ctx, 0.3),
-                            marginBottom: em(ctx, 0.25),
-                          }}
-                        >
-                          |
-                        </Text>
-                      ) : null}
-                    </Fragment>
-                  ))}
-              </View>
-            ) : (
-              <Text
-                style={{
-                  flex: 1,
-                  fontFamily:
-                    ctx.template === 'mono' ? ctx.monoFont : ctx.bodyFont,
-                  fontSize: em(ctx, 0.92),
-                  color: MUTED,
-                  lineHeight: INLINE_LINE_HEIGHT,
-                }}
-              >
-                {group.skills
-                  .filter((skill) => skill.trim())
-                  .map((skill, index) => (
-                    <Text key={`${skill}-${index}`}>
-                      {index > 0 ? (
-                        <Text style={{ color: FAINT }}>{' | '}</Text>
-                      ) : null}
-                      {skill}
-                    </Text>
-                  ))}
-              </Text>
-            )}
-          </View>
+            {group.skills.filter((skill) => skill.trim()).join(', ')}
+          </Text>
         ))}
       </View>
     );

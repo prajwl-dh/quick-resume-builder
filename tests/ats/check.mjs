@@ -11,7 +11,7 @@
 import assert from 'node:assert/strict';
 import { rmSync } from 'node:fs';
 import { parseResumePdf } from './parser.mjs';
-import { OUT_DIR, fontIds, templateIds, writeResumePdf } from './generate.mjs';
+import { OUT_DIR, fontIds, templateIds, writeResumePdf, writeWrappedSkillsPdf } from './generate.mjs';
 
 const normalize = (value) =>
   (value ?? '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
@@ -26,6 +26,7 @@ const expected = {
   ],
   school: 'university of texas at austin',
   degree: 'b s computer science',
+  skills: ['typescript', 'react', 'next js', 'figma', 'playwright', 'code review', 'mentoring'],
 };
 
 const only = process.env.ATS_ONLY?.trim().toLowerCase();
@@ -109,6 +110,14 @@ for (const template of templates) {
         `education.degree: got "${education.degree}"`
       );
 
+      const skillText = normalize(result.skills.join(' '));
+      for (const skill of expected.skills) {
+        assert.ok(
+          skillText.includes(skill),
+          `skills: expected to find "${skill}", got "${result.skills.join(' ')}"`
+        );
+      }
+
       // Guard against the old "/" field separator sneaking back into the PDF.
       const headerLine = result.lines.find((line) =>
         line.some((item) => item.includes('Northstar Labs'))
@@ -125,6 +134,23 @@ for (const template of templates) {
       failures.push({ label, message: error.message });
       console.log(`  ✗ ${label} — ${error.message}`);
     }
+  }
+}
+
+// Wrapped skill groups must stay in one ATS description with their category.
+if (!only) {
+  try {
+    const file = await writeWrappedSkillsPdf();
+    const skills = (await parseResumePdf(file)).skills;
+    assert.equal(skills.length, 3, `wrapped skills: expected 3 groups, got ${skills.length}`);
+    assert.match(skills[0], /^Languages & frameworks:/, 'wrapped skills: first group label missing');
+    assert.ok(skills[0].includes('Tailwind CSS'), 'wrapped skills: continuation line detached from its group');
+    assert.match(skills[1], /^Tools:/, 'wrapped skills: second group label missing');
+    console.log('  ✓ wrapped skills stay with their category');
+    passed += 1;
+  } catch (error) {
+    failures.push({ label: 'wrapped-skills', message: error.message });
+    console.log(`  ✗ wrapped-skills — ${error.message}`);
   }
 }
 

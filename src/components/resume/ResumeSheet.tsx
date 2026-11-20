@@ -139,21 +139,12 @@ export default function ResumeSheet({
             <SectionHeading section='skills' />
             <div className='r-skill-groups'>
               {groups.map((group) => (
-                <div className='r-skill-group' key={group.id}>
+                <p className='r-skill-group' key={group.id}>
                   {group.name?.trim() ? (
-                    <h3 className='r-skill-group-name'>{group.name}</h3>
-                  ) : null}
-                  <div className='r-skill-list'>
-                    {group.skills
-                      .filter((skill) => skill.trim())
-                      .map((skill, index, skills) => (
-                        <Fragment key={`${skill}-${index}`}>
-                          <span className='r-skill'>{skill}</span>
-                          {index < skills.length - 1 ? <Sep /> : null}
-                        </Fragment>
-                      ))}
-                  </div>
-                </div>
+                    <strong className='r-skill-group-name'>• {group.name}:</strong>
+                  ) : null}{' '}
+                  {group.skills.filter((skill) => skill.trim()).join(', ')}
+                </p>
               ))}
             </div>
           </section>
