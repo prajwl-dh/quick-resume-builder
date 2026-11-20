@@ -8,6 +8,7 @@ import {
   normalizeTheme,
   sectionHasContent,
   splitBullets,
+  titleCaseJobTitle,
 } from '@/lib/resumeDefaults';
 import { SECTION_LABELS, themeVars } from '@/lib/resumeDesign';
 import type { ReactNode } from 'react';
@@ -172,7 +173,9 @@ export default function ResumeSheet({
                           <span className='r-entry-sep' aria-hidden='true'>
                             /
                           </span>
-                          <span className='r-entry-role'>{entry.jobTitle}</span>
+                          <span className='r-entry-role'>
+                            {titleCaseJobTitle(entry.jobTitle)}
+                          </span>
                         </>
                       ) : null}
                       {entry.jobLocation ? (

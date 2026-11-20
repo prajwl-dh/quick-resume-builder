@@ -29,8 +29,8 @@ async function render(resume: ResumeInterface, fit: number) {
  * paper, margins and type settings shown in the live preview.
  *
  * When one-page mode is on, the document is rendered at decreasing type
- * scales until it fits. The smallest acceptable scale is 75%, below which
- * the type stops being readable.
+ * scales until it fits. The smallest acceptable scale is 80%, below which
+ * the type stops being readable and extraction gets unreliable.
  */
 export async function buildResumePdf(
   resume: ResumeInterface,

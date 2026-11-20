@@ -9,16 +9,18 @@ import {
   normalizeTheme,
   sectionHasContent,
   splitBullets,
+  titleCaseJobTitle,
 } from '@/lib/resumeDefaults';
 import {
   FALLBACK_COLOR,
   MARGIN_SIZES,
   PAPER_SIZES,
   SECTION_LABELS,
+  SUMMARY_SECTION_LABEL,
   isHexColor,
 } from '@/lib/resumeDesign';
 import { Document, Link, Page, Text, View } from '@react-pdf/renderer';
-import type { ReactNode } from 'react';
+import { Fragment, type ReactNode } from 'react';
 import { PDF_MONO_FONT, pdfFont, registerPdfFonts } from './fonts';
 
 const INK = '#1b1a17';
@@ -78,6 +80,100 @@ interface Ctx {
 }
 
 const em = (ctx: Ctx, value: number) => ctx.type * value;
+
+/**
+ * Every text run that shares an entry row must use the same line height. React
+ * PDF aligns rows by their text baselines, and a different line height on a
+ * smaller field shifts its baseline upward (e.g. a location sitting above the
+ * company name). A line height of 1 puts all baselines on the same level.
+ */
+const INLINE_LINE_HEIGHT = 1;
+
+/**
+ * A visible field separator. The spaces around the pipe also survive PDF text
+ * extraction, so adjacent fields are never read as one word.
+ */
+function FieldSeparator({ ctx, color = FAINT }: { ctx: Ctx; color?: string }) {
+  return (
+    <Text
+      style={{
+        fontFamily: ctx.bodyFont,
+        fontSize: em(ctx, 0.9),
+        lineHeight: INLINE_LINE_HEIGHT,
+        color,
+        marginHorizontal: em(ctx, 0.7),
+        flexShrink: 0,
+      }}
+    >
+      |
+    </Text>
+  );
+}
+
+/**
+ * Render a list of fields with separators only between the fields that exist.
+ * Passing the null results of the field helpers keeps empty values from
+ * producing stray pipes.
+ */
+function FieldList({
+  ctx,
+  children,
+}: {
+  ctx: Ctx;
+  children: Array<ReactNode | null | undefined | false>;
+}) {
+  const fields = children.filter(Boolean) as ReactNode[];
+  return (
+    <>
+      {fields.map((field, index) => (
+        <Fragment key={index}>
+          {field}
+          {index < fields.length - 1 ? <FieldSeparator ctx={ctx} /> : null}
+        </Fragment>
+      ))}
+    </>
+  );
+}
+
+function ContactSeparator({ ctx, color }: { ctx: Ctx; color?: string }) {
+  return (
+    <Text
+      style={{
+        fontSize: em(ctx, 0.82),
+        lineHeight: INLINE_LINE_HEIGHT,
+        color: color ?? FAINT,
+        marginHorizontal: em(ctx, 0.6),
+        flexShrink: 0,
+      }}
+    >
+      |
+    </Text>
+  );
+}
+
+/**
+ * The name uses a display font with a tall line box. A normal line height lets
+ * React PDF emit a real line break before the role, so text extractors keep the
+ * two as separate items instead of one run like "Alex MorganSenior engineer".
+ */
+function NameBlock({
+  children,
+  centered = false,
+}: {
+  children: ReactNode;
+  centered?: boolean;
+}) {
+  return (
+    <View
+      style={{
+        width: '100%',
+        alignItems: centered ? 'center' : 'flex-start',
+      }}
+    >
+      {children}
+    </View>
+  );
+}
 
 function contactList(resume: ResumeInterface): Contact[] {
   const profile = resume.profile ?? {};
@@ -165,57 +261,68 @@ function ContactRow({
       }}
     >
       {contacts.map((contact, index) => (
-        <View
-          key={`${contact.label}-${index}`}
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            marginRight: stacked ? 0 : em(ctx, 0.85),
-            marginBottom: stacked ? em(ctx, 0.16) : 0,
-            maxWidth: '100%',
-          }}
-        >
-          {labels ? (
-            <Text
-              style={{
-                fontFamily: ctx.monoFont,
-                fontSize: em(ctx, size * 0.84),
-                letterSpacing: 0,
-                textTransform: 'uppercase',
-                color: color ?? FAINT,
-                marginRight: em(ctx, 0.35),
-              }}
-            >
-              {`${contact.label}:`}
-            </Text>
-          ) : null}
-          <Text
+        <Fragment key={`${contact.label}-${index}`}>
+          <View
             style={{
-              fontSize: em(ctx, size),
-              color: color ?? MUTED,
-              lineHeight: 1.3,
+              flexDirection: 'row',
+              alignItems: 'baseline',
+              marginBottom: stacked ? em(ctx, 0.16) : 0,
+              maxWidth: '100%',
             }}
           >
-            <ContactValue contact={contact} color={color ?? MUTED} />
-          </Text>
-        </View>
+            {labels ? (
+              <Text
+                style={{
+                  fontFamily: ctx.monoFont,
+                  fontSize: em(ctx, size * 0.84),
+                  lineHeight: INLINE_LINE_HEIGHT,
+                  letterSpacing: 0,
+                  color: color ?? FAINT,
+                  marginRight: em(ctx, 0.35),
+                }}
+              >
+                {`${contact.label.toUpperCase()}:`}
+              </Text>
+            ) : null}
+            <Text
+              style={{
+                fontSize: em(ctx, size),
+                color: color ?? MUTED,
+                lineHeight: INLINE_LINE_HEIGHT,
+              }}
+            >
+              <ContactValue contact={contact} color={color ?? MUTED} />
+            </Text>
+          </View>
+          {!stacked && index < contacts.length - 1 ? (
+            <ContactSeparator ctx={ctx} color={color} />
+          ) : null}
+        </Fragment>
       ))}
     </View>
   );
 }
 
-function Header({ resume, ctx }: { resume: ResumeInterface; ctx: Ctx }) {
+function Header({
+  resume,
+  ctx,
+  showContacts = true,
+}: {
+  resume: ResumeInterface;
+  ctx: Ctx;
+  showContacts?: boolean;
+}) {
   const profile = resume.profile ?? {};
   const name = profile.fullName?.trim() || 'Your name';
   const role = profile.intro?.trim();
-  const contacts = contactList(resume);
+  const contacts = showContacts ? contactList(resume) : [];
   const t = ctx.template;
 
   const nameStyle = (size: number, weight: number, extra: Record<string, unknown> = {}) => ({
     fontFamily: ctx.bodyFont,
     fontSize: em(ctx, size),
     fontWeight: weight,
-    lineHeight: 1.02,
+    lineHeight: 1.2,
     letterSpacing: 0,
     ...extra,
   });
@@ -238,28 +345,29 @@ function Header({ resume, ctx }: { resume: ResumeInterface; ctx: Ctx }) {
           borderBottomColor: RULE,
         }}
       >
-        <Text
-          style={nameStyle(2.7, 600, {
-            letterSpacing: 0,
-            textAlign: 'center',
-          })}
-        >
-          {name}
-        </Text>
-        {role ? (
+        <NameBlock centered>
           <Text
-            style={{
-              fontSize: em(ctx, 0.9),
+            style={nameStyle(2.7, 600, {
               letterSpacing: 0,
-              textTransform: 'uppercase',
-              color: ctx.accent,
-              marginTop: em(ctx, 0.4),
               textAlign: 'center',
-            }}
+            })}
           >
-            {role}
+            {name}
           </Text>
-        ) : null}
+          {role ? (
+            <Text
+              style={{
+                fontSize: em(ctx, 0.9),
+                letterSpacing: 0,
+                color: ctx.accent,
+                marginTop: em(ctx, 0.4),
+                textAlign: 'center',
+              }}
+            >
+              {role}
+            </Text>
+          ) : null}
+        </NameBlock>
         <ContactRow ctx={ctx} contacts={contacts} align='center' marginTop={0.75} />
       </View>
     );
@@ -274,10 +382,12 @@ function Header({ resume, ctx }: { resume: ResumeInterface; ctx: Ctx }) {
           paddingLeft: em(ctx, 1),
         }}
       >
-        <Text style={nameStyle(2.65, 700, { letterSpacing: 0 })}>
-          {name}
-        </Text>
-        {role ? <Text style={roleStyle({ fontWeight: 400 })}>{role}</Text> : null}
+        <NameBlock>
+          <Text style={nameStyle(2.65, 700, { letterSpacing: 0 })}>
+            {name}
+          </Text>
+          {role ? <Text style={roleStyle({ fontWeight: 400 })}>{role}</Text> : null}
+        </NameBlock>
         <ContactRow ctx={ctx} contacts={contacts} marginTop={0.55} />
       </View>
     );
@@ -292,27 +402,25 @@ function Header({ resume, ctx }: { resume: ResumeInterface; ctx: Ctx }) {
           borderBottomColor: INK,
         }}
       >
-        <Text
-          style={nameStyle(3.3, 600, {
-            lineHeight: 0.94,
-            letterSpacing: 0,
-          })}
-        >
-          {name}
-        </Text>
-        {role ? (
+        <NameBlock>
           <Text
-            style={{
-              fontSize: em(ctx, 0.92),
-              letterSpacing: 0,
-              textTransform: 'uppercase',
-              color: ctx.accent,
-              marginTop: em(ctx, 0.55),
-            }}
+            style={nameStyle(3.3, 600, { letterSpacing: 0 })}
           >
-            {role}
+            {name}
           </Text>
-        ) : null}
+          {role ? (
+            <Text
+              style={{
+                fontSize: em(ctx, 0.92),
+                letterSpacing: 0,
+                color: ctx.accent,
+                marginTop: em(ctx, 0.55),
+              }}
+            >
+              {role}
+            </Text>
+          ) : null}
+        </NameBlock>
         <ContactRow ctx={ctx} contacts={contacts} marginTop={0.95} size={0.81} />
       </View>
     );
@@ -328,19 +436,21 @@ function Header({ resume, ctx }: { resume: ResumeInterface; ctx: Ctx }) {
           paddingVertical: em(ctx, 1.05),
         }}
       >
-        <Text style={nameStyle(2.7, 700, { color: WHITE })}>{name}</Text>
-        {role ? (
-          <Text
-            style={{
-              fontSize: em(ctx, 0.95),
-              color: '#c9c6c0',
-              marginTop: em(ctx, 0.32),
-              letterSpacing: 0,
-            }}
-          >
-            {role}
-          </Text>
-        ) : null}
+        <NameBlock>
+          <Text style={nameStyle(2.7, 700, { color: WHITE })}>{name}</Text>
+          {role ? (
+            <Text
+              style={{
+                fontSize: em(ctx, 0.95),
+                color: '#c9c6c0',
+                marginTop: em(ctx, 0.32),
+                letterSpacing: 0,
+              }}
+            >
+              {role}
+            </Text>
+          ) : null}
+        </NameBlock>
         <ContactRow ctx={ctx} contacts={contacts} color='#c9c6c0' marginTop={0.65} />
       </View>
     );
@@ -358,27 +468,29 @@ function Header({ resume, ctx }: { resume: ResumeInterface; ctx: Ctx }) {
         }}
       >
         <View style={{ flex: 1, paddingRight: em(ctx, 1) }}>
-          <Text
-            style={nameStyle(1.78, 700, {
-              letterSpacing: 0,
-              textTransform: 'uppercase',
-            })}
-          >
-            {name}
-          </Text>
-          {role ? (
+          <NameBlock>
             <Text
-              style={{
-                fontSize: em(ctx, 0.88),
+              style={nameStyle(1.78, 700, {
                 letterSpacing: 0,
                 textTransform: 'uppercase',
-                color: MUTED,
-                marginTop: em(ctx, 0.2 * ctx.spacing),
-              }}
+              })}
             >
-              {role}
+              {name}
             </Text>
-          ) : null}
+            {role ? (
+              <Text
+                style={{
+                  fontSize: em(ctx, 0.88),
+                  letterSpacing: 0,
+                  textTransform: 'uppercase',
+                  color: MUTED,
+                  marginTop: em(ctx, 0.2 * ctx.spacing),
+                }}
+              >
+                {role}
+              </Text>
+            ) : null}
+          </NameBlock>
         </View>
         <View style={{ width: em(ctx, 15) }}>
           <ContactRow
@@ -397,22 +509,24 @@ function Header({ resume, ctx }: { resume: ResumeInterface; ctx: Ctx }) {
   if (t === 'mono') {
     return (
       <View>
-        <Text style={nameStyle(2.55, 600, { letterSpacing: 0 })}>
-          {name}
-        </Text>
-        {role ? (
-          <Text
-            style={{
-              fontFamily: ctx.monoFont,
-              fontSize: em(ctx, 0.88),
-              letterSpacing: 0,
-              color: MUTED,
-              marginTop: em(ctx, 0.35),
-            }}
-          >
-            {role}
+        <NameBlock>
+          <Text style={nameStyle(2.55, 600, { letterSpacing: 0 })}>
+            {name}
           </Text>
-        ) : null}
+          {role ? (
+            <Text
+              style={{
+                fontFamily: ctx.monoFont,
+                fontSize: em(ctx, 0.88),
+                letterSpacing: 0,
+                color: MUTED,
+                marginTop: em(ctx, 0.35),
+              }}
+            >
+              {role}
+            </Text>
+          ) : null}
+        </NameBlock>
         <ContactRow ctx={ctx} contacts={contacts} labels size={0.76} marginTop={0.7} />
       </View>
     );
@@ -421,10 +535,12 @@ function Header({ resume, ctx }: { resume: ResumeInterface; ctx: Ctx }) {
   if (t === 'linea') {
     return (
       <View>
-        <Text style={nameStyle(2.9, 700, { letterSpacing: 0 })}>
-          {name}
-        </Text>
-        {role ? <Text style={roleStyle({ fontSize: em(ctx, 1.02) })}>{role}</Text> : null}
+        <NameBlock>
+          <Text style={nameStyle(2.9, 700, { letterSpacing: 0 })}>
+            {name}
+          </Text>
+          {role ? <Text style={roleStyle({ fontSize: em(ctx, 1.02) })}>{role}</Text> : null}
+        </NameBlock>
         <ContactRow ctx={ctx} contacts={contacts} marginTop={0.7} />
       </View>
     );
@@ -439,27 +555,28 @@ function Header({ resume, ctx }: { resume: ResumeInterface; ctx: Ctx }) {
           paddingTop: em(ctx, 0.65),
         }}
       >
-        <Text
-          style={nameStyle(2.95, 700, {
-            textTransform: 'uppercase',
-            lineHeight: 0.9,
-            letterSpacing: 0,
-          })}
-        >
-          {name}
-        </Text>
-        {role ? (
+        <NameBlock>
           <Text
-            style={{
-              fontSize: em(ctx, 0.92),
-              color: MUTED,
-              marginTop: em(ctx, 0.55),
+            style={nameStyle(2.95, 700, {
+              textTransform: 'uppercase',
               letterSpacing: 0,
-            }}
+            })}
           >
-            {role}
+            {name}
           </Text>
-        ) : null}
+          {role ? (
+            <Text
+              style={{
+                fontSize: em(ctx, 0.92),
+                color: MUTED,
+                marginTop: em(ctx, 0.55),
+                letterSpacing: 0,
+              }}
+            >
+              {role}
+            </Text>
+          ) : null}
+        </NameBlock>
         <ContactRow ctx={ctx} contacts={contacts} marginTop={0.9} />
       </View>
     );
@@ -476,30 +593,31 @@ function Header({ resume, ctx }: { resume: ResumeInterface; ctx: Ctx }) {
           paddingBottom: em(ctx, 0.8),
         }}
       >
-        <Text
-          style={nameStyle(3.1, 600, {
-            textTransform: 'uppercase',
-            letterSpacing: 0,
-            lineHeight: 1,
-            textAlign: 'center',
-          })}
-        >
-          {name}
-        </Text>
-        {role ? (
+        <NameBlock centered>
           <Text
-            style={{
-              fontSize: em(ctx, 0.78),
-              letterSpacing: 0,
+            style={nameStyle(3.1, 600, {
               textTransform: 'uppercase',
-              color: MUTED,
-              marginTop: em(ctx, 0.55),
+              letterSpacing: 0,
               textAlign: 'center',
-            }}
+            })}
           >
-            {role}
+            {name}
           </Text>
-        ) : null}
+          {role ? (
+            <Text
+              style={{
+                fontSize: em(ctx, 0.78),
+                letterSpacing: 0,
+                textTransform: 'uppercase',
+                color: MUTED,
+                marginTop: em(ctx, 0.55),
+                textAlign: 'center',
+              }}
+            >
+              {role}
+            </Text>
+          ) : null}
+        </NameBlock>
         <ContactRow ctx={ctx} contacts={contacts} align='center' size={0.77} marginTop={0.8} />
         <View style={{ width: '100%', marginTop: em(ctx, 0.65) }}>
           <View style={{ height: 1, backgroundColor: INK, marginBottom: em(ctx, 0.1) }} />
@@ -519,20 +637,22 @@ function Header({ resume, ctx }: { resume: ResumeInterface; ctx: Ctx }) {
           paddingVertical: em(ctx, 1.4),
         }}
       >
-        <Text style={nameStyle(2.85, 700, { color: WHITE, letterSpacing: 0 })}>
-          {name}
-        </Text>
-        {role ? (
-          <Text
-            style={{
-              fontSize: em(ctx, 0.98),
-              color: '#f4f1e9',
-              marginTop: em(ctx, 0.32),
-            }}
-          >
-            {role}
+        <NameBlock>
+          <Text style={nameStyle(2.85, 700, { color: WHITE, letterSpacing: 0 })}>
+            {name}
           </Text>
-        ) : null}
+          {role ? (
+            <Text
+              style={{
+                fontSize: em(ctx, 0.98),
+                color: '#f4f1e9',
+                marginTop: em(ctx, 0.32),
+              }}
+            >
+              {role}
+            </Text>
+          ) : null}
+        </NameBlock>
         <ContactRow ctx={ctx} contacts={contacts} color='#f4f1e9' marginTop={0.85} />
       </View>
     );
@@ -555,20 +675,22 @@ function Header({ resume, ctx }: { resume: ResumeInterface; ctx: Ctx }) {
             padding: em(ctx, 1.05),
           }}
         >
-          <Text style={nameStyle(2.35, 700, { color: WHITE, letterSpacing: 0 })}>
-            {name}
-          </Text>
-          {role ? (
-            <Text
-              style={{
-                fontSize: em(ctx, 0.94),
-                color: '#f4f1e9',
-                marginTop: em(ctx, 0.34),
-              }}
-            >
-              {role}
+          <NameBlock>
+            <Text style={nameStyle(2.35, 700, { color: WHITE, letterSpacing: 0 })}>
+              {name}
             </Text>
-          ) : null}
+            {role ? (
+              <Text
+                style={{
+                  fontSize: em(ctx, 0.94),
+                  color: '#f4f1e9',
+                  marginTop: em(ctx, 0.34),
+                }}
+              >
+                {role}
+              </Text>
+            ) : null}
+          </NameBlock>
         </View>
         <View
           style={{
@@ -597,10 +719,12 @@ function Header({ resume, ctx }: { resume: ResumeInterface; ctx: Ctx }) {
       }}
     >
       <View style={{ flex: 1, paddingRight: em(ctx, 1.5) }}>
-        <Text style={nameStyle(2.85, 700, { letterSpacing: 0 })}>
-          {name}
-        </Text>
-        {role ? <Text style={roleStyle({ fontSize: em(ctx, 1) })}>{role}</Text> : null}
+        <NameBlock>
+          <Text style={nameStyle(2.85, 700, { letterSpacing: 0 })}>
+            {name}
+          </Text>
+          {role ? <Text style={roleStyle({ fontSize: em(ctx, 1) })}>{role}</Text> : null}
+        </NameBlock>
       </View>
       <View style={{ width: em(ctx, 15), alignItems: 'flex-end' }}>
         <ContactRow
@@ -624,7 +748,7 @@ function SectionHeading({
   section: SectionKey;
   ctx: Ctx;
 }) {
-  const label = section === 'profile' ? 'Summary' : SECTION_LABELS[section];
+  const label = section === 'profile' ? SUMMARY_SECTION_LABEL : SECTION_LABELS[section];
   const base = {
     fontFamily: ctx.bodyFont,
     fontSize: em(ctx, 0.8),
@@ -741,12 +865,13 @@ function SectionHeading({
         <Text
           style={{
             ...base,
-            fontFamily: ctx.monoFont,
             color: INK,
             fontSize: em(ctx, 0.76),
             letterSpacing: 0,
           }}
         >
+          {/* A monospaced label beside the marker is emitted as one text item
+              per word, so OpenResume cannot recognise it as a section heading. */}
           {label}
         </Text>
       </View>,
@@ -890,17 +1015,23 @@ function Bullets({ text, ctx }: { text?: string; ctx: Ctx }) {
             marginTop: index === 0 ? 0 : em(ctx, 0.11 * ctx.spacing),
           }}
         >
-          <View
+          {/*
+            A real bullet character, not a drawn dot. It survives PDF text
+            extraction, which lets parsers find where the description list
+            begins and keeps each achievement separate from the next.
+          */}
+          <Text
             style={{
-              width: em(ctx, 0.28),
-              height: em(ctx, 0.28),
-              borderRadius: em(ctx, 0.14),
-              backgroundColor: ctx.accent,
-              opacity: 0.78,
-              marginTop: em(ctx, 0.52),
-              marginRight: em(ctx, 0.55),
+              width: em(ctx, 0.9),
+              flexShrink: 0,
+              fontFamily: ctx.bodyFont,
+              fontSize: em(ctx, 0.96),
+              color: ctx.accent,
+              lineHeight: ctx.leading,
             }}
-          />
+          >
+            •
+          </Text>
           <Text
             style={{
               flex: 1,
@@ -972,8 +1103,7 @@ function SectionBody({
           fontSize: em(ctx, 1.02),
           fontWeight: 700,
           color: accent && ctx.entryTitleAccent ? ctx.accent : INK,
-          lineHeight: 1.25,
-          marginRight: em(ctx, 0.45),
+          lineHeight: INLINE_LINE_HEIGHT,
         }}
       >
         {text}
@@ -987,11 +1117,29 @@ function SectionBody({
           fontFamily: ctx.bodyFont,
           fontSize: em(ctx, 0.97),
           color: MUTED,
-          lineHeight: 1.3,
-          marginRight: em(ctx, 0.45),
+          lineHeight: INLINE_LINE_HEIGHT,
         }}
       >
         {text}
+      </Text>
+    ) : null;
+
+  /**
+   * OpenResume matches job titles against a case-sensitive list of capitalised
+   * roles ("Engineer", "Developer", ...). Title-casing the value keeps it
+   * recognisable without a textTransform, which would shift the baseline.
+   */
+  const jobTitle = (text?: string) =>
+    text?.trim() ? (
+      <Text
+        style={{
+          fontFamily: ctx.bodyFont,
+          fontSize: em(ctx, 0.97),
+          color: MUTED,
+          lineHeight: INLINE_LINE_HEIGHT,
+        }}
+      >
+        {titleCaseJobTitle(text)}
       </Text>
     ) : null;
 
@@ -1001,19 +1149,13 @@ function SectionBody({
         style={{
           fontFamily: ctx.bodyFont,
           fontSize: em(ctx, 0.82),
+          lineHeight: INLINE_LINE_HEIGHT,
           color: FAINT,
-          marginRight: em(ctx, 0.45),
         }}
       >
         {text}
       </Text>
     ) : null;
-
-  const slash = (
-    <Text style={{ fontSize: em(ctx, 0.9), color: FAINT, marginRight: em(ctx, 0.45) }}>
-      /
-    </Text>
-  );
 
   const date = (text?: string) =>
     text?.trim() ? (
@@ -1021,6 +1163,7 @@ function SectionBody({
         style={{
           fontFamily: ctx.template === 'mono' ? ctx.monoFont : ctx.bodyFont,
           fontSize: em(ctx, 0.83),
+          lineHeight: INLINE_LINE_HEIGHT,
           color: MUTED,
           flexShrink: 0,
         }}
@@ -1036,6 +1179,7 @@ function SectionBody({
         style={{
           fontFamily: ctx.template === 'mono' ? ctx.monoFont : ctx.bodyFont,
           fontSize: em(ctx, 0.83),
+          lineHeight: INLINE_LINE_HEIGHT,
           color: MUTED,
           flexShrink: 0,
           textDecoration: 'none',
@@ -1093,42 +1237,63 @@ function SectionBody({
                   fontFamily: ctx.bodyFont,
                   fontSize: em(ctx, 0.94),
                   fontWeight: 600,
-                  lineHeight: 1.3,
+                  lineHeight: INLINE_LINE_HEIGHT,
                 }}
               >
                 {group.name}
               </Text>
             ) : null}
             {pills ? (
-              <View style={{ flex: 1, flexDirection: 'row', flexWrap: 'wrap' }}>
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: 'row',
+                  flexWrap: 'wrap',
+                  alignItems: 'center',
+                }}
+              >
                 {group.skills
                   .filter((skill) => skill.trim())
-                  .map((skill, index) => (
-                    <View
-                      key={`${skill}-${index}`}
-                      style={{
-                        backgroundColor:
-                          ctx.template === 'onyx'
-                            ? mix(ctx.accent, PAPER, 0.1)
-                            : mix(ctx.accent, PAPER, 0.09),
-                        borderRadius: 2,
-                        paddingHorizontal: em(ctx, 0.42),
-                        paddingVertical: em(ctx, 0.06),
-                        marginRight: em(ctx, 0.3),
-                        marginBottom: em(ctx, 0.25),
-                      }}
-                    >
-                      <Text
+                  .map((skill, index, skills) => (
+                    <Fragment key={`${skill}-${index}`}>
+                      <View
                         style={{
-                          fontFamily:
-                            ctx.template === 'mono' ? ctx.monoFont : ctx.bodyFont,
-                          fontSize: em(ctx, 0.86),
-                          color: INK,
+                          backgroundColor:
+                            ctx.template === 'onyx'
+                              ? mix(ctx.accent, PAPER, 0.1)
+                              : mix(ctx.accent, PAPER, 0.09),
+                          borderRadius: 2,
+                          paddingHorizontal: em(ctx, 0.42),
+                          paddingVertical: em(ctx, 0.06),
+                          marginRight: em(ctx, 0.3),
+                          marginBottom: em(ctx, 0.25),
                         }}
                       >
-                        {skill}
-                      </Text>
-                    </View>
+                        <Text
+                          style={{
+                            fontFamily:
+                              ctx.template === 'mono' ? ctx.monoFont : ctx.bodyFont,
+                            fontSize: em(ctx, 0.86),
+                            color: INK,
+                          }}
+                        >
+                          {skill}
+                        </Text>
+                      </View>
+                      {index < skills.length - 1 ? (
+                        <Text
+                          style={{
+                            fontFamily: ctx.bodyFont,
+                            fontSize: em(ctx, 0.76),
+                            color: FAINT,
+                            marginRight: em(ctx, 0.3),
+                            marginBottom: em(ctx, 0.25),
+                          }}
+                        >
+                          |
+                        </Text>
+                      ) : null}
+                    </Fragment>
                   ))}
               </View>
             ) : (
@@ -1139,7 +1304,7 @@ function SectionBody({
                     ctx.template === 'mono' ? ctx.monoFont : ctx.bodyFont,
                   fontSize: em(ctx, 0.92),
                   color: MUTED,
-                  lineHeight: 1.4,
+                  lineHeight: INLINE_LINE_HEIGHT,
                 }}
               >
                 {group.skills
@@ -1147,9 +1312,7 @@ function SectionBody({
                   .map((skill, index) => (
                     <Text key={`${skill}-${index}`}>
                       {index > 0 ? (
-                        <Text style={{ color: FAINT }}>
-                          {ctx.template === 'mono' ? '  /  ' : '  ·  '}
-                        </Text>
+                        <Text style={{ color: FAINT }}>{' | '}</Text>
                       ) : null}
                       {skill}
                     </Text>
@@ -1164,9 +1327,13 @@ function SectionBody({
 
   if (section === 'experience') {
     const entries = (resume.experience ?? []).filter((entry) =>
-      [entry.companyName, entry.jobTitle, entry.jobDescription].some((value) =>
-        Boolean(value?.trim())
-      )
+      [
+        entry.companyName,
+        entry.jobTitle,
+        entry.jobLocation,
+        entry.jobDescription,
+      ].some((value) => Boolean(value?.trim())) ||
+      Boolean(formatDateRange(entry.jobDateRange) || entry.jobDate?.trim())
     );
     if (!entries.length) return null;
     return sectionWrap(
@@ -1178,12 +1345,11 @@ function SectionBody({
             <>
               <EntryTop
                 left={
-                  <>
+                  <FieldList ctx={ctx}>
                     {title(entry.companyName, true)}
-                    {entry.companyName && entry.jobTitle ? slash : null}
-                    {role(entry.jobTitle)}
+                    {jobTitle(entry.jobTitle)}
                     {meta(entry.jobLocation)}
-                  </>
+                  </FieldList>
                 }
                 right={date(when)}
               />
@@ -1229,9 +1395,13 @@ function SectionBody({
 
   if (section === 'education') {
     const entries = (resume.education ?? []).filter((entry) =>
-      [entry.schoolName, entry.schoolMajor, entry.schoolDescription].some((value) =>
-        Boolean(value?.trim())
-      )
+      [
+        entry.schoolName,
+        entry.schoolMajor,
+        entry.schoolGPA,
+        entry.schoolDescription,
+      ].some((value) => Boolean(value?.trim())) ||
+      Boolean(formatDateRange(entry.schoolDateRange) || entry.schoolDate?.trim())
     );
     if (!entries.length) return null;
     return sectionWrap(
@@ -1256,12 +1426,11 @@ function SectionBody({
             >
               <EntryTop
                 left={
-                  <>
+                  <FieldList ctx={ctx}>
                     {title(entry.schoolName, true)}
-                    {entry.schoolName && entry.schoolMajor ? slash : null}
                     {role(entry.schoolMajor)}
                     {meta(entry.schoolGPA ? `GPA ${entry.schoolGPA}` : undefined)}
-                  </>
+                  </FieldList>
                 }
                 right={date(when)}
               />
@@ -1275,7 +1444,9 @@ function SectionBody({
 
   if (section === 'projects') {
     const entries = (resume.projects ?? []).filter((entry) =>
-      [entry.projectName, entry.projectDescription].some((value) => Boolean(value?.trim()))
+      [entry.projectName, entry.projectLink, entry.projectDescription].some((value) =>
+        Boolean(value?.trim())
+      )
     );
     if (!entries.length) return null;
     return sectionWrap(
@@ -1284,7 +1455,7 @@ function SectionBody({
           <View key={index} style={{ marginTop: index === 0 ? 0 : entryGap }}>
             <EntryTop
               left={
-                <>
+                <FieldList ctx={ctx}>
                   {title(entry.projectName, true)}
                   {entry.projectLink?.trim() ? (
                     <Link
@@ -1292,15 +1463,15 @@ function SectionBody({
                       style={{
                         fontFamily: ctx.bodyFont,
                         fontSize: em(ctx, 0.84),
+                        lineHeight: INLINE_LINE_HEIGHT,
                         color: ctx.accent,
                         textDecoration: 'none',
-                        marginRight: em(ctx, 0.45),
                       }}
                     >
                       {entry.projectLink}
                     </Link>
                   ) : null}
-                </>
+                </FieldList>
               }
             />
             <Bullets text={entry.projectDescription} ctx={ctx} />
@@ -1312,9 +1483,11 @@ function SectionBody({
 
   if (section === 'certifications') {
     const entries = (resume.certifications ?? []).filter((entry) =>
-      [entry.certificationName, entry.certificationDescription].some((value) =>
-        Boolean(value?.trim())
-      )
+      [
+        entry.certificationName,
+        entry.certificationIssuer,
+        entry.certificationDescription,
+      ].some((value) => Boolean(value?.trim()))
     );
     if (!entries.length) return null;
     return sectionWrap(
@@ -1323,10 +1496,10 @@ function SectionBody({
           <View key={index} style={{ marginTop: index === 0 ? 0 : entryGap }}>
             <EntryTop
               left={
-                <>
+                <FieldList ctx={ctx}>
                   {title(entry.certificationName, true)}
                   {role(entry.certificationIssuer)}
-                </>
+                </FieldList>
               }
               right={date(entry.certificationDate)}
             />
@@ -1339,7 +1512,9 @@ function SectionBody({
 
   if (section === 'awards') {
     const entries = (resume.awards ?? []).filter((entry) =>
-      [entry.awardName, entry.awardDescription].some((value) => Boolean(value?.trim()))
+      [entry.awardName, entry.awardIssuer, entry.awardDescription].some((value) =>
+        Boolean(value?.trim())
+      )
     );
     if (!entries.length) return null;
     return sectionWrap(
@@ -1348,10 +1523,10 @@ function SectionBody({
           <View key={index} style={{ marginTop: index === 0 ? 0 : entryGap }}>
             <EntryTop
               left={
-                <>
+                <FieldList ctx={ctx}>
                   {title(entry.awardName, true)}
                   {role(entry.awardIssuer)}
-                </>
+                </FieldList>
               }
               right={date(entry.awardDate)}
             />
@@ -1364,9 +1539,13 @@ function SectionBody({
 
   if (section === 'references') {
     const entries = (resume.references ?? []).filter((entry) =>
-      [entry.referenceName, entry.referenceDescription].some((value) =>
-        Boolean(value?.trim())
-      )
+      [
+        entry.referenceName,
+        entry.referenceRole,
+        entry.referenceCompany,
+        entry.referenceEmail,
+        entry.referenceDescription,
+      ].some((value) => Boolean(value?.trim()))
     );
     if (!entries.length) return null;
     return sectionWrap(
@@ -1379,10 +1558,10 @@ function SectionBody({
             <View key={index} style={{ marginTop: index === 0 ? 0 : entryGap }}>
               <EntryTop
                 left={
-                  <>
+                  <FieldList ctx={ctx}>
                     {title(entry.referenceName, true)}
                     {role(affiliation)}
-                  </>
+                  </FieldList>
                 }
                 right={emailLink(entry.referenceEmail)}
               />
@@ -1398,40 +1577,36 @@ function SectionBody({
     const items = (resume.languageItems ?? []).filter((item) => item.name?.trim());
     if (!items.length) return null;
     return sectionWrap(
-      <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'baseline' }}>
         {items.map((item, index) => (
-          <View
-            key={item.id}
-            style={{
-              flexDirection: 'row',
-              alignItems: 'baseline',
-              marginRight: em(ctx, 1.6),
-              marginTop: index === 0 ? 0 : em(ctx, 0.3),
-            }}
-          >
+          <Fragment key={item.id}>
             <Text
               style={{
                 fontFamily: ctx.bodyFont,
                 fontSize: em(ctx, 0.94),
-                fontWeight: 600,
-                color: INK,
-                marginRight: em(ctx, 0.4),
+                lineHeight: INLINE_LINE_HEIGHT,
+                marginBottom: em(ctx, 0.12),
               }}
             >
-              {item.name}
+              <Text style={{ fontWeight: 600, color: INK }}>{item.name}</Text>
+              {item.proficiency ? (
+                <Text style={{ color: MUTED }}>{`: ${item.proficiency}`}</Text>
+              ) : null}
             </Text>
-            {item.proficiency ? (
+            {index < items.length - 1 ? (
               <Text
                 style={{
                   fontFamily: ctx.bodyFont,
                   fontSize: em(ctx, 0.94),
-                  color: MUTED,
+                  lineHeight: INLINE_LINE_HEIGHT,
+                  color: FAINT,
+                  marginHorizontal: em(ctx, 0.6),
                 }}
               >
-                {item.proficiency}
+                |
               </Text>
             ) : null}
-          </View>
+          </Fragment>
         ))}
       </View>
     );
@@ -1485,6 +1660,7 @@ export default function ResumePdfDocument({
       creator='Quick Resume'
       producer='Quick Resume'
       keywords='resume, curriculum vitae'
+      language='en'
     >
       <Page
         size={[ (paper.width * 72) / 25.4, (paper.height * 72) / 25.4 ]}
@@ -1497,7 +1673,11 @@ export default function ResumePdfDocument({
           lineHeight: leading,
         }}
       >
-        <Header resume={data} ctx={ctx} />
+        <Header
+          resume={data}
+          ctx={ctx}
+          showContacts={!hidden.includes('profile')}
+        />
 
         {flow.map((section) => {
           if (section === 'profile') {

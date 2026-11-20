@@ -164,11 +164,33 @@ export function parseLegacyDate(value?: string): DateRange {
   return range;
 }
 
+/**
+ * Capitalise a job title so ATS parsers that match capitalised role keywords
+ * ("Engineer", "Developer", ...) can recognise it. Words with internal caps,
+ * such as iOS or JavaScript, are kept exactly as the user entered them.
+ */
+export function titleCaseJobTitle(value: string): string {
+  return value.replace(/\b[a-zA-Z][a-zA-Z0-9+#.]*/g, (word) =>
+    /[A-Z]/.test(word.slice(1))
+      ? word
+      : word.charAt(0).toUpperCase() + word.slice(1)
+  );
+}
+
 export function splitBullets(value?: string): string[] {
   if (!value) return [];
   return value
     .split(/\r?\n/)
-    .map((line) => line.replace(/^\s*[•\-–]\s*/, '').trim())
+    .map((line) =>
+      line
+        // Strip a leading bullet glyph (with or without a following space) or
+        // a leading dash that is being used as a list marker. A hyphen inside
+        // a word such as "e-commerce" is left untouched.
+        .replace(/^\s*(?:[•∙⋅●○◦▪▫■□*·]\s*|[-–—]\s+)/, '')
+        // Also accept numbered list markers so pasted content stays clean.
+        .replace(/^\s*\d+[.)]\s+/, '')
+        .trim()
+    )
     .filter(Boolean);
 }
 
@@ -308,7 +330,10 @@ export function sectionHasContent(
       );
     case 'projects':
       return (resume.projects ?? []).some(
-        (entry) => hasText(entry.projectName) || hasText(entry.projectDescription)
+        (entry) =>
+          hasText(entry.projectName) ||
+          hasText(entry.projectLink) ||
+          hasText(entry.projectDescription)
       );
     case 'certifications':
       return (resume.certifications ?? []).some(
@@ -329,6 +354,8 @@ export function sectionHasContent(
         (entry) =>
           hasText(entry.referenceName) ||
           hasText(entry.referenceRole) ||
+          hasText(entry.referenceCompany) ||
+          hasText(entry.referenceEmail) ||
           hasText(entry.referenceDescription)
       );
     case 'languages':

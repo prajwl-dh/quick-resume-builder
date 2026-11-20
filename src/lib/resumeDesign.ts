@@ -156,7 +156,7 @@ export const MARGIN_SIZES: Record<ResumeMargin, { label: string; mm: number }> =
 export const SECTION_LABELS: Record<SectionKey, string> = {
   profile: 'Profile',
   skills: 'Skills',
-  experience: 'Experience',
+  experience: 'Work Experience',
   education: 'Education',
   projects: 'Projects',
   certifications: 'Certifications',
@@ -164,6 +164,13 @@ export const SECTION_LABELS: Record<SectionKey, string> = {
   references: 'References',
   languages: 'Languages',
 };
+
+/**
+ * Conventional heading used for the summary in the document itself. The rail
+ * keeps the shorter "Profile" label, while the printed resume uses the wording
+ * most applicant tracking systems look for.
+ */
+export const SUMMARY_SECTION_LABEL = 'Professional Summary';
 
 export const SECTION_HINTS: Record<SectionKey, string> = {
   profile: 'The name, role and contact details at the top of the page.',
@@ -179,14 +186,14 @@ export const SECTION_HINTS: Record<SectionKey, string> = {
 
 export const DEFAULT_SECTION_ORDER: SectionKey[] = [
   'profile',
-  'skills',
   'experience',
   'education',
+  'skills',
   'projects',
   'certifications',
   'awards',
-  'references',
   'languages',
+  'references',
 ];
 
 export function isHexColor(value?: string): boolean {

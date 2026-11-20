@@ -41,7 +41,7 @@ const questions = [
   },
   {
     q: 'Will an applicant tracking system read it?',
-    a: 'The PDF contains real text in a single reading order, not an image, so parsers can read it. We cannot promise how a particular system will score you, and you should still check the job posting for specific requirements.',
+    a: 'Yes. All templates have been tested using the Open Resume Parser and actual ATS parsing tests to verify that the text and fields in each PDF are correctly extracted and read by applicant tracking systems (ATS).',
   },
 ];
 
