@@ -1,6 +1,7 @@
 'use client';
 
 import type {
+  ResumeFont,
   ResumeInterface,
   ResumeMargin,
   ResumePaper,
@@ -13,6 +14,7 @@ import {
   COLOR_GROUPS,
   DEFAULT_THEME,
   FONTS,
+  FONT_IDS,
   FONT_MAP,
   MARGIN_SIZES,
   PAPER_SIZES,
@@ -38,6 +40,42 @@ import { Segmented, Slider } from '../editor/fields';
 
 type Tab = 'template' | 'type' | 'layout';
 
+/**
+ * The Mono template forces a monospace typeface. Remember the font that was
+ * active before switching to it so we can restore it when leaving, even if the
+ * panel unmounts or the page reloads.
+ */
+const rememberedFontKey = (resumeId: string) => `resume-font-before-mono:${resumeId}`;
+
+function rememberFont(resumeId: string, font: ResumeFont) {
+  if (typeof window === 'undefined') return;
+  try {
+    window.localStorage.setItem(rememberedFontKey(resumeId), font);
+  } catch {
+    // Storage can be unavailable in private browsing; the default font is a
+    // safe fallback when leaving Mono.
+  }
+}
+
+function forgetFont(resumeId: string) {
+  if (typeof window === 'undefined') return;
+  try {
+    window.localStorage.removeItem(rememberedFontKey(resumeId));
+  } catch {
+    // Ignore storage failures.
+  }
+}
+
+function recallFont(resumeId: string): ResumeFont | null {
+  if (typeof window === 'undefined') return null;
+  try {
+    const value = window.localStorage.getItem(rememberedFontKey(resumeId));
+    return value && FONT_IDS.includes(value as ResumeFont) ? (value as ResumeFont) : null;
+  } catch {
+    return null;
+  }
+}
+
 const tabs: { value: Tab; label: string }[] = [
   { value: 'template', label: 'Template' },
   { value: 'type', label: 'Type & colour' },
@@ -55,6 +93,31 @@ export default function DesignPanel({ resume }: { resume: ResumeInterface }) {
 
   const update = (patch: Partial<typeof theme>) => {
     dispatch(updateResumeTheme({ id: resume.id, value: patch }));
+  };
+
+  /** Font a template switch would apply, also used for the template thumbnails. */
+  const fontForTemplate = (id: ResumeTemplate): ResumeFont => {
+    if (id === 'mono') return 'plex-mono';
+    return theme.template === 'mono'
+      ? recallFont(resume.id) ?? DEFAULT_THEME.font
+      : theme.font;
+  };
+
+  const chooseTemplate = (id: ResumeTemplate) => {
+    const font = fontForTemplate(id);
+    if (id === 'mono' && theme.template !== 'mono') {
+      rememberFont(resume.id, theme.font);
+    }
+    if (theme.template === 'mono' && id !== 'mono') {
+      forgetFont(resume.id);
+    }
+    update({ template: id, font });
+  };
+
+  const chooseFont = (id: ResumeFont) => {
+    // A manual choice while Mono is active becomes the font we restore.
+    if (theme.template === 'mono') rememberFont(resume.id, id);
+    update({ font: id });
   };
 
   const { dragIndex, overIndex, handleProps, itemProps } = useSortableList((from, to) => {
@@ -95,7 +158,7 @@ export default function DesignPanel({ resume }: { resume: ResumeInterface }) {
                 <button
                   key={template.id}
                   type='button'
-                  onClick={() => update({ template: template.id as ResumeTemplate })}
+                  onClick={() => chooseTemplate(template.id as ResumeTemplate)}
                   title={template.note}
                   aria-pressed={active}
                   className={`group relative overflow-hidden rounded-xl border bg-sunken p-1.5 text-left transition-all duration-200 ${
@@ -106,7 +169,14 @@ export default function DesignPanel({ resume }: { resume: ResumeInterface }) {
                 >
                   <div className='overflow-hidden rounded-[8px] bg-white shadow-[0_1px_2px_rgba(20,18,14,0.12)]'>
                     <ScaledSheet
-                      resume={{ ...resume, theme: { ...theme, template: template.id } }}
+                      resume={{
+                        ...resume,
+                        theme: {
+                          ...theme,
+                          template: template.id,
+                          font: fontForTemplate(template.id as ResumeTemplate),
+                        },
+                      }}
                       crop
                       rounded={false}
                     />
@@ -213,7 +283,7 @@ export default function DesignPanel({ resume }: { resume: ResumeInterface }) {
                   <button
                     key={font.id}
                     type='button'
-                    onClick={() => update({ font: font.id })}
+                    onClick={() => chooseFont(font.id)}
                     aria-pressed={active}
                     className={`flex items-center gap-2.5 rounded-xl border p-2.5 text-left transition-colors duration-150 ${
                       active
