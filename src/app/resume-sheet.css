@@ -74,7 +74,7 @@
 .r-contact {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.28em 1.05em;
+  gap: 0.28em 0.55em;
   margin-top: 0.7em;
   font-size: 0.84em;
   color: var(--r-muted);
@@ -243,7 +243,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  gap: 0.12em 0.05em;
+  gap: 0.12em 0.42em;
   min-width: 0;
 }
 
@@ -253,18 +253,12 @@
   overflow-wrap: anywhere;
 }
 
-.r-skill + .r-skill::before {
-  content: '·';
-  margin: 0 0.45em;
-  color: var(--r-faint);
-}
-
 /* ------------------------------ languages ----------------------------- */
 
 .r-languages {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.35em 1.8em;
+  gap: 0.35em 0.5em;
 }
 
 .r-language {
@@ -405,14 +399,6 @@
   font-size: 0.86em;
 }
 
-.r-t-meridian .r-skill + .r-skill::before,
-.r-t-atlas .r-skill + .r-skill::before,
-.r-t-studio .r-skill + .r-skill::before,
-.r-t-swiss .r-skill + .r-skill::before {
-  content: none;
-  margin: 0;
-}
-
 .r-t-meridian .r-skill-list,
 .r-t-atlas .r-skill-list,
 .r-t-studio .r-skill-list,
@@ -517,11 +503,6 @@
   font-size: 0.86em;
 }
 
-.r-t-onyx .r-skill + .r-skill::before {
-  content: none;
-  margin: 0;
-}
-
 .r-t-onyx .r-skill-list {
   gap: 0.25em 0.3em;
 }
@@ -608,7 +589,7 @@
 .r-t-mono .r-contact {
   font-family: var(--font-plex-mono), ui-monospace, monospace;
   font-size: 0.76em;
-  gap: 0.3em 1.25em;
+  gap: 0.3em 0.6em;
 }
 
 .r-t-mono .r-contact-label {
@@ -644,11 +625,6 @@
 .r-t-mono .r-skill {
   font-family: var(--font-plex-mono), ui-monospace, monospace;
   font-size: 0.86em;
-}
-
-.r-t-mono .r-skill + .r-skill::before {
-  content: '/';
-  color: var(--r-faint);
 }
 
 /* ==================================================================== */

@@ -81,6 +81,20 @@ interface Ctx {
 
 const em = (ctx: Ctx, value: number) => ctx.type * value;
 
+/** Section spacing matches the live preview's per-template CSS. */
+function sectionGap(ctx: Ctx): number {
+  switch (ctx.template) {
+    case 'folio':
+      return 1.35;
+    case 'ledger':
+      return 0.95;
+    case 'swiss':
+      return 0.85;
+    default:
+      return 1.15;
+  }
+}
+
 /**
  * Every text run that shares an entry row must use the same line height. React
  * PDF aligns rows by their text baselines, and a different line height on a
@@ -763,7 +777,7 @@ function SectionHeading({
     <View
       wrap={false}
       minPresenceAhead={em(ctx, 4)}
-      style={{ marginBottom: em(ctx, 0.38 * ctx.spacing), ...extra }}
+      style={{ marginBottom: em(ctx, 0.44 * ctx.spacing), ...extra }}
     >
       {children}
     </View>
@@ -1005,14 +1019,14 @@ function Bullets({ text, ctx }: { text?: string; ctx: Ctx }) {
   const lines = splitBullets(text);
   if (!lines.length) return null;
   return (
-    <View style={{ marginTop: em(ctx, 0.26 * ctx.spacing) }}>
+    <View style={{ marginTop: em(ctx, 0.3 * ctx.spacing) }}>
       {lines.map((line, index) => (
         <View
           key={index}
           style={{
             flexDirection: 'row',
             alignItems: 'flex-start',
-            marginTop: index === 0 ? 0 : em(ctx, 0.11 * ctx.spacing),
+            marginTop: index === 0 ? 0 : em(ctx, 0.18 * ctx.spacing),
           }}
         >
           {/*
@@ -1093,7 +1107,7 @@ function SectionBody({
   ctx: Ctx;
   number: number;
 }) {
-  const entryGap = em(ctx, 0.48 * ctx.spacing);
+  const entryGap = em(ctx, 0.72 * ctx.spacing);
 
   const title = (text?: string, accent = false) =>
     text?.trim() ? (
@@ -1197,7 +1211,7 @@ function SectionBody({
           fontSize: em(ctx, 0.95),
           color: MUTED,
           lineHeight: ctx.leading,
-          marginTop: em(ctx, 0.2 * ctx.spacing),
+          marginTop: em(ctx, 0.22 * ctx.spacing),
         }}
       >
         {text}
@@ -1205,7 +1219,7 @@ function SectionBody({
     ) : null;
 
   const sectionWrap = (children: ReactNode) => (
-    <View style={{ marginTop: number === 1 ? 0 : em(ctx, 0.8 * ctx.spacing) }}>
+    <View style={{ marginTop: number === 1 ? 0 : em(ctx, sectionGap(ctx) * ctx.spacing) }}>
       <SectionHeading section={section} ctx={ctx} />
       {children}
     </View>
@@ -1225,7 +1239,7 @@ function SectionBody({
             style={{
               flexDirection: 'row',
               alignItems: 'flex-start',
-              marginTop: groupIndex === 0 ? 0 : em(ctx, 0.32 * ctx.spacing),
+              marginTop: groupIndex === 0 ? 0 : em(ctx, 0.38 * ctx.spacing),
             }}
           >
             {group.name?.trim() ? (
@@ -1682,10 +1696,13 @@ export default function ResumePdfDocument({
         {flow.map((section) => {
           if (section === 'profile') {
             if (!hasSummary) return null;
+            // Count the summary so the first body section still gets its
+            // section gap, as it does in the live preview.
+            sectionNumber += 1;
             return (
               <View
                 key='profile'
-                style={{ marginTop: em(ctx, 0.8 * ctx.spacing) }}
+                style={{ marginTop: em(ctx, sectionGap(ctx) * ctx.spacing) }}
               >
                 <SectionHeading
                   section='profile'

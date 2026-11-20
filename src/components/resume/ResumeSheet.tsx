@@ -11,7 +11,16 @@ import {
   titleCaseJobTitle,
 } from '@/lib/resumeDefaults';
 import { SECTION_LABELS, themeVars } from '@/lib/resumeDesign';
-import type { ReactNode } from 'react';
+import { Fragment, type ReactNode } from 'react';
+
+/** Mirrors the PDF's field separator so both views read the same way. */
+function Sep() {
+  return (
+    <span className='r-entry-sep' aria-hidden='true'>
+      |
+    </span>
+  );
+}
 
 function hrefFor(value?: string): string {
   if (!value) return '';
@@ -114,6 +123,8 @@ export default function ResumeSheet({
   );
 
   const contacts = contactItems.filter(Boolean);
+  // These templates stack contacts in a column; the PDF omits separators there.
+  const inlineContacts = !['ledger', 'atlas', 'column'].includes(theme.template);
   const hasAnything = visible.length > 0 || contacts.length > 0 || Boolean(name || role);
 
   const renderSection = (section: SectionKey) => {
@@ -135,10 +146,11 @@ export default function ResumeSheet({
                   <div className='r-skill-list'>
                     {group.skills
                       .filter((skill) => skill.trim())
-                      .map((skill, index) => (
-                        <span className='r-skill' key={`${skill}-${index}`}>
-                          {skill}
-                        </span>
+                      .map((skill, index, skills) => (
+                        <Fragment key={`${skill}-${index}`}>
+                          <span className='r-skill'>{skill}</span>
+                          {index < skills.length - 1 ? <Sep /> : null}
+                        </Fragment>
                       ))}
                   </div>
                 </div>
@@ -170,16 +182,17 @@ export default function ResumeSheet({
                       ) : null}
                       {entry.jobTitle ? (
                         <>
-                          <span className='r-entry-sep' aria-hidden='true'>
-                            /
-                          </span>
+                          <Sep />
                           <span className='r-entry-role'>
                             {titleCaseJobTitle(entry.jobTitle)}
                           </span>
                         </>
                       ) : null}
                       {entry.jobLocation ? (
-                        <span className='r-entry-meta'>{entry.jobLocation}</span>
+                        <>
+                          {entry.companyName || entry.jobTitle ? <Sep /> : null}
+                          <span className='r-entry-meta'>{entry.jobLocation}</span>
+                        </>
                       ) : null}
                     </div>
                     {date ? <span className='r-entry-date'>{date}</span> : null}
@@ -216,14 +229,15 @@ export default function ResumeSheet({
                       ) : null}
                       {entry.schoolMajor ? (
                         <>
-                          <span className='r-entry-sep' aria-hidden='true'>
-                            /
-                          </span>
+                          <Sep />
                           <span className='r-entry-role'>{entry.schoolMajor}</span>
                         </>
                       ) : null}
                       {entry.schoolGPA ? (
-                        <span className='r-entry-meta'>GPA {entry.schoolGPA}</span>
+                        <>
+                          {entry.schoolName || entry.schoolMajor ? <Sep /> : null}
+                          <span className='r-entry-meta'>GPA {entry.schoolGPA}</span>
+                        </>
                       ) : null}
                     </div>
                     {date ? <span className='r-entry-date'>{date}</span> : null}
@@ -254,9 +268,12 @@ export default function ResumeSheet({
                       <span className='r-entry-title'>{entry.projectName}</span>
                     ) : null}
                     {entry.projectLink ? (
-                      <a className='r-entry-link' href={hrefFor(entry.projectLink)}>
-                        {entry.projectLink}
-                      </a>
+                      <>
+                        {entry.projectName ? <Sep /> : null}
+                        <a className='r-entry-link' href={hrefFor(entry.projectLink)}>
+                          {entry.projectLink}
+                        </a>
+                      </>
                     ) : null}
                   </div>
                 </div>
@@ -283,7 +300,10 @@ export default function ResumeSheet({
                   <div className='r-entry-title-row'>
                     <span className='r-entry-title'>{entry.certificationName}</span>
                     {entry.certificationIssuer ? (
-                      <span className='r-entry-role'>{entry.certificationIssuer}</span>
+                      <>
+                        {entry.certificationName ? <Sep /> : null}
+                        <span className='r-entry-role'>{entry.certificationIssuer}</span>
+                      </>
                     ) : null}
                   </div>
                   {entry.certificationDate ? (
@@ -313,7 +333,10 @@ export default function ResumeSheet({
                   <div className='r-entry-title-row'>
                     <span className='r-entry-title'>{entry.awardName}</span>
                     {entry.awardIssuer ? (
-                      <span className='r-entry-role'>{entry.awardIssuer}</span>
+                      <>
+                        {entry.awardName ? <Sep /> : null}
+                        <span className='r-entry-role'>{entry.awardIssuer}</span>
+                      </>
                     ) : null}
                   </div>
                   {entry.awardDate ? (
@@ -347,11 +370,14 @@ export default function ResumeSheet({
                     {[entry.referenceRole, entry.referenceCompany]
                       .filter(Boolean)
                       .join(', ') ? (
-                      <span className='r-entry-role'>
-                        {[entry.referenceRole, entry.referenceCompany]
-                          .filter(Boolean)
-                          .join(', ')}
-                      </span>
+                      <>
+                        {entry.referenceName ? <Sep /> : null}
+                        <span className='r-entry-role'>
+                          {[entry.referenceRole, entry.referenceCompany]
+                            .filter(Boolean)
+                            .join(', ')}
+                        </span>
+                      </>
                     ) : null}
                   </div>
                   {entry.referenceEmail ? (
@@ -374,13 +400,16 @@ export default function ResumeSheet({
           <section className='r-section' data-section='languages' key={section}>
             <SectionHeading section='languages' />
             <div className='r-languages'>
-              {items.map((item) => (
-                <div className='r-language' key={item.id}>
-                  <span className='r-language-name'>{item.name}</span>
-                  {item.proficiency ? (
-                    <span className='r-language-level'>{item.proficiency}</span>
-                  ) : null}
-                </div>
+              {items.map((item, index) => (
+                <Fragment key={item.id}>
+                  <div className='r-language'>
+                    <span className='r-language-name'>{item.name}</span>
+                    {item.proficiency ? (
+                      <span className='r-language-level'>{item.proficiency}</span>
+                    ) : null}
+                  </div>
+                  {index < items.length - 1 ? <Sep /> : null}
+                </Fragment>
               ))}
             </div>
           </section>
@@ -405,7 +434,18 @@ export default function ResumeSheet({
           {role ? <p className='r-role'>{role}</p> : null}
         </div>
         {!profileHidden && contacts.length ? (
-          <ul className='r-contact'>{contacts}</ul>
+          <ul className='r-contact'>
+            {contacts.map((contact, index) => (
+              <Fragment key={index}>
+                {contact}
+                {inlineContacts && index < contacts.length - 1 ? (
+                  <li className='r-entry-sep' aria-hidden='true'>
+                    |
+                  </li>
+                ) : null}
+              </Fragment>
+            ))}
+          </ul>
         ) : null}
       </header>
 
