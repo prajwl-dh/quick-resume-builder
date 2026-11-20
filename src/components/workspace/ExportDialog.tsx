@@ -1,9 +1,9 @@
 'use client';
 
 import type { ResumeInterface } from '@/components/builder/previousResumes/ResumeInterface';
-import { normalizeTheme } from '@/lib/resumeDefaults';
 import { pdfFileName } from '@/lib/downloads';
 import { MIN_ONE_PAGE_SCALE } from '@/lib/pdf/limits';
+import { normalizeTheme } from '@/lib/resumeDefaults';
 import { MARGIN_SIZES, PAPER_SIZES } from '@/lib/resumeDesign';
 import {
   Dialog,
@@ -251,7 +251,7 @@ export default function ExportDialog({
               <Checkbox
                 checked={onePage}
                 onChange={setOnePage}
-                label='Fit everything on one page'
+                label='Try to fit everything on one page'
               />
               <p className='mt-2 pl-[26px] text-[11.5px] leading-[1.5] text-ink-faint'>
                 {!ready

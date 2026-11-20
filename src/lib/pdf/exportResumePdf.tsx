@@ -29,8 +29,9 @@ async function render(resume: ResumeInterface, fit: number) {
  * paper, margins and type settings shown in the live preview.
  *
  * When one-page mode is on, the document is rendered at decreasing type
- * scales until it fits. The smallest acceptable scale is 80%, below which
- * the type stops being readable and extraction gets unreliable.
+ * scales until it fits. The search prefers the largest readable scale and
+ * stops at MIN_ONE_PAGE_SCALE; resumes that cannot fit even there stay
+ * multi-page, which the download dialog reports.
  */
 export async function buildResumePdf(
   resume: ResumeInterface,
@@ -55,8 +56,8 @@ export async function buildResumePdf(
   let high = 1;
   let best = smallest;
 
-  // Four steps land within about 3% of the largest scale that still fits.
-  for (let step = 0; step < 4; step += 1) {
+  // Six steps land within about 1% of the largest scale that still fits.
+  for (let step = 0; step < 6; step += 1) {
     const mid = (low + high) / 2;
     const attempt = await render(resume, mid);
     if (attempt.pages === 1) {
