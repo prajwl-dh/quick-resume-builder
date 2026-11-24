@@ -2,8 +2,8 @@
 
 import { MONTHS, YEARS } from '@/lib/resumeDefaults';
 import type { DateRange } from '@/components/builder/previousResumes/ResumeInterface';
-import type { InputHTMLAttributes, ReactNode, TextareaHTMLAttributes } from 'react';
-import { useId } from 'react';
+import type { InputHTMLAttributes, ReactNode, TextareaHTMLAttributes, UIEvent } from 'react';
+import { useId, useRef } from 'react';
 import { LuCheck, LuPlus } from 'react-icons/lu';
 
 /* --------------------------------- field -------------------------------- */
@@ -36,16 +36,25 @@ export function TextAreaField({
   label,
   hint,
   counter,
+  bulleted = false,
   className = '',
   ...props
 }: TextareaHTMLAttributes<HTMLTextAreaElement> & {
   label: string;
   hint?: string;
   counter?: boolean;
+  bulleted?: boolean;
   className?: string;
 }) {
   const id = useId();
+  const mirrorRef = useRef<HTMLDivElement>(null);
   const length = typeof props.value === 'string' ? props.value.length : 0;
+  const value = typeof props.value === 'string' ? props.value : '';
+  const lines = value.split(/\r?\n/);
+  const syncScroll = (event: UIEvent<HTMLTextAreaElement>) => {
+    props.onScroll?.(event);
+    if (mirrorRef.current) mirrorRef.current.scrollTop = event.currentTarget.scrollTop;
+  };
   return (
     <div className={`min-w-0 ${className}`}>
       <div className='flex items-end justify-between gap-3'>
@@ -56,7 +65,23 @@ export function TextAreaField({
           <span className='mb-1.5 text-[11px] tabular-nums text-ink-faint'>{length}</span>
         ) : null}
       </div>
-      <textarea id={id} className='textarea' {...props} />
+      <div className={bulleted ? 'relative flex' : undefined}>
+        <textarea
+          id={id}
+          className={`textarea${bulleted ? ' textarea-bulleted' : ''}`}
+          {...props}
+          onScroll={syncScroll}
+        />
+        {bulleted ? (
+          <div aria-hidden='true' ref={mirrorRef} className='textarea-bullet-mirror'>
+            {lines.map((line, index) => (
+              <div key={index} className='textarea-bullet-line' data-empty={!line.trim()}>
+                {line || '\u200b'}
+              </div>
+            ))}
+          </div>
+        ) : null}
+      </div>
       {hint ? <p className='mt-1.5 text-[12px] leading-[1.5] text-ink-faint'>{hint}</p> : null}
     </div>
   );

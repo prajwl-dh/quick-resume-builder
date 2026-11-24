@@ -49,11 +49,11 @@ export default function ProjectsEditor({ resume }: { resume: ResumeInterface }) 
             />
           </div>
           <TextAreaField
-            label='What it is'
+            label='What it is (optional)'
+            bulleted
             rows={4}
             value={entry.projectDescription ?? ''}
             placeholder='A component library used by three product teams. Built the theming layer and wrote the contributing guide.'
-            hint='Two or three lines. What it does, what you did, and what happened.'
             onChange={(event) => update(index, { projectDescription: event.target.value })}
           />
         </>

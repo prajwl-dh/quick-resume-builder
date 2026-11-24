@@ -116,6 +116,7 @@ export default function EducationEditor({ resume }: { resume: ResumeInterface })
             />
             <TextAreaField
               label='Highlights (optional)'
+              bulleted
               rows={3}
               value={entry.schoolDescription ?? ''}
               placeholder='Graduated with honors. Teaching assistant for Data Structures.'

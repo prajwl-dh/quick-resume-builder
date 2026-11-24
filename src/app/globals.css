@@ -192,6 +192,45 @@
     @apply min-h-24 resize-y px-3 py-2.5 leading-[1.6];
   }
 
+  /* Leave a gutter for the bullet marker drawn by the mirrored layer. */
+  .textarea-bulleted {
+    padding-left: 1.75rem;
+  }
+
+  /* Mirrors the textarea's text so the editor shows one bullet per line,
+     the same way the PDF splits the value into bullets. */
+  .textarea-bullet-mirror {
+    position: absolute;
+    inset: 0;
+    padding: 0.625rem 0.75rem 0.625rem 1.75rem;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    overflow: hidden;
+    pointer-events: none;
+    color: transparent;
+    font-size: 14px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+  }
+
+  .textarea-bullet-line {
+    position: relative;
+    min-height: 1.6em;
+  }
+
+  .textarea-bullet-line::before {
+    content: '•';
+    position: absolute;
+    left: -1rem;
+    color: rgb(var(--c-accent) / 0.9);
+  }
+
+  /* Empty lines read like the placeholder until something is written. */
+  .textarea-bullet-line[data-empty='true']::before {
+    color: rgb(var(--c-ink-faint));
+  }
+
   .select {
     @apply cursor-pointer appearance-none bg-[length:16px] bg-[right_10px_center] bg-no-repeat pr-9;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none'%3E%3Cpath d='m4 6 4 4 4-4' stroke='%238A8377' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");

@@ -117,12 +117,12 @@ export default function ExperienceEditor({ resume }: { resume: ResumeInterface }
             />
             <TextAreaField
               label='What you did'
+              bulleted
               rows={5}
               value={entry.jobDescription ?? ''}
               placeholder={
                 'Rebuilt the checkout flow and cut drop-off by 18%.\nMentored two designers through their first release.\nRan the accessibility review for the design system.'
               }
-              hint='One line per bullet. Two to four lines is a good length for each role.'
               onChange={(event) => update(index, { jobDescription: event.target.value })}
             />
           </EntryCard>
