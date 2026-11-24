@@ -318,7 +318,8 @@
 @media (max-width: 639px) {
   input,
   textarea,
-  select {
+  select,
+  .textarea-bullet-mirror {
     font-size: 16px !important;
   }
 }
